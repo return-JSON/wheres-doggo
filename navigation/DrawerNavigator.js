@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
+import Camera from '../screens/CameraScreen';
 
 const Drawer = createDrawerNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -39,6 +40,17 @@ export default function DrawerNavigator({ navigation, route }) {
           )
         }}
       />
+
+      <Drawer.Screen
+        name="Camera"
+        component={Camera}
+        options={{
+          title: 'Camera',
+          drawerIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="ios-camera" />
+          )
+        }}
+      />
     </Drawer.Navigator>
   );
 }
@@ -52,5 +64,7 @@ function getHeaderTitle(route) {
       return 'How to get started';
     case 'Links':
       return 'Links to learn more';
+    case 'Camera':
+      return 'Snap a pup!';
   }
 }
