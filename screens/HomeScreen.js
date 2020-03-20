@@ -9,12 +9,28 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
+import { db } from '../config/firebase';
+
+const dogs = db.collection('dogs').doc('shiba');
+let getDog = dogs
+  .get()
+  .then(doc => {
+    if (!doc.exists) {
+      console.log('No such document!');
+    } else {
+      console.log('Document data:', doc.data());
+    }
+  })
+  .catch(err => {
+    console.log('Error getting document', err);
+  });
 
 import { MonoText } from '../components/StyledText';
 
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
+      {console.log('dogs')}
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}

@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import DrawerNavigator from './navigation/DrawerNavigator';
+import BottomTab from './navigation/BottomTab';
 import useLinking from './navigation/useLinking';
 
 const Stack = createStackNavigator();
@@ -55,6 +56,7 @@ export default function App(props) {
         >
           <Stack.Navigator>
             <Stack.Screen name="Root" component={DrawerNavigator} />
+            {/* <Stack.Screen name="Root" component={BottomTab} /> */}
           </Stack.Navigator>
         </NavigationContainer>
       </View>
