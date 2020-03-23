@@ -3,8 +3,6 @@ import { Button, View } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
 import Camera from '../screens/CameraScreen';
 import UserProfile from '../screens/UserProfile';
 import DogProfile from '../screens/DogProfile'
@@ -22,20 +20,10 @@ export default function DrawerNavigator({ navigation, route }) {
   return (
     <Drawer.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
       <Drawer.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          title: 'Get Started',
-          drawerIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-code-working" />
-          )
-        }}
-      />
-      <Drawer.Screen
         name="UserProfile"
         component={UserProfile}
         options={{
-          title: 'User Profile',
+          title: 'My Profile',
           drawerIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-person" />
           )
@@ -46,9 +34,9 @@ export default function DrawerNavigator({ navigation, route }) {
         name="DogProfile"
         component={DogProfile}
         options={{
-          title: 'Dog Profile',
+          title: 'DoggoDex',
           drawerIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-person" />
+            <TabBarIcon focused={focused} name="md-heart" />
           )
         }}
       />
@@ -57,20 +45,9 @@ export default function DrawerNavigator({ navigation, route }) {
         name="ListTemplate"
         component={ListTemplate}
         options={{
-          title: 'ListTemplate',
+          title: 'Users',
           drawerIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-person" />
-          )
-        }}
-      />
-
-      <Drawer.Screen
-        name="Links"
-        component={LinksScreen}
-        options={{
-          title: 'Resources',
-          drawerIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-book" />
+            <TabBarIcon focused={focused} name="md-search" />
           )
         }}
       />
@@ -95,9 +72,7 @@ function getHeaderTitle(route) {
 
   switch (routeName) {
     case 'Home':
-      return 'How to get started';
-    case 'Links':
-      return 'Links to learn more';
+      return 'Where\'s Doggo?';
     case 'Camera':
       return 'Snap a pup!';
   }
