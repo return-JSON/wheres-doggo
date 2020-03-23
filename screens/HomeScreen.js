@@ -12,33 +12,19 @@ import * as WebBrowser from 'expo-web-browser';
 import { MonoText } from '../components/StyledText';
 import { db } from '../config/firebase';
 
-const dogs = db.collection('dogs').doc('shiba');
-let getDog = dogs
-  .get()
-  .then(doc => {
-    if (!doc.exists) {
-      console.log('No such document!');
-    } else {
-      console.log('Document data:', doc.data());
-    }
-  })
-  .catch(err => {
-    console.log('Error getting document', err);
-  });
-
 // const dogs = db.collection('dogs').doc('shiba');
-// dogs
-//    .get()
-//    .then(doc => {
-//       if (!doc.exists) {
-//          console.log('No such document!');
-//       } else {
-//          console.log('Document data:', doc.data());
-//       }
-//    })
-//    .catch(err => {
-//       console.log('Error getting document', err);
-//    });
+// let getDog = dogs
+//   .get()
+//   .then(doc => {
+//     if (!doc.exists) {
+//       console.log('No such document!');
+//     } else {
+//       console.log('Document data:', doc.data());
+//     }
+//   })
+//   .catch(err => {
+//     console.log('Error getting document', err);
+//   });
 
 export default function HomeScreen() {
   return (
