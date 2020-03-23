@@ -51,19 +51,6 @@ export default function DrawerNavigator({ navigation, route }) {
         }}
       />
 
-<<<<<<< HEAD
-        <Drawer.Screen
-           name='Links'
-           component={LinksScreen}
-           options={{
-              title: 'Resources',
-              drawerIcon: ({ focused }) => (
-                 <TabBarIcon focused={focused} name='md-book' />
-              )
-           }}
-        />
-     </Drawer.Navigator>
-=======
       <Drawer.Screen
         name="Links"
         component={LinksScreen}
@@ -86,7 +73,6 @@ export default function DrawerNavigator({ navigation, route }) {
         }}
       />
     </Drawer.Navigator>
->>>>>>> e35cce37334a3a1c7e6f1f3f891b989a070c73d3
   );
 }
 
