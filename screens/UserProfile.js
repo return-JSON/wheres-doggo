@@ -70,16 +70,13 @@ export default class UserProfile extends React.Component {
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-      //   justifyContent: 'center',
-      //   alignItems: 'center',
-      //   alignContent: 'center',
-      flexDirection: 'row'
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignContent: 'center',
    },
    userCard: {
-      //   flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      alignContent: 'center'
+      backgroundColor: '#fff',
+      width: '50%'
    },
    cardChild: {
       flexDirection: 'row',
