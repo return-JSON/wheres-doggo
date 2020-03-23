@@ -3,11 +3,17 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { SplashScreen } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import reducer from './src/reducers';
+const store = createStore(reducer);
+
 import DrawerNavigator from './navigation/DrawerNavigator';
-import BottomTab from './navigation/BottomTab';
+import DogSnap from './screens/DogSnap';
 import useLinking from './navigation/useLinking';
 
 const Stack = createStackNavigator();
@@ -48,18 +54,20 @@ export default function App(props) {
     return null;
   } else {
     return (
-      <View style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-        <NavigationContainer
-          ref={containerRef}
-          initialState={initialNavigationState}
-        >
-          <Stack.Navigator>
-            <Stack.Screen name="Root" component={DrawerNavigator} />
-            {/* <Stack.Screen name="Root" component={BottomTab} /> */}
-          </Stack.Navigator>
-        </NavigationContainer>
-      </View>
+      <Provider store={store}>
+        <View style={styles.container}>
+          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+          <NavigationContainer
+            ref={containerRef}
+            initialState={initialNavigationState}
+          >
+            <Stack.Navigator>
+              <Stack.Screen name="Root" component={DrawerNavigator} />
+              <Stack.Screen name="DogSnap" component={DogSnap} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </View>
+      </Provider>
     );
   }
 }
