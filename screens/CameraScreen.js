@@ -13,6 +13,7 @@ export default function CameraScreen({ navigation }) {
       setHasPermission(status === 'granted');
     })();
   }, []);
+
   snap = async () => {
     if (this.camera) {
       let photo = await this.camera.takePictureAsync();
@@ -40,7 +41,7 @@ export default function CameraScreen({ navigation }) {
         >
           <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>
             {' '}
-            butt{' '}
+            snap{' '}
           </Text>
         </TouchableOpacity>
       </Camera>
