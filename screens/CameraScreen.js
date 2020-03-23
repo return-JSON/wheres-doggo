@@ -40,7 +40,7 @@ export default function CameraScreen({ navigation }) {
         >
           <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>
             {' '}
-            butt{' '}
+            snap{' '}
           </Text>
         </TouchableOpacity>
       </Camera>
