@@ -7,6 +7,7 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import Camera from '../screens/CameraScreen';
 import UserProfile from '../screens/UserProfile';
+import DogProfile from '../screens/DogProfile'
 import ListTemplate from '../screens/ListTemplate';
 
 const Drawer = createDrawerNavigator();
@@ -34,12 +35,24 @@ export default function DrawerNavigator({ navigation, route }) {
         name="UserProfile"
         component={UserProfile}
         options={{
-          title: 'UserProfile',
+          title: 'User Profile',
           drawerIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-person" />
           )
         }}
       />
+
+      <Drawer.Screen
+        name="DogProfile"
+        component={DogProfile}
+        options={{
+          title: 'Dog Profile',
+          drawerIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="md-person" />
+          )
+        }}
+      />
+
       <Drawer.Screen
         name="ListTemplate"
         component={ListTemplate}

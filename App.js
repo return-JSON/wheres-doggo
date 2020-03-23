@@ -62,7 +62,7 @@ export default function App(props) {
             initialState={initialNavigationState}
           >
             <Stack.Navigator>
-              <Stack.Screen name="Root" component={DrawerNavigator} />
+              <Stack.Screen name="Where's Doggo" component={DrawerNavigator} />
               <Stack.Screen name="DogSnap" component={DogSnap} />
             </Stack.Navigator>
           </NavigationContainer>
