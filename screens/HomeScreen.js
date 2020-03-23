@@ -25,7 +25,19 @@ let getDog = dogs
     console.log('Error getting document', err);
   });
 
-import { MonoText } from '../components/StyledText';
+// const dogs = db.collection('dogs').doc('shiba');
+// dogs
+//    .get()
+//    .then(doc => {
+//       if (!doc.exists) {
+//          console.log('No such document!');
+//       } else {
+//          console.log('Document data:', doc.data());
+//       }
+//    })
+//    .catch(err => {
+//       console.log('Error getting document', err);
+//    });
 
 export default function HomeScreen() {
   return (
