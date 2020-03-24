@@ -65,17 +65,6 @@ export default function DrawerNavigator({ navigation, route }) {
       />
 
       <Drawer.Screen
-        name="Links"
-        component={LinksScreen}
-        options={{
-          title: 'Resources',
-          drawerIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-book" />
-          )
-        }}
-      />
-
-      <Drawer.Screen
         name="Camera"
         component={Camera}
         options={{
@@ -95,7 +84,7 @@ function getHeaderTitle(route) {
 
   switch (routeName) {
     case 'Home':
-      return 'How to get started';
+      return 'Welcome to DogGO!';
     case 'Links':
       return 'Links to learn more';
     case 'Camera':

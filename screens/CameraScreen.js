@@ -13,6 +13,7 @@ export default function CameraScreen({ navigation }) {
       setHasPermission(status === 'granted');
     })();
   }, []);
+
   snap = async () => {
     if (this.camera) {
       let photo = await this.camera.takePictureAsync();

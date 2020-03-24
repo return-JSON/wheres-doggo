@@ -11,10 +11,7 @@ const takePhoto = photo => {
 
 //thunk creator
 export const saveAndSetPhoto = photo => {
-  return async dispatch => {
-    const { data } = await axios.get(`/api/robots/${id}`);
-    dispatch(getOneRobot(data));
-  };
+  return async dispatch => {};
 };
 
 export default (state = {}, action) => {
