@@ -6,7 +6,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import Camera from '../screens/CameraScreen';
 import UserProfile from '../screens/UserProfile';
-import DogProfile from '../screens/DogProfile'
+import DogProfile from '../screens/DogProfile';
 import ListTemplate from '../screens/ListTemplate';
 
 const Drawer = createDrawerNavigator();
@@ -19,7 +19,18 @@ export default function DrawerNavigator({ navigation, route }) {
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   return (
-<Drawer.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+    <Drawer.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+      <Drawer.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          title: 'Get Started',
+          drawerIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="md-code-working" />
+          )
+        }}
+      />
+
       <Drawer.Screen
         name="UserProfile"
         component={UserProfile}
