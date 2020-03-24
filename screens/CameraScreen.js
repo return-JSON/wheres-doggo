@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
+import { useFirebase } from 'react-redux-firebase';
 
 import { Camera } from 'expo-camera';
 
 export default function CameraScreen({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
+  const firebase = useFirebase();
 
   useEffect(() => {
     (async () => {
@@ -16,8 +18,24 @@ export default function CameraScreen({ navigation }) {
 
   snap = async () => {
     if (this.camera) {
-      let photo = await this.camera.takePictureAsync();
+      try {
+        let photo = await this.camera.takePictureAsync();
+        const response = await fetch(photo.uri);
+        const blob = await response.blob();
+        var ref = await firebase
+          .storage()
+          .ref()
+          .child('userid/last-image');
+        await ref.put(blob);
+      } catch (err) {
+        console.log(err);
+      }
     }
+  };
+
+  handlePress = async () => {
+    await snap();
+    await navigation.navigate('DogSnap');
   };
 
   if (hasPermission === null) {
@@ -35,9 +53,7 @@ export default function CameraScreen({ navigation }) {
             alignSelf: 'flex-end',
             alignItems: 'center'
           }}
-          onPress={() => {
-            snap(), navigation.navigate('DogSnap');
-          }}
+          onPress={handlePress}
         >
           <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>
             {' '}
