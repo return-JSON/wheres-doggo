@@ -19,7 +19,18 @@ export default function DrawerNavigator({ navigation, route }) {
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   return (
-<Drawer.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+    <Drawer.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+      <Drawer.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          title: 'Get Started',
+          drawerIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="md-code-working" />
+          )
+        }}
+      />
+
       <Drawer.Screen
         name="UserProfile"
         component={UserProfile}
@@ -74,11 +85,6 @@ function getHeaderTitle(route) {
   switch (routeName) {
     case 'Home':
       return 'Welcome to DogGO!';
-<<<<<<< HEAD
-    case 'Links':
-      return 'Links to learn more';
-=======
->>>>>>> 4a7f0bb0a9652272e1cb6eca264d58420ddd7e4b
     case 'Camera':
       return 'Snap a pup!';
   }
