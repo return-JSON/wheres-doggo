@@ -41,8 +41,8 @@ export default class DogProfile extends React.Component {
     console.log("DOGGY STATE", dog);
     console.log("DOGGY BREED", dog.breed);
     console.log("DOGGY DESC", dog.description);
-    console.log("DOGGY LATITUDE", dog.lastSeen["U"]);
-    console.log("DOGGY LONGITUDE", dog.lastSeen["k"]);
+    console.log("DOGGY LATITUDE", dog.lastSeen["F"]);
+    console.log("DOGGY LONGITUDE", dog.lastSeen["V"]);
     console.log("DOGGY IMAGE", dog.imageUrl);
     return (
       <View style={styles.container}>
@@ -64,17 +64,17 @@ export default class DogProfile extends React.Component {
               <MapView
                 style={styles.map}
                 region={{
-                  latitude: dog.lastSeen["U"],
-                  longitude: dog.lastSeen["k"],
+                  latitude: dog.lastSeen["F"],
+                  longitude: dog.lastSeen["V"],
                   latitudeDelta: 0.09,
                   longitudeDelta: 0.09
                 }}
               >
-                <Circle center={{latitude: dog.lastSeen["U"], longitude: dog.lastSeen['k']}} radius={500} strokeWidth={2} strokeColor={'white'} />
+                <Circle center={{latitude: dog.lastSeen["F"], longitude: dog.lastSeen['V']}} radius={500} strokeWidth={2} strokeColor={'white'} />
                 <Marker
                   coordinate={{
-                    latitude: dog.lastSeen["U"],
-                    longitude: dog.lastSeen["k"]
+                    latitude: dog.lastSeen["F"],
+                    longitude: dog.lastSeen["V"]
                   }}
                   title={dog.breed}
                 />

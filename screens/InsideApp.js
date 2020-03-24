@@ -14,10 +14,6 @@ import DogSnap from './DogSnap';
 import useLinking from '../navigation/useLinking';
 const Stack = createStackNavigator();
 
-
-
-
-
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [initialNavigationState, setInitialNavigationState] = React.useState();
@@ -40,7 +36,7 @@ export default function App(props) {
         </View>
       </Provider>
     );
-  
+
 }
 
 const styles = StyleSheet.create({
