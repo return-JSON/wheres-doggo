@@ -4,6 +4,10 @@ import LoadingScreen from './screens/LoadingScreen'
 import LoginScreen from './screens/LoginScreen'
 import InsideApp from './screens/InsideApp'
 
+import {decode, encode} from 'base-64'
+if (!global.btoa) {  global.btoa = encode }
+if (!global.atob) { global.atob = decode }
+
 
 
   const AppSwitchNavigator = createSwitchNavigator({
