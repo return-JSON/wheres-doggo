@@ -9,19 +9,18 @@ import {
 import firebase from 'firebase'
 
 
-
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
 
       <Text>Welcome to DogGo!!!</Text>
-      <Image 
+      <Image
         style={{width:300, height:250}}
         source={{uri:'https://i.barkpost.com/wp-content/uploads/2015/02/featmeme.jpg?q=70&fit=crop&crop=entropy&w=808&h=500'}} />
-      <Button 
+      <Button
         title='Sign Out'
         onPress={() => firebase.auth().signOut()}/>
-   
+
     </View>
   );
 }

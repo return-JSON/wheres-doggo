@@ -3,6 +3,7 @@ import { Button, View } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import TabBarIcon from '../components/TabBarIcon';
+import HomeScreen from '../screens/HomeScreen';
 import Camera from '../screens/CameraScreen';
 import UserProfile from '../screens/UserProfile';
 import DogProfile from '../screens/DogProfile'
@@ -18,7 +19,7 @@ export default function DrawerNavigator({ navigation, route }) {
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   return (
-    <Drawer.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+<Drawer.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
       <Drawer.Screen
         name="UserProfile"
         component={UserProfile}
@@ -72,7 +73,7 @@ function getHeaderTitle(route) {
 
   switch (routeName) {
     case 'Home':
-      return 'Where\'s Doggo?';
+      return 'Welcome to DogGO!';
     case 'Camera':
       return 'Snap a pup!';
   }
