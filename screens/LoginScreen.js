@@ -19,18 +19,16 @@ class LoginScreen extends Component{
           for (var i = 0; i < providerData.length; i++) {
             if (providerData[i].providerId === firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
                 providerData[i].uid === googleUser.getBasicProfile().getId()) {
-              // We don't need to reauth the Firebase connection.
               return true;
             }
           }
         }
         return false;
-      }
+      };
       
 
   onSignIn = (googleUser) =>{
         console.log('Google Auth Response', googleUser);
-        // We need to register an Observer on Firebase Auth to make sure auth is initialized.
         var unsubscribe = firebase.auth().onAuthStateChanged(function(firebaseUser) {
           unsubscribe();
           // Check if we are already signed-in Firebase with the correct user.
@@ -41,7 +39,21 @@ class LoginScreen extends Component{
                 googleUser.accessToken
             );
 
-            firebase.auth().signInWithCredential(credential).catch(function(error) {
+            firebase.auth().signInWithCredential(credential)
+            .then(function(result){
+                console.log('user signed in');
+                firebase.firestore()
+                .ref('users' + result.user.uid)
+                .set({
+                    gmail:result.user.email,
+                    profile_picture:result.additionalUserInfo.profile.picture,
+                    locale:result.additionalUserInfo.profile.locale,
+                    first_name:result.additionalUserInfo.profile.given_name,
+                    last_name:result.additionalUserInfo.profile.family_name
+                })
+        
+            })
+            .catch(function(error) {
               // Handle Errors here.
               var errorCode = error.code;
               var errorMessage = error.message;
@@ -55,7 +67,8 @@ class LoginScreen extends Component{
             console.log('User already signed-in Firebase.');
           }
         }.bind(this));
-      }
+      };
+
 
 signInWithGoogleAsync = async() =>{
     try{
@@ -74,7 +87,9 @@ signInWithGoogleAsync = async() =>{
     }catch(error){
         return {error:true}
     }
-}
+};
+
+
     render(){
         return(
             <View style={styles.container}>

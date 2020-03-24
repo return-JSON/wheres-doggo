@@ -17,15 +17,16 @@ const Stack = createStackNavigator();
 import {createAppContainer,createSwitchNavigator} from 'react-navigation'
 import LoadingScreen from './screens/LoadingScreen'
 import LoginScreen from './screens/LoginScreen'
-import DashboardScreen from './screens/DashboardScreen'
+
 import {db} from './config/firebase'
+import HomeScreen from './screens/HomeScreen';
 
 
 
   const AppSwitchNavigator = createSwitchNavigator({
     LoadingScreen: LoadingScreen,
     LoginScreen:LoginScreen,
-    DashboardScreen: DashboardScreen
+    DashboardScreen: HomeScreen
   }); //<--- nuria code 
 
   const AppNavigator= createAppContainer(AppSwitchNavigator);//<--- nuria code 
