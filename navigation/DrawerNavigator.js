@@ -3,6 +3,7 @@ import { Button, View } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import TabBarIcon from '../components/TabBarIcon';
+import HomeScreen from '../screens/HomeScreen';
 import Camera from '../screens/CameraScreen';
 import UserProfile from '../screens/UserProfile';
 import DogProfile from '../screens/DogProfile';
@@ -18,7 +19,7 @@ export default function DrawerNavigator({ navigation, route }) {
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   return (
-    <Drawer.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+<Drawer.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
       <Drawer.Screen
         name="UserProfile"
         component={UserProfile}
@@ -45,9 +46,9 @@ export default function DrawerNavigator({ navigation, route }) {
         name="ListTemplate"
         component={ListTemplate}
         options={{
-          title: 'ListTemplate',
+          title: 'Users',
           drawerIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-person" />
+            <TabBarIcon focused={focused} name="md-search" />
           )
         }}
       />
@@ -73,8 +74,11 @@ function getHeaderTitle(route) {
   switch (routeName) {
     case 'Home':
       return 'Welcome to DogGO!';
+<<<<<<< HEAD
     case 'Links':
       return 'Links to learn more';
+=======
+>>>>>>> 4a7f0bb0a9652272e1cb6eca264d58420ddd7e4b
     case 'Camera':
       return 'Snap a pup!';
   }
