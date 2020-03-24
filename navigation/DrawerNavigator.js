@@ -4,9 +4,9 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
 import Camera from '../screens/CameraScreen';
 import UserProfile from '../screens/UserProfile';
+import DogProfile from '../screens/DogProfile'
 import ListTemplate from '../screens/ListTemplate';
 
 const Drawer = createDrawerNavigator();
@@ -19,34 +19,36 @@ export default function DrawerNavigator({ navigation, route }) {
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   return (
-    <Drawer.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
-      <Drawer.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          title: 'Get Started',
-          drawerIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-code-working" />
-          )
-        }}
-      />
+<Drawer.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
       <Drawer.Screen
         name="UserProfile"
         component={UserProfile}
         options={{
-          title: 'UserProfile',
+          title: 'My Profile',
           drawerIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-person" />
           )
         }}
       />
+
+      <Drawer.Screen
+        name="DogProfile"
+        component={DogProfile}
+        options={{
+          title: 'DoggoDex',
+          drawerIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="md-heart" />
+          )
+        }}
+      />
+
       <Drawer.Screen
         name="ListTemplate"
         component={ListTemplate}
         options={{
-          title: 'ListTemplate',
+          title: 'Users',
           drawerIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-person" />
+            <TabBarIcon focused={focused} name="md-search" />
           )
         }}
       />
