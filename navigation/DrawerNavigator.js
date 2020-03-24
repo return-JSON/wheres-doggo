@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import TabBarIcon from '../components/TabBarIcon';
 import Camera from '../screens/CameraScreen';
 import UserProfile from '../screens/UserProfile';
-import DogProfile from '../screens/DogProfile'
+import DogProfile from '../screens/DogProfile';
 import ListTemplate from '../screens/ListTemplate';
 
 const Drawer = createDrawerNavigator();
@@ -45,15 +45,9 @@ export default function DrawerNavigator({ navigation, route }) {
         name="ListTemplate"
         component={ListTemplate}
         options={{
-<<<<<<< HEAD
           title: 'ListTemplate',
           drawerIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-person" />
-=======
-          title: 'Users',
-          drawerIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-search" />
->>>>>>> 1095fcd85b825e004e82e501c5f6dc1e573cc311
           )
         }}
       />
@@ -78,13 +72,9 @@ function getHeaderTitle(route) {
 
   switch (routeName) {
     case 'Home':
-<<<<<<< HEAD
       return 'Welcome to DogGO!';
     case 'Links':
       return 'Links to learn more';
-=======
-      return 'Where\'s Doggo?';
->>>>>>> 1095fcd85b825e004e82e501c5f6dc1e573cc311
     case 'Camera':
       return 'Snap a pup!';
   }
