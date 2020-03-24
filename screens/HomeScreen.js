@@ -3,9 +3,10 @@ import {
   StyleSheet,
   Text,
   View,
-  Image
+  Image,
+  Button
 } from 'react-native';
-
+import firebase from 'firebase'
 
 
 
@@ -17,6 +18,9 @@ export default function HomeScreen() {
       <Image 
         style={{width:300, height:250}}
         source={{uri:'https://i.barkpost.com/wp-content/uploads/2015/02/featmeme.jpg?q=70&fit=crop&crop=entropy&w=808&h=500'}} />
+      <Button 
+        title='Sign Out'
+        onPress={() => firebase.auth().signOut()}/>
    
     </View>
   );
