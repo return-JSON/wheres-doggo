@@ -2,7 +2,8 @@ import * as React from 'react';
 import {
   StyleSheet,
   Text,
-  View
+  View,
+  Image
 } from 'react-native';
 
 
@@ -13,6 +14,9 @@ export default function HomeScreen() {
     <View style={styles.container}>
 
       <Text>Welcome to DogGo!!!</Text>
+      <Image 
+        style={{width:300, height:250}}
+        source={{uri:'https://i.barkpost.com/wp-content/uploads/2015/02/featmeme.jpg?q=70&fit=crop&crop=entropy&w=808&h=500'}} />
    
     </View>
   );
