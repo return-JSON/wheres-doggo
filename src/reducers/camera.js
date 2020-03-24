@@ -1,9 +1,11 @@
 // import { useFirebase } from 'react-redux-firebase';
 // const firebase = useFirebase();
+import { submitToGoogle } from '../googleVision';
 
 let initialState = {
   uri: '',
-  dogId: 'dog'
+  googleResp: null,
+  dogId: ''
 };
 
 // actions
@@ -11,7 +13,7 @@ const SET_PHOTO_URI = 'SET_PHOTO_URI';
 const SET_DOG = 'SET_DOG';
 
 //// action creator
-const takePhoto = photo => {
+export const takePhoto = uri => {
   return {
     type: SET_PHOTO_URI,
     uri
@@ -20,7 +22,8 @@ const takePhoto = photo => {
 
 //thunk creator
 export const setPhotoUri = uri => {
-  return dispatch => {
+  return async dispatch => {
+    const { data } = await submitToGoogle();
     dispatch(takePhoto(uri));
   };
 };

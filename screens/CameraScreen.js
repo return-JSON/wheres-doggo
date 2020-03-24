@@ -5,7 +5,7 @@ import { useFirebase } from 'react-redux-firebase';
 import { Camera } from 'expo-camera';
 
 export default function CameraScreen({ navigation }) {
-  const [hasPermission, setHasPermission] = useState(null);
+  const [hasPermission, setHasPermission, image] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const firebase = useFirebase();
 
@@ -26,7 +26,8 @@ export default function CameraScreen({ navigation }) {
           .storage()
           .ref()
           .child('userid/last-image');
-        await ref.put(blob);
+        const snapshot = await ref.put(blob);
+        blob.close();
       } catch (err) {
         console.log(err);
       }
