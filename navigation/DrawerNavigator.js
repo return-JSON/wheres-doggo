@@ -3,8 +3,6 @@ import { Button, View } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
 import Camera from '../screens/CameraScreen';
 import UserProfile from '../screens/UserProfile';
 import DogProfile from '../screens/DogProfile'
@@ -22,20 +20,10 @@ export default function DrawerNavigator({ navigation, route }) {
   return (
     <Drawer.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
       <Drawer.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          title: 'Get Started',
-          drawerIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-code-working" />
-          )
-        }}
-      />
-      <Drawer.Screen
         name="UserProfile"
         component={UserProfile}
         options={{
-          title: 'User Profile',
+          title: 'My Profile',
           drawerIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-person" />
           )
@@ -46,9 +34,9 @@ export default function DrawerNavigator({ navigation, route }) {
         name="DogProfile"
         component={DogProfile}
         options={{
-          title: 'Dog Profile',
+          title: 'DoggoDex',
           drawerIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-person" />
+            <TabBarIcon focused={focused} name="md-heart" />
           )
         }}
       />
@@ -57,9 +45,15 @@ export default function DrawerNavigator({ navigation, route }) {
         name="ListTemplate"
         component={ListTemplate}
         options={{
+<<<<<<< HEAD
           title: 'ListTemplate',
           drawerIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-person" />
+=======
+          title: 'Users',
+          drawerIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="md-search" />
+>>>>>>> 1095fcd85b825e004e82e501c5f6dc1e573cc311
           )
         }}
       />
@@ -84,9 +78,13 @@ function getHeaderTitle(route) {
 
   switch (routeName) {
     case 'Home':
+<<<<<<< HEAD
       return 'Welcome to DogGO!';
     case 'Links':
       return 'Links to learn more';
+=======
+      return 'Where\'s Doggo?';
+>>>>>>> 1095fcd85b825e004e82e501c5f6dc1e573cc311
     case 'Camera':
       return 'Snap a pup!';
   }
