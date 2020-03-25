@@ -2,17 +2,25 @@ import * as React from 'react';
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { db } from '../config/firebase';
+// note user1 is still hardcoded! will need to refactor to logged in user
 
 export default class UserProfile extends React.Component {
    constructor() {
       super();
       // will need to replace user2 with logged-in user
-      this.ref = db.collection('users').doc('user2');
+      this.ref = db.collection('users').doc('user1');
+      this.dogsRef = this.ref.collection('dogs');
       this.state = {
          isLoading: true,
-         userProf: {}
+         userProf: {},
+         dogsArr: []
          //  key: ''
       };
+      this.getDogSubcollection = this.getDogSubcollection.bind(this);
+   }
+
+   componentWillUnmount() {
+      this.unsubscribe();
    }
 
    componentDidMount() {
@@ -27,6 +35,16 @@ export default class UserProfile extends React.Component {
             console.log('No such document!');
          }
       });
+      this.unsubscribe = this.dogsRef.onSnapshot(this.getDogSubcollection);
+   }
+   
+   getDogSubcollection(querySnapshot) {
+      const dogsArr = [];
+      querySnapshot.forEach(res => {
+         const { breed, imageUrl, location } = res.data();
+         dogsArr.push({ key: res.id, res, breed, imageUrl,location });
+      });
+      this.setState({dogsArr})
    }
 
    render() {
@@ -60,6 +78,7 @@ export default class UserProfile extends React.Component {
                </View>
                <View>
                   <Text>Doggos collected:</Text>
+                     {/* create a new component to render each dog? */}
                </View>
             </View>
          </View>
@@ -70,9 +89,9 @@ export default class UserProfile extends React.Component {
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignContent: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignContent: 'center'
    },
    userCard: {
       backgroundColor: '#fff',
