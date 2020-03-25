@@ -7,7 +7,7 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
 // Initialize Firebase
-const config = {
+export const config = {
   apiKey: c.FIREBASE_API_KEY,
   authDomain: c.FIREBASE_AUTH_DOMAIN,
   databaseURL: c.FIREBASE_DATABASE_URL,

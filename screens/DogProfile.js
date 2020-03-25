@@ -38,12 +38,6 @@ export default class DogProfile extends React.Component {
         </View>
       );
     }
-    console.log("DOGGY STATE", dog);
-    console.log("DOGGY BREED", dog.breed);
-    console.log("DOGGY DESC", dog.description);
-    console.log("DOGGY LATITUDE", dog.lastSeen["F"]);
-    console.log("DOGGY LONGITUDE", dog.lastSeen["V"]);
-    console.log("DOGGY IMAGE", dog.imageUrl);
     return (
       <View style={styles.container}>
         <View style={styles.userCard}>
@@ -77,6 +71,7 @@ export default class DogProfile extends React.Component {
                     longitude: dog.lastSeen["V"]
                   }}
                   title={dog.breed}
+                  image={require('../src/img/dog.png')}
                 />
               </MapView>
             </View>
