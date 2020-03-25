@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button, TextInput, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Button, TextInput, Alert, TouchableOpacity, Image } from 'react-native';
 import * as Google from 'expo-google-app-auth';
 import firebase from '../config/firebase';
 import * as Facebook from 'expo-facebook';
@@ -23,9 +23,7 @@ class LoginScreen extends Component {
   //     }
   //   });
   // }
-
-
-
+//FOR NON-GOOGLE OR NON-FB USERS
   loginUser = () => {
     const { email, password } = this.state;
     firebase
@@ -34,10 +32,13 @@ class LoginScreen extends Component {
       .catch(error => this.setState({ errorMessage: error.message }))
   };
 
+
+
+
   //  // FACEBOOK LOGIN
   async loginWithFacebook() {
     await Facebook.initializeAsync('826104554466560')
-    const { type, token } = await Facebook.logInWithReadPermissionsAsync({ permissions: ['public_profile'] });
+    const { type, token } = await Facebook.logInWithReadPermissionsAsync('826104554466560', {permissions: ['public_profile','email'], behavior: "web"});
     if (type === 'success') {
       await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
       const credential = firebase.auth.FacebookAuthProvider.credential(token);
@@ -47,6 +48,7 @@ class LoginScreen extends Component {
       console.log(facebookProfileData);
     }
   }
+  
 
 
 
@@ -85,7 +87,7 @@ class LoginScreen extends Component {
           firebase
             .auth()
             .signInWithCredential(credential)
-            .then(function (result) {
+            .then(function (result) { 
               if (result.additionalUserInfo.isNewUser) {
                 firebase
                   .firestore()

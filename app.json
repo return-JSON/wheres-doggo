@@ -9,10 +9,18 @@
       "android",
       "web"
     ],
+    "FacebookAppId": "826104554466560",
+    "FacebookDisplayName": "WheresDogGo",
+    "LSApplicationQueriesSchemes": [
+      "fbapi",
+      "fb-messenger-share-api",
+      "fbauth2",
+      "fbshareextension"
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "com.DOMAIN",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
