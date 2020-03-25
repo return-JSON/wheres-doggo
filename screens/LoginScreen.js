@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button, TextInput, Alert } from 'react-native';
+import { View, Text, StyleSheet, Button, TextInput, Alert, TouchableOpacity, Image } from 'react-native';
 import * as Google from 'expo-google-app-auth';
-import firebase from 'firebase';
+import firebase from '../config/firebase';
 import * as Facebook from 'expo-facebook';
+
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -10,90 +11,57 @@ class LoginScreen extends Component {
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      errorMessage: null
     };
   }
 
-  componentDidMount() {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user !== null) {
-        console.log(user);
-      }
-    });
-  }
-
-  signUpUser = (email, password) => {
-    try {
-      if (this.state.password.length < 6) {
-        alert('Please enter atleast 6 characters');
-        return;
-      }
-      firebase.auth().createUserWithEmailAndPassword(email, password);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  loginUser = (email, password) => {
-    try {
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then(function(user) {
-          console.log(user);
-        });
-    } catch (error) {
-      console.log(error.toString());
-    }
-  };
-
-  //FACEBOOK LOGIN
-  // async loginWithFacebook(){
-  //     const {type,token} = await Facebook.logInWithReadPermissionsAsync('826104554466560', {permissions:['public_profile']});
-
-  //     if(type === 'success'){
-  //         const credential = firebase.auth.FacebookAuthProvider.credential(token)
-
-  //         firebase.auth().signInWithCredential(credential).catch((error) => {
-  //             console.log(error)
-  //         })
+  // componentDidMount() {
+  //   firebase.auth().onAuthStateChanged(user => {
+  //     if (user !== null) {
+  //       console.log(user);
   //     }
+  //   });
   // }
+//FOR NON-GOOGLE OR NON-FB USERS
+  loginUser = () => {
+    const { email, password } = this.state;
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .catch(error => this.setState({ errorMessage: error.message }))
+  };
 
-  async logIn() {
-    try {
-      await Facebook.initializeAsync('826104554466560');
-      const {
-        type,
-        token,
-        expires,
-        permissions,
-        declinedPermissions
-      } = await Facebook.logInWithReadPermissionsAsync({
-        permissions: ['public_profile']
-      });
-      if (type === 'success') {
-        // Get the user's name using Facebook's Graph API
-        const response = await fetch(
-          `https://graph.facebook.com/me?access_token=${token}`
-        );
-        Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
-      } else {
-        // type === 'cancel'
-      }
-    } catch ({ message }) {
-      alert(`Facebook Login Error: ${message}`);
+
+
+
+  //  // FACEBOOK LOGIN
+  async loginWithFacebook() {
+    await Facebook.initializeAsync('826104554466560')
+    const { type, token } = await Facebook.logInWithReadPermissionsAsync('826104554466560', {permissions: ['public_profile','email'], behavior: "web"});
+    if (type === 'success') {
+      await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+      const credential = firebase.auth.FacebookAuthProvider.credential(token);
+      const facebookProfileData = await firebase
+        .auth()
+        .signInWithCredential(credential); // Sign in with Facebook credential
+      console.log(facebookProfileData);
     }
   }
+  
 
-  //
+
+
+
+
+  //GOOGLE SIGN IN
   isUserEqual = (googleUser, firebaseUser) => {
     if (firebaseUser) {
       var providerData = firebaseUser.providerData;
       for (var i = 0; i < providerData.length; i++) {
         if (
           providerData[i].providerId ===
-            firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
           providerData[i].uid === googleUser.getBasicProfile().getId()
         ) {
           return true;
@@ -106,7 +74,7 @@ class LoginScreen extends Component {
   onSignIn = googleUser => {
     console.log('Google Auth Response', googleUser);
     var unsubscribe = firebase.auth().onAuthStateChanged(
-      function(firebaseUser) {
+      function (firebaseUser) {
         unsubscribe();
         // Check if we are already signed-in Firebase with the correct user.
         if (!this.isUserEqual(googleUser, firebaseUser)) {
@@ -119,42 +87,36 @@ class LoginScreen extends Component {
           firebase
             .auth()
             .signInWithCredential(credential)
-            .then(function(result) {
-              console.log('user signed in');
-              console.log('result', result);
+            .then(function (result) { 
               if (result.additionalUserInfo.isNewUser) {
                 firebase
-                .firestore()
-                   .collection('users')
-                   .doc(result.user.uid)
-                   .set({
-                      gmail: result.user.email,
-                      profile_picture:
-                         result.additionalUserInfo.profile.picture,
-                      locale: result.additionalUserInfo.profile.locale,
-                      first_name: result.additionalUserInfo.profile.given_name,
-                      last_name: result.additionalUserInfo.profile.family_name,
-                      created_at: Date.now()
-                   });
+                  .firestore()
+                  .collection('users')
+                  .doc(result.user.uid)
+                  .set({
+                    gmail: result.user.email,
+                    profile_picture:
+                      result.additionalUserInfo.profile.picture,
+                    locale: result.additionalUserInfo.profile.locale,
+                    first_name: result.additionalUserInfo.profile.given_name,
+                    last_name: result.additionalUserInfo.profile.family_name,
+                    created_at: Date.now()
+                  });
               } else {
                 firebase
-                .firestore()
-                   .collection('users')
-                   .doc(result.user.uid)
-                   .update({
-                      last_logged_in: Date.now()
-                   });
+                  .firestore()
+                  .collection('users')
+                  .doc(result.user.uid)
+                  .update({
+                    last_logged_in: Date.now()
+                  });
               }
             })
-            .catch(function(error) {
-              // Handle Errors here.
+            .catch(function (error) {
               var errorCode = error.code;
               var errorMessage = error.message;
-              // The email of the user's account used.
               var email = error.email;
-              // The firebase.auth.AuthCredential type that was used.
               var credential = error.credential;
-              // ...
             });
         } else {
           console.log('User already signed-in Firebase.');
@@ -185,6 +147,12 @@ class LoginScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
+      <Text style={{fontSize: 30}}>WELCOME TO DOGGO!</Text>
+
+        <View style={styles.errorMessage}>
+          {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
+        </View>
+
         <TextInput
           style={styles.input}
           underlineColorAndroid="transparent"
@@ -192,6 +160,7 @@ class LoginScreen extends Component {
           placeholderTextColor="#9a73ef"
           autoCapitalize="none"
           onChangeText={email => this.setState({ email })}
+          value={this.state.email}
         />
 
         <TextInput
@@ -202,15 +171,13 @@ class LoginScreen extends Component {
           autoCapitalize="none"
           secureTextEntry={true}
           onChangeText={password => this.setState({ password })}
+          value={this.state.password}
         />
 
-        <Button
-          title="Sign Up"
-          onPress={() => this.signUpUser(this.state.email, this.state.password)}
-        />
+
         <Button
           title="Log In"
-          onPress={() => this.loginUser(this.state.email, this.state.password)}
+          onPress={this.loginUser}
         />
 
         <Button
@@ -218,7 +185,15 @@ class LoginScreen extends Component {
           onPress={() => this.signInWithGoogleAsync()}
         />
 
-        <Button title="Sign In With Facebook" onPress={() => this.logIn()} />
+        <Button title="Sign In With Facebook"
+          onPress={() => this.loginWithFacebook()} />
+
+        <TouchableOpacity style={{ alignSelf: "center", marginTop: 32 }} onPress={() => this.props.navigation.navigate('Register')}>
+          <Text style={{ fontSize: 15 }}>
+            New to Where's DogGo? <Text style={{ fontWeight: "500", color: "pink" }}>Sign Up</Text>
+          </Text>
+        </TouchableOpacity>
+
       </View>
     );
   }
@@ -244,5 +219,17 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 15,
     height: 40
+  },
+  errorMessage: {
+    height: 72,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 30
+  },
+  error: {
+    color: "green",
+    fontSize: 13,
+    fontWeight: "600",
+    textAlign: "center"
   }
 });
