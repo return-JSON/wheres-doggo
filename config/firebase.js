@@ -16,4 +16,5 @@ const config = {
   measurementId: c.FIREBASE_MEASUREMENT_ID
 };
 firebase.initializeApp(config);
+export const db = firebase.firestore();
 export default firebase
