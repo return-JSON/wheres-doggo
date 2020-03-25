@@ -19,7 +19,7 @@ export default submitToGoogle = async () => {
     });
     let response = await fetch(
       'https://vision.googleapis.com/v1/images:annotate?key=' +
-        'AIzaSyAtR83KT3-6fEk457SwYGqcVkYXPlnnLW4',
+        GOOGLE_CLOUD_VISION_API_KEY,
       {
         headers: {
           Accept: 'application/json',
