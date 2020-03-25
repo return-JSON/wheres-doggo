@@ -5,7 +5,6 @@ import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
 import DrawerNavigator from '../navigation/DrawerNavigator';
 import DogSnap from './DogSnap';
 import useLinking from '../navigation/useLinking';
