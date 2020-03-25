@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button, TextInput, Alert, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, Button, TextInput, TouchableOpacity } from 'react-native';
 import * as Google from 'expo-google-app-auth';
 import firebase from '../config/firebase';
-import * as Facebook from 'expo-facebook';
 
 
 class LoginScreen extends Component {
@@ -16,14 +15,7 @@ class LoginScreen extends Component {
     };
   }
 
-  // componentDidMount() {
-  //   firebase.auth().onAuthStateChanged(user => {
-  //     if (user !== null) {
-  //       console.log(user);
-  //     }
-  //   });
-  // }
-//FOR NON-GOOGLE OR NON-FB USERS
+
   loginUser = () => {
     const { email, password } = this.state;
     firebase
@@ -31,24 +23,6 @@ class LoginScreen extends Component {
       .signInWithEmailAndPassword(email, password)
       .catch(error => this.setState({ errorMessage: error.message }))
   };
-
-
-
-
-  //  // FACEBOOK LOGIN
-  async loginWithFacebook() {
-    await Facebook.initializeAsync('826104554466560')
-    const { type, token } = await Facebook.logInWithReadPermissionsAsync('826104554466560', {permissions: ['public_profile','email'], behavior: "web"});
-    if (type === 'success') {
-      await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-      const credential = firebase.auth.FacebookAuthProvider.credential(token);
-      const facebookProfileData = await firebase
-        .auth()
-        .signInWithCredential(credential); // Sign in with Facebook credential
-      console.log(facebookProfileData);
-    }
-  }
-  
 
 
 
@@ -185,8 +159,6 @@ class LoginScreen extends Component {
           onPress={() => this.signInWithGoogleAsync()}
         />
 
-        <Button title="Sign In With Facebook"
-          onPress={() => this.loginWithFacebook()} />
 
         <TouchableOpacity style={{ alignSelf: "center", marginTop: 32 }} onPress={() => this.props.navigation.navigate('Register')}>
           <Text style={{ fontSize: 15 }}>
