@@ -7,7 +7,7 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
 // Initialize Firebase
-export const config = {
+const config = {
   apiKey: c.FIREBASE_API_KEY,
   authDomain: c.FIREBASE_AUTH_DOMAIN,
   databaseURL: c.FIREBASE_DATABASE_URL,
@@ -17,3 +17,4 @@ export const config = {
 };
 firebase.initializeApp(config);
 export const db = firebase.firestore();
+export default firebase
