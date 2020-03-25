@@ -11,8 +11,9 @@ export default function(containerRef) {
           Home: 'home',
           Links: 'links',
           Settings: 'settings',
-        },
-      },
-    },
+          Camera: 'camera'
+        }
+      }
+    }
   });
 }

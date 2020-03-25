@@ -1,70 +1,51 @@
 import * as React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { SplashScreen } from 'expo';
-import * as Font from 'expo-font';
-import { Ionicons } from '@expo/vector-icons';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import LoadingScreen from './screens/LoadingScreen';
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import InsideApp from './screens/InsideApp';
 
-import DrawerNavigator from './navigation/DrawerNavigator';
-import useLinking from './navigation/useLinking';
+import { Provider } from 'react-redux';
+import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
+import { createFirestoreInstance } from 'redux-firestore';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
-const Stack = createStackNavigator();
+import store from './src/store';
 
-export default function App(props) {
-  const [isLoadingComplete, setLoadingComplete] = React.useState(false);
-  const [initialNavigationState, setInitialNavigationState] = React.useState();
-  const containerRef = React.useRef();
-  const { getInitialState } = useLinking(containerRef);
+const rrfConfig = { userProfile: 'users', useFirestoreForProfile: true };
 
-  // Load any resources or data that we need prior to rendering the app
-  React.useEffect(() => {
-    async function loadResourcesAndDataAsync() {
-      try {
-        SplashScreen.preventAutoHide();
+const rrfProps = {
+  firebase,
+  config: rrfConfig,
+  dispatch: store.dispatch,
+  createFirestoreInstance
+};
 
-        // Load our initial navigation state
-        setInitialNavigationState(await getInitialState());
+import { decode, encode } from 'base-64';
 
-        // Load fonts
-        await Font.loadAsync({
-          ...Ionicons.font,
-          'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf')
-        });
-      } catch (e) {
-        // We might want to provide this error information to an error reporting service
-        console.warn(e);
-      } finally {
-        setLoadingComplete(true);
-        SplashScreen.hide();
-      }
-    }
-
-    loadResourcesAndDataAsync();
-  }, []);
-
-  if (!isLoadingComplete && !props.skipLoadingScreen) {
-    return null;
-  } else {
-    return (
-      <View style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-        <NavigationContainer
-          ref={containerRef}
-          initialState={initialNavigationState}
-        >
-          <Stack.Navigator>
-            <Stack.Screen name="Root" component={DrawerNavigator} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </View>
-    );
-  }
+if (!global.btoa) {
+  global.btoa = encode;
+}
+if (!global.atob) {
+  global.atob = decode;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff'
-  }
+const AppSwitchNavigator = createSwitchNavigator({
+  LoadingScreen: LoadingScreen,
+  LoginScreen: LoginScreen,
+  Register: RegisterScreen,
+  DashboardScreen: InsideApp
 });
+
+const AppNavigator = createAppContainer(AppSwitchNavigator);
+
+export default function App() {
+  return (
+    <Provider store={store}>
+      <ReactReduxFirebaseProvider {...rrfProps}>
+        <AppNavigator />
+      </ReactReduxFirebaseProvider>
+    </Provider>
+  );
+}

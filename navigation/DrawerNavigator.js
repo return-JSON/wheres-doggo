@@ -1,14 +1,19 @@
-import * as React from 'react';
-import { Button, View } from 'react-native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationContainer } from '@react-navigation/native';
-
-import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
+import * as React from "react";
+import { Button, View } from "react-native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { NavigationContainer } from "@react-navigation/native";
+import TabBarIcon from "../components/TabBarIcon";
+import {
+  HomeScreen,
+  Camera,
+  UserProfile,
+  DogProfile,
+  ListTemplate,
+  Map
+} from "../screens";
 
 const Drawer = createDrawerNavigator();
-const INITIAL_ROUTE_NAME = 'Home';
+const INITIAL_ROUTE_NAME = "Home";
 
 export default function DrawerNavigator({ navigation, route }) {
   // Set the header title on the parent stack navigator depending on the
@@ -22,20 +27,64 @@ export default function DrawerNavigator({ navigation, route }) {
         name="Home"
         component={HomeScreen}
         options={{
-          title: 'Get Started',
+          title: "Get Started",
           drawerIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-code-working" />
+            <TabBarIcon focused={focused} name="md-home" />
           )
         }}
       />
 
       <Drawer.Screen
-        name="Links"
-        component={LinksScreen}
+        name="Map"
+        component={Map}
         options={{
-          title: 'Resources',
+          title: "DoggoMap",
           drawerIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-book" />
+            <TabBarIcon focused={focused} name="ios-map" />
+          )
+        }}
+      />
+
+      <Drawer.Screen
+        name="UserProfile"
+        component={UserProfile}
+        options={{
+          title: "My Profile",
+          drawerIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="md-person" />
+          )
+        }}
+      />
+
+      <Drawer.Screen
+        name="DogProfile"
+        component={DogProfile}
+        options={{
+          title: "DoggoDex",
+          drawerIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="md-heart" />
+          )
+        }}
+      />
+
+      <Drawer.Screen
+        name="ListTemplate"
+        component={ListTemplate}
+        options={{
+          title: "Users",
+          drawerIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="md-search" />
+          )
+        }}
+      />
+
+      <Drawer.Screen
+        name="Camera"
+        component={Camera}
+        options={{
+          title: "Camera",
+          drawerIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="ios-camera" />
           )
         }}
       />
@@ -48,9 +97,9 @@ function getHeaderTitle(route) {
     route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
 
   switch (routeName) {
-    case 'Home':
-      return 'How to get started';
-    case 'Links':
-      return 'Links to learn more';
+    case "Home":
+      return "Welcome to DogGO!";
+    case "Camera":
+      return "Snap a pup!";
   }
 }
