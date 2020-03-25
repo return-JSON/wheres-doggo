@@ -32,7 +32,7 @@ class LoginScreen extends Component {
       }
       firebase.auth().createUserWithEmailAndPassword(email, password);
     } catch (error) {
-      console.log(error.toString());
+      console.error(error);
     }
   };
 
@@ -137,25 +137,29 @@ class LoginScreen extends Component {
             .signInWithCredential(credential)
             .then(function(result) {
               console.log('user signed in');
+              console.log('result', result);
               if (result.additionalUserInfo.isNewUser) {
                 firebase
-                  .database()
-                  .ref('/users/' + result.user.uid)
-                  .set({
-                    gmail: result.user.email,
-                    profile_picture: result.additionalUserInfo.profile.picture,
-                    locale: result.additionalUserInfo.profile.locale,
-                    first_name: result.additionalUserInfo.profile.given_name,
-                    last_name: result.additionalUserInfo.profile.family_name,
-                    created_at: Date.now()
-                  });
+                .firestore()
+                   .collection('users')
+                   .doc(result.user.uid)
+                   .set({
+                      gmail: result.user.email,
+                      profile_picture:
+                         result.additionalUserInfo.profile.picture,
+                      locale: result.additionalUserInfo.profile.locale,
+                      first_name: result.additionalUserInfo.profile.given_name,
+                      last_name: result.additionalUserInfo.profile.family_name,
+                      created_at: Date.now()
+                   });
               } else {
                 firebase
-                  .database()
-                  .ref('/users/' + result.user.uid)
-                  .update({
-                    last_logged_in: Date.now()
-                  });
+                .firestore()
+                   .collection('users')
+                   .doc(result.user.uid)
+                   .update({
+                      last_logged_in: Date.now()
+                   });
               }
             })
             .catch(function(error) {
