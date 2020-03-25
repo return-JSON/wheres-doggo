@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
-import { ListItem } from 'react-native-elements';
+import DogTile from '../components/DogTile';
 import { db } from '../config/firebase';
 // note user1 is still hardcoded! will need to refactor to logged in user
 
 export default class UserProfile extends React.Component {
    constructor() {
       super();
-      // will need to replace user2 with logged-in user
+      // will need to replace user2 with logged-in user or current user?
       this.ref = db.collection('users').doc('user1');
       this.dogsRef = this.ref.collection('dogs');
       this.state = {
@@ -37,14 +37,14 @@ export default class UserProfile extends React.Component {
       });
       this.unsubscribe = this.dogsRef.onSnapshot(this.getDogSubcollection);
    }
-   
+
    getDogSubcollection(querySnapshot) {
       const dogsArr = [];
       querySnapshot.forEach(res => {
          const { breed, imageUrl, location } = res.data();
-         dogsArr.push({ key: res.id, res, breed, imageUrl,location });
+         dogsArr.push({ key: res.id, res, breed, imageUrl, location });
       });
-      this.setState({dogsArr})
+      this.setState({ dogsArr });
    }
 
    render() {
@@ -65,20 +65,24 @@ export default class UserProfile extends React.Component {
                <View style={styles.cardChild}>
                   <View>
                      <Image
-                        style={{ width: 200, height: 200 }}
+                        style={styles.profilePic}
                         source={{
                            uri: this.state.userProf.photourl
                         }}
                      />
                   </View>
-                  <View>
+                  {/* <View>
                      <Text>Friends:</Text>
                      <Text>no friends yet!</Text>
-                  </View>
+                  </View> */}
                </View>
                <View>
                   <Text>Doggos collected:</Text>
-                     {/* create a new component to render each dog? */}
+               </View>
+               <View style={styles.cardChild}>
+                  {this.state.dogsArr.map(dog => (
+                     <DogTile dog={dog} key={dog.key} />
+                  ))}
                </View>
             </View>
          </View>
@@ -98,7 +102,12 @@ const styles = StyleSheet.create({
       width: '50%'
    },
    cardChild: {
+      justifyContent: 'center',
       flexDirection: 'row',
       flexWrap: 'wrap'
+   },
+   profilePic: {
+      width: 175,
+      height: 175
    }
 });
