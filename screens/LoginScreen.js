@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button, TextInput, Alert } from 'react-native';
+import { View, Text, StyleSheet, Button, TextInput, Alert, TouchableOpacity } from 'react-native';
 import * as Google from 'expo-google-app-auth';
 import firebase from '../config/firebase';
 import * as Facebook from 'expo-facebook';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -12,96 +12,46 @@ class LoginScreen extends Component {
     this.state = {
       email: '',
       password: '',
-      errorMessage:null
+      errorMessage: null
     };
   }
 
-  componentDidMount() {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user !== null) {
-        console.log(user);
-      }
-    });
-  }
-
-  signUpUser = (email, password) => {
-    try {
-      if (this.state.password.length < 6) {
-        alert('Please enter atleast 6 characters');
-        return;
-      }
-      firebase.auth().createUserWithEmailAndPassword(email, password);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  loginUser = () => {
-      const {email, password} = this.state;
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .catch(error => this.setState({errorMessage:error.message}))
-  };
-
-//  // FACEBOOK LOGIN
-  async loginWithFacebook(){
-    await Facebook.initializeAsync('826104554466560')
-      const {type,token} = await Facebook.logInWithReadPermissionsAsync('826104554466560', {permissions:['public_profile']});
-      behavior: Platform.OS == "ios" ? Expo.Constants.statusBarHeight < 40 ? "web" : "native" : "native"
-      if(type === 'success'){
-          const credential = firebase.auth.FacebookAuthProvider.credential(token)
-
-          firebase.auth().signInWithCredential(credential).catch((error) => {
-              console.log(error)
-          })
-      }
-    }
-
-
-  // async loginWithFacebook() {
-
-  //     await Facebook.initializeAsync('826104554466560');
-  //     const permissions = ['public_profile', 'email']
-  //     const {
-  //       type,
-  //       token
-  //     } = await Facebook.logInWithReadPermissionsAsync(
-  //       '826104554466560',{permissions});
-  //   //   if (type === 'success') {
-  //   //     // Get the user's name using Facebook's Graph API
-  //   //     const response = await fetch(
-  //   //       `https://graph.facebook.com/me?access_token=${token}`
-  //   //     );
-  //   //     Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
-  //   //     // await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-  //   //     // const credential = firebase.auth.FacebookAuthProvider.credential(token);
-  //   //     // const facebookProfileData = await firebase.auth().signInAndRetrieveDataWithCredential(credential)
-  //   //   } else {
-  //   //     // type === 'cancel'
-  //   //   }
-  //   // } catch ({ message }) {
-  //   //   alert(`Facebook Login Error: ${message}`);
-  //   switch (type) {
-  //     case 'success': {
-  //       await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);  // Set persistent auth state
-  //       const credential = firebase.auth.FacebookAuthProvider.credential(token);
-  //       const facebookProfileData = await firebase.auth().signInAndRetrieveDataWithCredential(credential);  // Sign in with Facebook credential
-  
-  //       // Do something with Facebook profile data
-  //       // OR you have subscribed to auth state change, authStateChange handler will process the profile data
-        
-  //       return Promise.resolve({type: 'success'});
+  // componentDidMount() {
+  //   firebase.auth().onAuthStateChanged(user => {
+  //     if (user !== null) {
+  //       console.log(user);
   //     }
-  //     case 'cancel': {
-  //       return Promise.reject({type: 'cancel'});
-  //     }
-  //   }
-    
+  //   });
   // }
 
 
-  
+
+  loginUser = () => {
+    const { email, password } = this.state;
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .catch(error => this.setState({ errorMessage: error.message }))
+  };
+
+  //  // FACEBOOK LOGIN
+  async loginWithFacebook() {
+    await Facebook.initializeAsync('826104554466560')
+    const { type, token } = await Facebook.logInWithReadPermissionsAsync({ permissions: ['public_profile'] });
+    if (type === 'success') {
+      await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+      const credential = firebase.auth.FacebookAuthProvider.credential(token);
+      const facebookProfileData = await firebase
+        .auth()
+        .signInWithCredential(credential); // Sign in with Facebook credential
+      console.log(facebookProfileData);
+    }
+  }
+
+
+
+
+
   //GOOGLE SIGN IN
   isUserEqual = (googleUser, firebaseUser) => {
     if (firebaseUser) {
@@ -109,7 +59,7 @@ class LoginScreen extends Component {
       for (var i = 0; i < providerData.length; i++) {
         if (
           providerData[i].providerId ===
-            firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
           providerData[i].uid === googleUser.getBasicProfile().getId()
         ) {
           return true;
@@ -122,7 +72,7 @@ class LoginScreen extends Component {
   onSignIn = googleUser => {
     console.log('Google Auth Response', googleUser);
     var unsubscribe = firebase.auth().onAuthStateChanged(
-      function(firebaseUser) {
+      function (firebaseUser) {
         unsubscribe();
         // Check if we are already signed-in Firebase with the correct user.
         if (!this.isUserEqual(googleUser, firebaseUser)) {
@@ -135,42 +85,36 @@ class LoginScreen extends Component {
           firebase
             .auth()
             .signInWithCredential(credential)
-            .then(function(result) {
-              console.log('user signed in');
-              console.log('result', result);
+            .then(function (result) {
               if (result.additionalUserInfo.isNewUser) {
                 firebase
-                .firestore()
-                   .collection('users')
-                   .doc(result.user.uid)
-                   .set({
-                      gmail: result.user.email,
-                      profile_picture:
-                         result.additionalUserInfo.profile.picture,
-                      locale: result.additionalUserInfo.profile.locale,
-                      first_name: result.additionalUserInfo.profile.given_name,
-                      last_name: result.additionalUserInfo.profile.family_name,
-                      created_at: Date.now()
-                   });
+                  .firestore()
+                  .collection('users')
+                  .doc(result.user.uid)
+                  .set({
+                    gmail: result.user.email,
+                    profile_picture:
+                      result.additionalUserInfo.profile.picture,
+                    locale: result.additionalUserInfo.profile.locale,
+                    first_name: result.additionalUserInfo.profile.given_name,
+                    last_name: result.additionalUserInfo.profile.family_name,
+                    created_at: Date.now()
+                  });
               } else {
                 firebase
-                .firestore()
-                   .collection('users')
-                   .doc(result.user.uid)
-                   .update({
-                      last_logged_in: Date.now()
-                   });
+                  .firestore()
+                  .collection('users')
+                  .doc(result.user.uid)
+                  .update({
+                    last_logged_in: Date.now()
+                  });
               }
             })
-            .catch(function(error) {
-              // Handle Errors here.
+            .catch(function (error) {
               var errorCode = error.code;
               var errorMessage = error.message;
-              // The email of the user's account used.
               var email = error.email;
-              // The firebase.auth.AuthCredential type that was used.
               var credential = error.credential;
-              // ...
             });
         } else {
           console.log('User already signed-in Firebase.');
@@ -201,10 +145,11 @@ class LoginScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
+      <Text style={{fontSize: 30}}>WELCOME TO DOGGO!</Text>
 
-      <View style ={styles.errorMessage}>
-        {this.state.errorMessage && <Text style ={styles.error}>{this.state.errorMessage}</Text>}
-      </View>
+        <View style={styles.errorMessage}>
+          {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
+        </View>
 
         <TextInput
           style={styles.input}
@@ -227,19 +172,6 @@ class LoginScreen extends Component {
           value={this.state.password}
         />
 
-  <TouchableOpacity style= {{alignSelf:"center", marginTop: 32}} onPress={() => this.props.navigation.navigate('Register')}>
-    <Text style={{color:'#414959', fontSize:13}}>
-      New to Where's DogGo? <Text style={{fontWeight:"500", color:"pink"}}>Sign Up</Text>
-    </Text>
-  </TouchableOpacity>
-
-
-        {/* <Button
-          title="Sign Up"
-          onPress={() => this.signUpUser(this.state.email, this.state.password)}
-        /> */}
-
-
 
         <Button
           title="Log In"
@@ -251,7 +183,15 @@ class LoginScreen extends Component {
           onPress={() => this.signInWithGoogleAsync()}
         />
 
-        <Button title="Sign In With Facebook" onPress={() => this.loginWithFacebook()} />
+        <Button title="Sign In With Facebook"
+          onPress={() => this.loginWithFacebook()} />
+
+        <TouchableOpacity style={{ alignSelf: "center", marginTop: 32 }} onPress={() => this.props.navigation.navigate('Register')}>
+          <Text style={{ fontSize: 15 }}>
+            New to Where's DogGo? <Text style={{ fontWeight: "500", color: "pink" }}>Sign Up</Text>
+          </Text>
+        </TouchableOpacity>
+
       </View>
     );
   }
@@ -278,16 +218,16 @@ const styles = StyleSheet.create({
     margin: 15,
     height: 40
   },
-  errorMessage:{
-    height:72,
-    alignItems:'center',
-    justifyContent:'center',
-    marginHorizontal:30
+  errorMessage: {
+    height: 72,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 30
   },
-  error:{
-    color:"green",
-    fontSize:13,
-    fontWeight:"600",
-    textAlign:"center"
+  error: {
+    color: "green",
+    fontSize: 13,
+    fontWeight: "600",
+    textAlign: "center"
   }
 });

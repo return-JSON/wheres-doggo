@@ -16,9 +16,6 @@ signOutUser = () => {
   firebase.auth().signOut();
 }
 
-
-
-
   render(){
   return (
     <View style={styles.container}>

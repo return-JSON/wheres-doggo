@@ -1,57 +1,64 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button, TextInput, Alert } from 'react-native';
+import { View, Text, StyleSheet, Button, TextInput,TouchableOpacity } from 'react-native';
 import firebase from '../config/firebase';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+
+
 
 class RegisterScreen extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      name: '',
       email: '',
       password: '',
-      errorMessage:null
+      errorMessage: null
     };
   }
 
-  componentDidMount() {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user !== null) {
-        console.log(user);
-      }
-    });
-  }
 
-  signUpUser = (email, password) => {
+  signUpUser = () => {
     try {
-      if (this.state.password.length < 6) {
-        alert('Please enter atleast 6 characters');
-        return;
-      }
-      firebase.auth().createUserWithEmailAndPassword(email, password);
+      const { email, password } = this.state;
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(function (results) {
+          if (results.additionalUserInfo.isNewUser) {
+            firebase
+              .firestore()
+              .collection('users')
+              .doc(results.user.uid)
+              .set({
+                uid: results.user.uid,
+                email: results.user.email,
+                created_at: Date.now()
+              })
+          }
+        })
     } catch (error) {
-      console.log(error.toString());
+      (error => this.setState({ errorMessage: error.message }))
     }
+
   };
-
-  loginUser = () => {
-      const {email, password} = this.state;
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .catch(error => this.setState({errorMessage:error.message}))
-  };
-
-
 
 
   render() {
     return (
       <View style={styles.container}>
+        <Text>{"Hello!\nSign up to get started"}</Text>
 
-      <View style ={styles.errorMessage}>
-        {this.state.errorMessage && <Text style ={styles.error}>{this.state.errorMessage}</Text>}
-      </View>
+        <View style={styles.errorMessage}>
+          {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
+        </View>
+
+        <TextInput
+          style={styles.input}
+          underlineColorAndroid="transparent"
+          placeholder="Full Name"
+          placeholderTextColor="#9a73ef"
+          autoCapitalize="none"
+          onChangeText={name => this.setState({ name })}
+          value={this.state.name}
+        />
 
         <TextInput
           style={styles.input}
@@ -74,24 +81,18 @@ class RegisterScreen extends Component {
           value={this.state.password}
         />
 
-  <TouchableOpacity style= {{alignSelf:"center", marginTop: 32}}>
-    <Text style={{color:'#414959', fontSize:13}}>
-      New to Where's DogGo? <Text style={{fontWeight:"500", color:"#E944GA"}}>Sign Up</Text>
-    </Text>
-  </TouchableOpacity>
-
 
         <Button
-          title="Sign Up"
-          onPress={() => this.signUpUser(this.state.email, this.state.password)}
+          title="Join"
+          onPress={this.signUpUser}
         />
 
+        <TouchableOpacity style={{ alignSelf: "center", marginTop: 32 }} onPress={() => this.props.navigation.navigate('LoginScreen')}>
+          <Text style={{fontSize: 15 }}>
+            Already Have An Account? Log In
+          </Text>
+        </TouchableOpacity>
 
-
-        <Button
-          title="Log In"
-          onPress={this.loginUser}
-        />
 
       </View>
     );
@@ -119,16 +120,16 @@ const styles = StyleSheet.create({
     margin: 15,
     height: 40
   },
-  errorMessage:{
-    height:72,
-    alignItems:'center',
-    justifyContent:'center',
-    marginHorizontal:30
+  errorMessage: {
+    height: 72,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 30
   },
-  error:{
-    color:"green",
-    fontSize:13,
-    fontWeight:"600",
-    textAlign:"center"
+  error: {
+    color: "green",
+    fontSize: 13,
+    fontWeight: "600",
+    textAlign: "center"
   }
 });

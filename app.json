@@ -4,7 +4,6 @@
     "slug": "wheresDoggo",
     "privacy": "public",
     "sdkVersion": "36.0.0",
-    "facebookScheme":"fb826104554466560",
     "platforms": [
       "ios",
       "android",

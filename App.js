@@ -18,7 +18,7 @@ if (!global.atob) {
 const AppSwitchNavigator = createSwitchNavigator({
   LoadingScreen: LoadingScreen,
   LoginScreen: LoginScreen,
-  RegisterScreen: RegisterScreen,
+  Register: RegisterScreen,
   DashboardScreen: InsideApp
 });
 
