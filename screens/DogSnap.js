@@ -13,15 +13,14 @@ class DogSnap extends Component {
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>
-          <Image
-            style={{ width: 550, height: 550 }}
-            source={{
-              uri: this.props.camera.uri
-            }}
-          />
-          {console.log(this.props.camera)}
-        </Text>
+        <Image
+          style={{ width: 300, height: 300 }}
+          source={{
+            uri: this.props.camera.uri
+          }}
+        />
+        {console.log(this.props.camera)}
+        <Text>Wowie! What a cute {this.props.camera.dogBreed}😍</Text>
       </View>
     );
   }

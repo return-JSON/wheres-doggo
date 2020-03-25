@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Button, View, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useFirebase } from 'react-redux-firebase';
 
 import { Camera } from 'expo-camera';
@@ -47,19 +48,23 @@ export default function CameraScreen({ navigation }) {
   }
   return (
     <View style={{ flex: 1 }}>
-      <Camera style={{ flex: 1 }} ref={ref => (this.camera = ref)}>
+      <Camera
+        style={{ flex: 1, justifyContent: 'flex-end' }}
+        ref={ref => (this.camera = ref)}
+      >
         <TouchableOpacity
           style={{
             flex: 0.1,
-            alignSelf: 'flex-end',
-            alignItems: 'center'
+            alignSelf: 'center'
           }}
           onPress={handlePress}
         >
-          <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>
-            {' '}
-            snap{' '}
-          </Text>
+          <Ionicons
+            name="ios-aperture"
+            size={60}
+            color="white"
+            iconStyle={{ marginBottom: 200 }}
+          />
         </TouchableOpacity>
       </Camera>
     </View>

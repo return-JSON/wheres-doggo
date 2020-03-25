@@ -1,16 +1,17 @@
 // import { useFirebase } from 'react-redux-firebase';
 // const firebase = useFirebase();
 import submitToGoogle from '../googleVision';
+//test objects
+import { dog, notADog, breedList } from '../../constants/dog';
+import { dogResponseComboFunction } from '../../constants/utilityFunctions';
 
 let initialState = {
   uri: '',
-  googleResp: null,
-  dogId: ''
+  dogBreed: ''
 };
 
 // actions
 const SET_PHOTO_URI = 'SET_PHOTO_URI';
-const SET_GOOGLE_RESPONSE = 'SET_GOOGLE_RESPONSE';
 const SET_DOG = 'SET_DOG';
 
 //// action creator
@@ -21,10 +22,10 @@ export const takePhoto = uri => {
   };
 };
 
-export const setGoogle = reponse => {
+export const setDogBreed = dogBreed => {
   return {
-    type: SET_GOOGLE_RESPONSE,
-    response
+    type: SET_DOG,
+    dogBreed
   };
 };
 
@@ -32,8 +33,9 @@ export const setGoogle = reponse => {
 export const setPhotoUri = uri => {
   return async dispatch => {
     let response = await submitToGoogle();
+    response = dogResponseComboFunction(response, breedList);
     await dispatch(takePhoto(uri));
-    await dispatch(setGoogle(response));
+    await dispatch(setDogBreed(response));
   };
 };
 
@@ -42,9 +44,7 @@ export default (state = {}, action) => {
     case SET_PHOTO_URI:
       return { ...state, uri: action.uri };
     case SET_DOG:
-      return { ...state, dogId: action.dogId };
-    case SET_GOOGLE_RESPONSE:
-      return { ...state, googleResp: action.response };
+      return { ...state, dogBreed: action.dogBreed };
     default:
       return state;
   }

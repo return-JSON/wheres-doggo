@@ -1,4 +1,4 @@
-import GOOGLE_CLOUD_VISION_API_KEY from '../../config/constants';
+import GOOGLE_VISION_API_KEY from '../../config/constants';
 
 export default submitToGoogle = async () => {
   console.log('test');
@@ -19,7 +19,7 @@ export default submitToGoogle = async () => {
     });
     let response = await fetch(
       'https://vision.googleapis.com/v1/images:annotate?key=' +
-        GOOGLE_CLOUD_VISION_API_KEY,
+        'AIzaSyAtR83KT3-6fEk457SwYGqcVkYXPlnnLW4',
       {
         headers: {
           Accept: 'application/json',
@@ -31,6 +31,7 @@ export default submitToGoogle = async () => {
     );
     let responseJson = await response.json();
     console.log(responseJson);
+    //
     return responseJson;
   } catch (error) {
     console.log(error);
