@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button, TextInput, Alert } from 'react-native';
 import * as Google from 'expo-google-app-auth';
-import firebase from 'firebase';
+import firebase from '../config/firebase';
 import * as Facebook from 'expo-facebook';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -10,7 +11,8 @@ class LoginScreen extends Component {
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      errorMessage:null
     };
   }
 
@@ -34,59 +36,73 @@ class LoginScreen extends Component {
     }
   };
 
-  loginUser = (email, password) => {
-    try {
+  loginUser = () => {
+      const {email, password} = this.state;
       firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
-        .then(function(user) {
-          console.log(user);
-        });
-    } catch (error) {
-      console.log(error.toString());
-    }
+        .catch(error => this.setState({errorMessage:error.message}))
   };
 
-  //FACEBOOK LOGIN
-  // async loginWithFacebook(){
-  //     const {type,token} = await Facebook.logInWithReadPermissionsAsync('826104554466560', {permissions:['public_profile']});
+//  // FACEBOOK LOGIN
+  async loginWithFacebook(){
+    await Facebook.initializeAsync('826104554466560')
+      const {type,token} = await Facebook.logInWithReadPermissionsAsync('826104554466560', {permissions:['public_profile']});
+      behavior: Platform.OS == "ios" ? Expo.Constants.statusBarHeight < 40 ? "web" : "native" : "native"
+      if(type === 'success'){
+          const credential = firebase.auth.FacebookAuthProvider.credential(token)
 
-  //     if(type === 'success'){
-  //         const credential = firebase.auth.FacebookAuthProvider.credential(token)
+          firebase.auth().signInWithCredential(credential).catch((error) => {
+              console.log(error)
+          })
+      }
+    }
 
-  //         firebase.auth().signInWithCredential(credential).catch((error) => {
-  //             console.log(error)
-  //         })
+
+  // async loginWithFacebook() {
+
+  //     await Facebook.initializeAsync('826104554466560');
+  //     const permissions = ['public_profile', 'email']
+  //     const {
+  //       type,
+  //       token
+  //     } = await Facebook.logInWithReadPermissionsAsync(
+  //       '826104554466560',{permissions});
+  //   //   if (type === 'success') {
+  //   //     // Get the user's name using Facebook's Graph API
+  //   //     const response = await fetch(
+  //   //       `https://graph.facebook.com/me?access_token=${token}`
+  //   //     );
+  //   //     Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+  //   //     // await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+  //   //     // const credential = firebase.auth.FacebookAuthProvider.credential(token);
+  //   //     // const facebookProfileData = await firebase.auth().signInAndRetrieveDataWithCredential(credential)
+  //   //   } else {
+  //   //     // type === 'cancel'
+  //   //   }
+  //   // } catch ({ message }) {
+  //   //   alert(`Facebook Login Error: ${message}`);
+  //   switch (type) {
+  //     case 'success': {
+  //       await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);  // Set persistent auth state
+  //       const credential = firebase.auth.FacebookAuthProvider.credential(token);
+  //       const facebookProfileData = await firebase.auth().signInAndRetrieveDataWithCredential(credential);  // Sign in with Facebook credential
+  
+  //       // Do something with Facebook profile data
+  //       // OR you have subscribed to auth state change, authStateChange handler will process the profile data
+        
+  //       return Promise.resolve({type: 'success'});
   //     }
+  //     case 'cancel': {
+  //       return Promise.reject({type: 'cancel'});
+  //     }
+  //   }
+    
   // }
 
-  async logIn() {
-    try {
-      await Facebook.initializeAsync('826104554466560');
-      const {
-        type,
-        token,
-        expires,
-        permissions,
-        declinedPermissions
-      } = await Facebook.logInWithReadPermissionsAsync({
-        permissions: ['public_profile']
-      });
-      if (type === 'success') {
-        // Get the user's name using Facebook's Graph API
-        const response = await fetch(
-          `https://graph.facebook.com/me?access_token=${token}`
-        );
-        Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
-      } else {
-        // type === 'cancel'
-      }
-    } catch ({ message }) {
-      alert(`Facebook Login Error: ${message}`);
-    }
-  }
 
-  //
+  
+  //GOOGLE SIGN IN
   isUserEqual = (googleUser, firebaseUser) => {
     if (firebaseUser) {
       var providerData = firebaseUser.providerData;
@@ -181,6 +197,11 @@ class LoginScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
+
+      <View style ={styles.errorMessage}>
+        {this.state.errorMessage && <Text style ={styles.error}>{this.state.errorMessage}</Text>}
+      </View>
+
         <TextInput
           style={styles.input}
           underlineColorAndroid="transparent"
@@ -188,6 +209,7 @@ class LoginScreen extends Component {
           placeholderTextColor="#9a73ef"
           autoCapitalize="none"
           onChangeText={email => this.setState({ email })}
+          value={this.state.email}
         />
 
         <TextInput
@@ -198,15 +220,26 @@ class LoginScreen extends Component {
           autoCapitalize="none"
           secureTextEntry={true}
           onChangeText={password => this.setState({ password })}
+          value={this.state.password}
         />
 
-        <Button
+  <TouchableOpacity style= {{alignSelf:"center", marginTop: 32}} onPress={() => this.props.navigation.navigate('Register')}>
+    <Text style={{color:'#414959', fontSize:13}}>
+      New to Where's DogGo? <Text style={{fontWeight:"500", color:"pink"}}>Sign Up</Text>
+    </Text>
+  </TouchableOpacity>
+
+
+        {/* <Button
           title="Sign Up"
           onPress={() => this.signUpUser(this.state.email, this.state.password)}
-        />
+        /> */}
+
+
+
         <Button
           title="Log In"
-          onPress={() => this.loginUser(this.state.email, this.state.password)}
+          onPress={this.loginUser}
         />
 
         <Button
@@ -214,7 +247,7 @@ class LoginScreen extends Component {
           onPress={() => this.signInWithGoogleAsync()}
         />
 
-        <Button title="Sign In With Facebook" onPress={() => this.logIn()} />
+        <Button title="Sign In With Facebook" onPress={() => this.loginWithFacebook()} />
       </View>
     );
   }
@@ -240,5 +273,17 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 15,
     height: 40
+  },
+  errorMessage:{
+    height:72,
+    alignItems:'center',
+    justifyContent:'center',
+    marginHorizontal:30
+  },
+  error:{
+    color:"green",
+    fontSize:13,
+    fontWeight:"600",
+    textAlign:"center"
   }
 });
