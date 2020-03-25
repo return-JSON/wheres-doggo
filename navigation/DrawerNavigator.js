@@ -72,8 +72,6 @@ function getHeaderTitle(route) {
   switch (routeName) {
     case 'Home':
       return 'Welcome to DogGO!';
-    case 'Links':
-      return 'Links to learn more';
     case 'Camera':
       return 'Snap a pup!';
   }

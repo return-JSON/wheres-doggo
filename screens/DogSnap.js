@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { Text, View, Image } from 'react-native';
-import { takePhoto } from '../src/reducers/camera';
+import { setPhotoUri } from '../src/reducers/camera';
 
 class DogSnap extends Component {
   componentDidMount() {
-    this.props.takePhoto(
+    this.props.setPhotoUri(
       'https://firebasestorage.googleapis.com/v0/b/wheres-doggo.appspot.com/o/userid%2Flast-image?alt=media&token=82207119-f59c-4f2b-acdc-ab02dec71c9d'
     );
   }
@@ -20,6 +20,7 @@ class DogSnap extends Component {
               uri: this.props.camera.uri
             }}
           />
+          {console.log(this.props.camera)}
         </Text>
       </View>
     );
@@ -32,7 +33,7 @@ const mapState = state => {
 };
 
 const mapDispatch = dispatch => ({
-  takePhoto: uri => dispatch(takePhoto(uri))
+  setPhotoUri: uri => dispatch(setPhotoUri(uri))
 });
 
 export default connect(mapState, mapDispatch)(DogSnap);
