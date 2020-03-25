@@ -38,7 +38,7 @@ export default function DrawerNavigator({ navigation, route }) {
         name="Map"
         component={Map}
         options={{
-          title: "Map",
+          title: "DoggoMap",
           drawerIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="ios-map" />
           )
