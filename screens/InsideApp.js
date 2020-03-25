@@ -16,6 +16,7 @@ export default function App(props) {
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
 
+<<<<<<< HEAD
   return (
     <View style={styles.container}>
       {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
@@ -30,6 +31,25 @@ export default function App(props) {
       </NavigationContainer>
     </View>
   );
+=======
+    return (
+      <Provider store={store}>
+        <View style={styles.container}>
+          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+          <NavigationContainer
+            ref={containerRef}
+            initialState={initialNavigationState}
+          >
+            <Stack.Navigator>
+              <Stack.Screen name="Root" component={DrawerNavigator} />
+              <Stack.Screen name="DogSnap" component={DogSnap} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </View>
+      </Provider>
+    );
+
+>>>>>>> dev
 }
 
 const styles = StyleSheet.create({
