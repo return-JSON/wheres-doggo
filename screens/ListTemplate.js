@@ -37,6 +37,7 @@ export default class ListTemplate extends React.Component {
       // console.log('querySnapshot list template', querySnapshot)
       const userArr = [];
       querySnapshot.forEach(res => {
+         console.log('res.data from list template', res.data)
          const { name, email, photourl } = res.data();
          userArr.push({
             key: res.id,
