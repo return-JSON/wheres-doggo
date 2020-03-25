@@ -4,23 +4,11 @@
     "slug": "wheresDoggo",
     "privacy": "public",
     "sdkVersion": "36.0.0",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
-    "FacebookAppId": "826104554466560",
-    "FacebookDisplayName": "WheresDogGo",
-    "LSApplicationQueriesSchemes": [
-      "fbapi",
-      "fb-messenger-share-api",
-      "fbauth2",
-      "fbshareextension"
-    ],
+    "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "com.DOMAIN",
+    "scheme": "myapp",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -29,9 +17,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     }
