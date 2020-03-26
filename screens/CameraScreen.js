@@ -6,6 +6,7 @@ import { useFirebase } from 'react-redux-firebase';
 import { Camera } from 'expo-camera';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
+import * as ImageManipulator from 'expo-image-manipulator';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function CameraScreen({ navigation }) {
@@ -28,7 +29,12 @@ export default function CameraScreen({ navigation }) {
     if (this.camera) {
       try {
         let photo = await this.camera.takePictureAsync();
-        const response = await fetch(photo.uri);
+        let resizedPhoto = await ImageManipulator.manipulateAsync(
+          photo.uri,
+          [{ resize: { width: 500 } }],
+          { compress: 0.5, format: 'png', base64: false }
+        );
+        const response = await fetch(resizedPhoto.uri);
         const blob = await response.blob();
         var ref = await firebase
           .storage()
