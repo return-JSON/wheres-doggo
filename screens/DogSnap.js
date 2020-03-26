@@ -7,7 +7,7 @@ import { setPhotoUri } from '../src/reducers/camera';
 class DogSnap extends Component {
   componentDidMount() {
     this.props.setPhotoUri(
-      'https://firebasestorage.googleapis.com/v0/b/wheres-doggo.appspot.com/o/userid%2Flast-image?alt=media&token=82207119-f59c-4f2b-acdc-ab02dec71c9d'
+      `https://firebasestorage.googleapis.com/v0/b/wheres-doggo.appspot.com/o/${this.props.user.id}%2Flast-image?alt=media&token=82207119-f59c-4f2b-acdc-ab02dec71c9d`
     );
   }
   render() {
@@ -19,15 +19,16 @@ class DogSnap extends Component {
             uri: this.props.camera.uri
           }}
         />
-        {console.log(this.props.camera)}
         <Text>Wowie! What a cute {this.props.camera.dogBreed}😍</Text>
       </View>
     );
   }
 }
+
 const mapState = state => {
   return {
-    camera: state.camera
+    camera: state.camera,
+    user: state.user
   };
 };
 

@@ -1,6 +1,7 @@
 import GOOGLE_VISION_API_KEY from '../../config/constants';
+import * as Location from 'expo-location';
 
-export default submitToGoogle = async () => {
+export const submitToGoogle = async () => {
   console.log('test');
   try {
     let image =
@@ -36,4 +37,9 @@ export default submitToGoogle = async () => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const getLocation = async () => {
+  let location = await Location.getCurrentPositionAsync({});
+  return location;
 };
