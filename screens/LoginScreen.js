@@ -68,7 +68,7 @@ class LoginScreen extends Component {
                   .collection('users')
                   .doc(result.user.uid)
                   .set({
-                    gmail: result.user.email,
+                    email: result.user.email,
                     profile_picture:
                       result.additionalUserInfo.profile.picture,
                     locale: result.additionalUserInfo.profile.locale,
