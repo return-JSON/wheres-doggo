@@ -10,8 +10,7 @@ export default class HomeScreen extends React.Component {
          email: '',
          displayName: '',
          userId: '',
-         userProf: {},
-         dogsArr: []
+         userProf: {}
       };
    }
    componentDidMount() {
@@ -20,7 +19,7 @@ export default class HomeScreen extends React.Component {
       this.getUser(email);
    }
 
-   getUser(email) {
+   getUser(email) { // to be refactored into reducer
       db.collection('users')
          .where('email', '==', email)
          .get()
@@ -32,26 +31,11 @@ export default class HomeScreen extends React.Component {
          });
    }
 
-
-  //  getDogsArr = () => {
-  //     const dogsArr = [];
-  //     db.collection('users')
-  //        .doc(this.state.userId)
-  //        .collection('dogs')
-  //        .get()
-  //        .then(doc => {
-  //           const { breed, imageUrl, location } = doc.data();
-  //           dogsArr.push({ key: doc.id, doc, breed, imageUrl, location });
-  //        });
-  //     this.setState({ dogsArr });
-  //  };
-
    signOutUser = () => {
       firebase.auth().signOut();
    };
 
    render() {
-      console.log('state', this.state);
       return (
          <View style={styles.container}>
             <Text>Welcome to DogGo!!! {this.state.email}</Text>

@@ -7,20 +7,15 @@ import { db } from '../config/firebase';
 export default class UserProfile extends React.Component {
    constructor() {
       super();
-      // will need to replace user2 with logged-in user or current user?
+      // will need to replace user2 with logged-in user
       this.ref = db.collection('users').doc('user1');
       this.dogsRef = this.ref.collection('dogs');
       this.state = {
          isLoading: true,
          userProf: {},
          dogsArr: []
-         //  key: ''
       };
       this.getDogSubcollection = this.getDogSubcollection.bind(this);
-   }
-
-   componentWillUnmount() {
-      this.unsubscribe();
    }
 
    componentDidMount() {
@@ -28,21 +23,22 @@ export default class UserProfile extends React.Component {
          if (doc.exists) {
             this.setState({
                userProf: doc.data(),
-               //    key: doc.id,
                isLoading: false
             });
          } else {
             console.log('No such document!');
          }
       });
-      this.unsubscribe = this.dogsRef.onSnapshot(this.getDogSubcollection);
+      this.dogsRef
+         .get()
+         .then(querySnapshot => this.getDogSubcollection(querySnapshot));
    }
 
    getDogSubcollection(querySnapshot) {
       const dogsArr = [];
-      querySnapshot.forEach(res => {
-         const { breed, imageUrl, location } = res.data();
-         dogsArr.push({ key: res.id, res, breed, imageUrl, location });
+      querySnapshot.forEach(doc => {
+         const { breed, imageUrl, location } = doc.data();
+         dogsArr.push({ key: doc.id, doc, breed, imageUrl, location });
       });
       this.setState({ dogsArr });
    }
