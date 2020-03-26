@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
+// import { NavigationContainer } from '@react-navigation/native';
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
 
 import Camera from '../screens/CameraScreen';

@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Button, View } from "react-native";
+// import { Button, View } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { NavigationContainer } from "@react-navigation/native";
+// import { NavigationContainer } from "@react-navigation/native";
 import TabBarIcon from "../components/TabBarIcon";
 import {
   HomeScreen,
