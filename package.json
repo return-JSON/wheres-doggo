@@ -30,6 +30,7 @@
     "expo-facebook": "^8.0.0",
     "expo-font": "~8.0.0",
     "expo-google-app-auth": "^8.0.1",
+    "expo-image-manipulator": "^8.0.0",
     "expo-location": "^8.0.0",
     "expo-web-browser": "~8.0.0",
     "firebase": "^7.12.0",
