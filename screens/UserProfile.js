@@ -22,16 +22,15 @@ export default class UserProfile extends React.Component {
       this.ref.get().then(doc => {
          if (doc.exists) {
             this.setState({
-               userProf: doc.data(),
-               isLoading: false
+               userProf: doc.data()
             });
          } else {
             console.log('No such document!');
          }
       });
-      this.dogsRef
-         .get()
-         .then(querySnapshot => this.getDogSubcollection(querySnapshot));
+      this.dogsRef.get().then(querySnapshot => {
+         this.getDogSubcollection(querySnapshot);
+      });
    }
 
    getDogSubcollection(querySnapshot) {
@@ -40,7 +39,7 @@ export default class UserProfile extends React.Component {
          const { breed, imageUrl, location } = doc.data();
          dogsArr.push({ key: doc.id, doc, breed, imageUrl, location });
       });
-      this.setState({ dogsArr });
+      this.setState({ dogsArr, isLoading: false });
    }
 
    render() {
