@@ -61,7 +61,7 @@ class LoginScreen extends Component {
           firebase
             .auth()
             .signInWithCredential(credential)
-            .then(function (result) { 
+            .then(function (result) {
               if (result.additionalUserInfo.isNewUser) {
                 firebase
                   .firestore()
@@ -69,12 +69,12 @@ class LoginScreen extends Component {
                   .doc(result.user.uid)
                   .set({
                     email: result.user.email,
-                    profile_picture:
+                    profilePicture:
                       result.additionalUserInfo.profile.picture,
                     locale: result.additionalUserInfo.profile.locale,
-                    first_name: result.additionalUserInfo.profile.given_name,
-                    last_name: result.additionalUserInfo.profile.family_name,
-                    created_at: Date.now()
+                    firstName: result.additionalUserInfo.profile.given_name,
+                    lastName: result.additionalUserInfo.profile.family_name,
+                    createdAt: Date.now()
                   });
               } else {
                 firebase
@@ -82,7 +82,7 @@ class LoginScreen extends Component {
                   .collection('users')
                   .doc(result.user.uid)
                   .update({
-                    last_logged_in: Date.now()
+                    lastLoggedIn: Date.now()
                   });
               }
             })
