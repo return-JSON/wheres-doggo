@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, Image, Button } from 'react-native';
 import { connect } from 'react-redux'
 import { fetchUser } from '../src/reducers/user'
 import * as firebase from 'firebase';
-import { db } from '../config/firebase';
 
 class HomeScreen extends React.Component {
    constructor(props) {
@@ -11,7 +10,7 @@ class HomeScreen extends React.Component {
    }
 
    componentDidMount() {
-      const { email, displayName } = firebase.auth().currentUser;
+      const { email } = firebase.auth().currentUser;
       this.props.fetchUser(email);
    }
 
@@ -23,7 +22,7 @@ class HomeScreen extends React.Component {
      const user = this.props.user
       return (
          <View style={styles.container}>
-            <Text>Welcome to DogGo!!! {user.firstName}</Text>
+            <Text>Welcome to DogGo, {user.firstName}!!!</Text>
             <Image
                style={{ width: 300, height: 250 }}
                source={{
@@ -55,4 +54,4 @@ const styles = StyleSheet.create({
    }
 });
 
-export default connect (mapState, mapDispatch)(HomeScreen)
+export default connect(mapState, mapDispatch)(HomeScreen)

@@ -28,7 +28,7 @@ export const fetchUser = email => {
   }
 }
 
-// state
+// sub-reducer
 export default (state = initialState, action) => {
   switch (action.type) {
     case GET_USER:
