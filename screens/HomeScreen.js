@@ -13,20 +13,16 @@ export default class HomeScreen extends React.Component {
          userProf: {},
          dogsArr: []
       };
-      // this.dogsRef = db
-      //    .collection('users')
-      //    .doc(this.state.userId)
-      //    .collection('dogs');
    }
    componentDidMount() {
       const { email, displayName } = firebase.auth().currentUser;
       this.setState({ email, displayName });
-      this.getUser();
+      this.getUser(email);
    }
 
-   getUser() {
+   getUser(email) {
       db.collection('users')
-         .where('gmail', '==', 'hilaryly@gmail.com')
+         .where('email', '==', email)
          .get()
          .then(querySnapshot => {
             this.setState({
@@ -35,6 +31,7 @@ export default class HomeScreen extends React.Component {
             });
          });
    }
+
 
   //  getDogsArr = () => {
   //     const dogsArr = [];
