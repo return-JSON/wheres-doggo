@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button, TextInput,TouchableOpacity } from 'react-native';
 import firebase from '../config/firebase';
 
-
-
 class RegisterScreen extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      name: '',
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
       errorMessage: null
@@ -19,7 +18,7 @@ class RegisterScreen extends Component {
 
   signUpUser = () => {
     try {
-      const { email, password } = this.state;
+      const { email, password, firstName, lastName } = this.state;
       firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(function (results) {
           if (results.additionalUserInfo.isNewUser) {
@@ -29,9 +28,19 @@ class RegisterScreen extends Component {
               .doc(results.user.uid)
               .set({
                 uid: results.user.uid,
+                firstName: firstName,
+                lastName: lastName,
                 email: results.user.email,
-                created_at: Date.now()
+                createdAt: Date.now()
               })
+          } else {
+            firebase
+              .firestore()
+              .collection('users')
+              .doc(result.user.uid)
+              .update({
+                lastLoggedIn: Date.now()
+              });
           }
         })
     } catch (error) {
@@ -39,7 +48,6 @@ class RegisterScreen extends Component {
     }
 
   };
-
 
   render() {
     return (
@@ -53,11 +61,21 @@ class RegisterScreen extends Component {
         <TextInput
           style={styles.input}
           underlineColorAndroid="transparent"
-          placeholder="Full Name"
+          placeholder="First Name"
           placeholderTextColor="#9a73ef"
           autoCapitalize="none"
-          onChangeText={name => this.setState({ name })}
-          value={this.state.name}
+          onChangeText={firstName => this.setState({ firstName })}
+          value={this.state.firstName}
+        />
+
+        <TextInput
+          style={styles.input}
+          underlineColorAndroid="transparent"
+          placeholder="Last Name"
+          placeholderTextColor="#9a73ef"
+          autoCapitalize="none"
+          onChangeText={lastName => this.setState({ lastName })}
+          value={this.state.lastName}
         />
 
         <TextInput
