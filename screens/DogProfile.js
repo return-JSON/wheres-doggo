@@ -1,58 +1,40 @@
 import * as React from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { fetchDogs } from '../src/reducers/dog'
+import { connect } from 'react-redux'
 import { db } from "../config/firebase";
 import DogList from './DogList'
 
-export default class DogProfile extends React.Component {
+class DogProfile extends React.Component {
   constructor() {
     super();
     this.ref = db.collection("dogs");
     this.state = {
       isLoading: true,
-      dogArr: []
     };
   }
 
   componentDidMount() {
-    this.unsubscribe = this.ref.onSnapshot(this.getDogCollection);
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  getDogCollection = querySnapshot => {
-    // console.log('querySnapshot list template', querySnapshot)
-    const dogArr = [];
-    querySnapshot.forEach(res => {
-      const { breed, description, imageUrl, lastSeen, points } = res.data();
-      dogArr.push({
-        key: res.id,
-        breed,
-        description,
-        imageUrl,
-        lastSeen,
-        points
-      });
-    });
+    this.props.fetchDogs()
+    console.log('I AM A DOG!!!!', this.props.dogs)
     this.setState({
-      dogArr,
       isLoading: false
-    });
-  };
+    })
+  }
 
   render() {
+    const dogs = this.props.dogs
     if (this.state.isLoading) {
       return (
         <View style={styles.preloader}>
-          <Text>loading..</Text>
+          <Text>Loading...</Text>
         </View>
       );
     }
     return (
       <ScrollView>
         <View style={styles.container}>
-          {this.state.dogArr.map((dog, i) => {
+          {dogs.map((dog, i) => {
             return <DogList key={i} dog={dog} />
           })}
         </View>
@@ -81,3 +63,16 @@ const styles = StyleSheet.create({
     flexWrap: "wrap"
   }
 });
+
+const mapState = state => {
+  return {
+    user: state.user,
+    dogs: state.dogs
+  }
+}
+
+const mapDispatch = dispatch => ({
+  fetchDogs: () => dispatch(fetchDogs())
+})
+
+export default connect(mapState, mapDispatch)(DogProfile)
