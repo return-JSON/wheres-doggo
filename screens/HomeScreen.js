@@ -9,8 +9,7 @@ export default class HomeScreen extends React.Component {
       this.state = {
          email: '',
          displayName: '',
-         userId: '',
-         userProf: {}
+         user: {}
       };
    }
    componentDidMount() {
@@ -25,8 +24,10 @@ export default class HomeScreen extends React.Component {
          .get()
          .then(querySnapshot => {
             this.setState({
-               userId: querySnapshot.docs[0].id,
-               userProf: querySnapshot.docs[0].data()
+              user: {
+                ...querySnapshot.docs[0].data(),
+                id: querySnapshot.docs[0].id
+              }
             });
          });
    }
@@ -36,6 +37,7 @@ export default class HomeScreen extends React.Component {
    };
 
    render() {
+    //  console.log('state', this.state)
       return (
          <View style={styles.container}>
             <Text>Welcome to DogGo!!! {this.state.email}</Text>
