@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, Button } from 'react-native';
 import { connect } from 'react-redux'
 import { fetchUser } from '../src/reducers/user'
 import * as firebase from 'firebase';
+import Dogs from '../components/Dogs'
 import { db } from '../config/firebase';
 
 class HomeScreen extends React.Component {
@@ -13,6 +14,7 @@ class HomeScreen extends React.Component {
    componentDidMount() {
       const { email, displayName } = firebase.auth().currentUser;
       this.props.fetchUser(email);
+      // this.props.fetchCollectedDogs(this.state.user.id)
    }
 
    signOutUser = () => {
@@ -20,10 +22,14 @@ class HomeScreen extends React.Component {
    };
 
    render() {
+      //  console.log('this.props', this.props);
+      //  console.log('this.state', this.state);
      const user = this.props.user
       return (
          <View style={styles.container}>
             <Text>Welcome to DogGo!!! {user.firstName}</Text>
+            {console.log('user', user)}
+            <Dogs user={user} />
             <Image
                style={{ width: 300, height: 250 }}
                source={{
