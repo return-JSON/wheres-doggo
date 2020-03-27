@@ -37,68 +37,163 @@ export const useAuth = () => {
    return state;
 };
 
-function findUserId(email) {
-  // initialize our default state
-  const [error, setError] = React.useState(false) 
-  const [loading, setLoading] = React.useState(true) 
-  const [userId, setId] = React.useState(null)
-  // when the id attribute changes (including mount)
-  // subscribe to the recipe document and update
-  // our state when it changes.
-  React.useEffect(
-    () => {
-      const unsubscribe = firebase
-         .firestore()
-         .collection('users')
-         .where('email', '==', email)
-         .onSnapshot(
-            doc => {
-               // console.log('docs', docs);
-               setLoading(false);
-               setId(doc.docs[0].id);
-            },
-            err => {
-               setError(err);
-            }
-         );
+// function findUserId(email) {
+//    const [error, setError] = React.useState(false) 
+//    const [loading, setLoading] = React.useState(true) 
+//    const [userId, setId] = React.useState(null)
+//   // initialize our default state
+//   // when the id attribute changes (including mount)
+//   // subscribe to the recipe document and update
+//   // our state when it changes.
+//   React.useEffect(
+//     () => {
+//       const unsubscribe = firebase
+//          .firestore()
+//          .collection('users')
+//          .where('email', '==', email)
+//          .onSnapshot(
+//             doc => {
+//                // console.log('docs', docs);
+//                setLoading(false);
+//                setId(doc.docs[0].id);
+//             },
+//             err => {
+//                setError(err);
+//             }
+//          );
 
-      // returning the unsubscribe function will ensure that
-      // we unsubscribe from document changes when our id
-      // changes to a different value.
-      return () => unsubscribe()
-    },
-    [email]
-  )
+//       // returning the unsubscribe function will ensure that
+//       // we unsubscribe from document changes when our id
+//       // changes to a different value.
+//       return () => unsubscribe()
+//     },
+//     [email]
+//   )
 
-  return {
-     error,
-     loading,
-     userId
-  };
-}
+//   return {
+//      error,
+//      loading,
+//      userId
+//   };
+// }
+
+// function getDogs(id) {
+//       const [error, setError] = React.useState(false)
+//       const [loading, setLoading] = React.useState(true)
+//       const [dogs, setDogs] = React.useState([])
+    
+//       React.useEffect(
+//         () => {
+//           const unsubscribe = firebase
+//             .firestore()
+//             .collection('users')
+//             .doc(id)
+//             .collection('dogs') 
+//             .onSnapshot( snapshot => { 
+//                const dogs = [] 
+//                snapshot.forEach(doc => { dogs.push(doc) }) 
+//                setLoading(false) 
+//                setDogs(dogs) 
+//              }, err => { setError(err) } )
+    
+//           return () => unsubscribe()
+//         },
+//         [id]
+//       )
+    
+//       return {
+//         error,
+//         loading,
+//         dogs,
+//       }
+// }
 
 export default function HomeScreen(props) {
+const { initializing, user } = useAuth();
+    const [error, setError] = React.useState(false);
+    const [loading, setLoading] = React.useState(true);
+    const [userId, setId] = React.useState('');
+    const [dogs, setDogs] = React.useState([]);
+    // initialize our default state
+    // when the id attribute changes (including mount)
+    // subscribe to the recipe document and update
+    // our state when it changes.
+    React.useEffect(() => {
+       const unsubscribe = firebase
+          .firestore()
+          .collection('users')
+          .where('email', '==', user.email)
+          .onSnapshot(
+             doc => {
+                // console.log('docs', docs);
+                setLoading(false);
+                setId(doc.docs[0].id);
+             },
+             err => {
+                setError(err);
+             }
+          );
+
+       // returning the unsubscribe function will ensure that
+       // we unsubscribe from document changes when our id
+       // changes to a different value.
+       return () => unsubscribe();
+    }, [user.email]);
+
+    console.log(userId)
+    const myId = 'Fy5lvEPjAnWlAeP4pfdEUcjvyRD3';
+    React.useEffect(() => {
+       const unsubscribe = firebase
+          .firestore()
+          .collection('users')
+          .doc(myId)
+          .collection('dogs')
+          .onSnapshot(
+             snapshot => {
+                const dogsArr = [];
+                snapshot.forEach(doc => {
+                   const { breed, imageUrl, location } = doc.data();
+                   dogsArr.push({
+                      key: doc.id,
+                      breed,
+                      imageUrl,
+                      location
+                   });
+                });
+                setLoading(false);
+                setDogs(dogsArr);
+             },
+             err => {
+                setError(err);
+             }
+          );
+
+       return () => unsubscribe();
+    }, [myId]);
+
+
    // const { email } = firebase.auth().currentUser;
-
-
    // const [email, setEmail] = React.useState(firebase.auth().currentUser.email);
    // console.log(email);
 
    signOutUser = () => {
       firebase.auth().signOut();
    };
-   const { initializing, user } = useAuth();
+   
    if (initializing) {
       return <Text>Loading</Text>;
    }
    
    console.log('user', user.email)
-   console.log(findUserId(user.email));
+   // const hello = findUserId(user.email);
+   // console.log(userId);
+   console.log(dogs)
+   // console.log(getDogs(hello.userId))
    return (
       <userContext.Provider value={{ user }}>
          <Text>
             Hello,
-            {/* {user.displayName} */}
+            {user.displayName}
          </Text>
       </userContext.Provider>
       // <View style={styles.container}>
