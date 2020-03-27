@@ -66,12 +66,12 @@ const { initializing, user } = useAuth();
     }, [user.email]);
 
     console.log(userId)
-    const myId = 'Fy5lvEPjAnWlAeP4pfdEUcjvyRD3';
+   //  const myId = 'Fy5lvEPjAnWlAeP4pfdEUcjvyRD3';
     React.useEffect(() => {
        const unsubscribe = firebase
           .firestore()
           .collection('users')
-          .doc(myId)
+          .doc(userId)
           .collection('dogs')
           .onSnapshot(
              snapshot => {
@@ -94,7 +94,7 @@ const { initializing, user } = useAuth();
           );
 
        return () => unsubscribe();
-    }, [myId]);
+    }, [userId]);
 
 
    // const { email } = firebase.auth().currentUser;
