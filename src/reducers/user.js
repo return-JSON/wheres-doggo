@@ -13,20 +13,20 @@ export const getUser = user => {
    };
 };
 
+// thunk creators
 export const fetchUser = email => {
-   let userObj, userId;
    return async dispatch => {
-      const userDoc = await db
-         .collection('users')
+      db.collection('users')
          .where('email', '==', email)
-         .get();
-      userObj = userDoc[0].data;
-      userId = userDoc[0].data;
-      //  .then(querySnapshot => {
-      //     userObj = querySnapshot.docs[0].data()
-      //     userId = querySnapshot.docs[0].id
-      //  });
-      console.log(userObj, userId);
+         .get()
+         .then(async querySnapshot => {
+            await dispatch(
+               getUser({
+                  ...querySnapshot.docs[0].data(),
+                  id: querySnapshot.docs[0].id
+               })
+            );
+         });
    };
 };
 
