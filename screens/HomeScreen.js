@@ -29,7 +29,6 @@ export const useAuth = () => {
       // unsubscribe to the listener when unmounting
       return () => unsubscribe();
    }, []);
-
    return state;
 };
 
@@ -63,37 +62,39 @@ const { initializing, user } = useAuth();
        // we unsubscribe from document changes when our id
        // changes to a different value.
        return () => unsubscribe();
-    }, [user.email]);
+    }, []);
 
     console.log(userId)
    //  const myId = 'Fy5lvEPjAnWlAeP4pfdEUcjvyRD3';
     React.useEffect(() => {
-       const unsubscribe = firebase
-          .firestore()
-          .collection('users')
-          .doc(userId)
-          .collection('dogs')
-          .onSnapshot(
-             snapshot => {
-                const dogsArr = [];
-                snapshot.forEach(doc => {
-                   const { breed, imageUrl, location } = doc.data();
-                   dogsArr.push({
-                      key: doc.id,
-                      breed,
-                      imageUrl,
-                      location
+       if (userId) {
+          const unsubscribe = firebase
+             .firestore()
+             .collection('users')
+             .doc(userId)
+             .collection('dogs')
+             .onSnapshot(
+                snapshot => {
+                   const dogsArr = [];
+                   snapshot.forEach(doc => {
+                      const { breed, imageUrl, location } = doc.data();
+                      dogsArr.push({
+                         key: doc.id,
+                         breed,
+                         imageUrl,
+                         location
+                      });
                    });
-                });
-                setLoading(false);
-                setDogs(dogsArr);
-             },
-             err => {
-                setError(err);
-             }
-          );
-
-       return () => unsubscribe();
+                   setLoading(false);
+                   setDogs(dogsArr);
+                },
+                err => {
+                   setError(err);
+                }
+             );
+   
+          return () => unsubscribe();
+       }
     }, [userId]);
 
 
@@ -120,7 +121,7 @@ const { initializing, user } = useAuth();
          <Text>Doggos collected:</Text>
          <View style={styles.cardChild}>
                {dogs.map(dog => {
-                  return <DogTile dog={dog} key={dog.id} />;
+                  return <DogTile dog={dog} key={dog.key} />;
                })}
             </View>
          <Button title='Sign Out' onPress={signOutUser} />
