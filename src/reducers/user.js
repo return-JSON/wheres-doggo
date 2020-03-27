@@ -1,6 +1,6 @@
 import { db } from '../../config/firebase';
 
-let initialState = { user: {}, dogs: [] };
+let initialState = {};
 
 // action constant
 const GET_USER = 'GET_USER';
@@ -65,6 +65,7 @@ export const fetchCollectedDogs = userId => {
          .get()
          .then(async querySnapshot => {
             querySnapshot.forEach(doc => {
+               console.log('doc.data()', doc.data())
                const { breed, imageUrl, location } = doc.data();
                dogsArr.push({ key: doc.id, doc, breed, imageUrl, location });
             });
@@ -78,7 +79,7 @@ export const fetchCollectedDogs = userId => {
 export default (state = initialState, action) => {
    switch (action.type) {
       case GET_USER:
-         return { ...state, user: action.user };
+         return action.user;
       case GET_COLLECTED_DOGS:
          console.log('reducer hit', state);
          return { ...state, dogs: action.dogsArr };

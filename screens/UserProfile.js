@@ -50,7 +50,7 @@ export default class UserProfile extends React.Component {
             </View>
          );
       }
-      // console.log('state', this.state);
+      console.log('state', this.state);
       return (
          <View style={styles.container}>
             <View style={styles.userCard}>
