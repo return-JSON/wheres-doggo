@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Button, View, TouchableOpacity, Text } from 'react-native';
-import { useFirebase } from 'react-redux-firebase';
+import { View, TouchableOpacity, Text } from 'react-native';
 
 import { Camera } from 'expo-camera';
-import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
-import * as ImageManipulator from 'expo-image-manipulator';
 import { Ionicons } from '@expo/vector-icons';
+
+import { uploadImage } from '../src/api';
 
 export default function CameraScreen({ navigation }) {
   const userId = useSelector(state => state.user.id);
-  const [hasPermission, setHasPermission, location] = useState(null);
+  const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
-  const firebase = useFirebase();
 
   useEffect(() => {
     (async () => {
@@ -29,19 +27,7 @@ export default function CameraScreen({ navigation }) {
     if (this.camera) {
       try {
         let photo = await this.camera.takePictureAsync();
-        let resizedPhoto = await ImageManipulator.manipulateAsync(
-          photo.uri,
-          [{ resize: { width: 500 } }],
-          { compress: 0.5, format: 'png', base64: false }
-        );
-        const response = await fetch(resizedPhoto.uri);
-        const blob = await response.blob();
-        var ref = await firebase
-          .storage()
-          .ref()
-          .child(`${userId}/last-image`);
-        const snapshot = await ref.put(blob);
-        blob.close();
+        await uploadImage(userId, photo.uri);
       } catch (err) {
         console.log(err);
       }
@@ -57,7 +43,9 @@ export default function CameraScreen({ navigation }) {
     return <View />;
   }
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return (
+      <Text>This app needs access to your camera and location, pls! 🐶</Text>
+    );
   }
   return (
     <View style={{ flex: 1 }}>

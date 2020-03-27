@@ -11,7 +11,7 @@ const transform = googleResObj => {
 };
 //helperFunc for isThisADog
 const isDog = elem => {
-  if (elem === 'Dog breed') return elem;
+  if (elem === 'Dog') return elem;
 };
 //Returns false if it is Not A Dog
 const isThisADog = transformResponse => {
@@ -23,11 +23,11 @@ const isThisADog = transformResponse => {
 };
 //Finds the breed if it is a dog + breed exists in breed list
 const breedFinder = (isThisADogResponse, breedList) => {
-  let foundBreed = '';
   for (let i = 0; i <= isThisADogResponse.length; i++) {
     let label = isThisADogResponse[i];
     for (let j = 0; j <= breedList.length; j++) {
       let breed = breedList[j];
+      console.log(breed);
       if (label === breed) {
         return breed;
       }
