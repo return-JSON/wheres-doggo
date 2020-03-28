@@ -5,7 +5,7 @@ export default function DogTile(props) {
     const { dog } = props
     // console.log('props in dogtile', dog.imageUrl);
     return(
-        <View>
+        <View style={styles.container}>
             <Image style={styles.image} source={{ uri: dog.imageUrl }} />
             <Text>{dog.breed}</Text>
         </View>
@@ -13,8 +13,13 @@ export default function DogTile(props) {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        margin: 10
+    },
     image: {
-        width: 50,
-        height: 50
+        // tintColor: 'gray',
+        // opacity: 0.3,
+        width: 150,
+        height: 150
     }
 })
