@@ -2,71 +2,121 @@ import * as React from 'react';
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
 import DogTile from '../components/DogTile';
 import { db } from '../config/firebase';
+import * as firebase from 'firebase';
+import { useAuth } from './HomeScreen';
 // note user1 is still hardcoded! will need to refactor to logged in user
 
-export default class UserProfile extends React.Component {
-   constructor() {
-      super();
-      // will need to replace user2 with logged-in user
-      this.ref = db.collection('users').doc('user1');
-      this.dogsRef = this.ref.collection('dogs');
-      this.state = {
-         isLoading: true,
-         userProf: {},
-         dogsArr: []
-      };
-      this.getDogSubcollection = this.getDogSubcollection.bind(this);
-   }
+export default function UserProfile(props) {
+   // constructor() {
+   //    super();
+   //    // will need to replace user2 with logged-in user
+   //    this.ref = db.collection('users').doc('user1');
+   //    this.dogsRef = this.ref.collection('dogs');
+   //    this.state = {
+   //       isLoading: true,
+   //       userProf: {},
+   //       dogsArr: []
+   //    };
+   //    this.getDogSubcollection = this.getDogSubcollection.bind(this);
+   // }
 
-   componentDidMount() {
-      this.ref.get().then(doc => {
-         if (doc.exists) {
-            this.setState({
-               userProf: doc.data()
-            });
-         } else {
-            console.log('No such document!');
-         }
-      });
-      this.dogsRef.get().then(querySnapshot => {
-         this.getDogSubcollection(querySnapshot);
-      });
-   }
+   // componentDidMount() {
+   //    this.ref.get().then(doc => {
+   //       if (doc.exists) {
+   //          this.setState({
+   //             userProf: doc.data()
+   //          });
+   //       } else {
+   //          console.log('No such document!');
+   //       }
+   //    });
+   //    this.dogsRef.get().then(querySnapshot => {
+   //       this.getDogSubcollection(querySnapshot);
+   //    });
+   // }
 
-   getDogSubcollection(querySnapshot) {
-      const dogsArr = [];
-      querySnapshot.forEach(doc => {
-         const { breed, imageUrl, location } = doc.data();
-         dogsArr.push({ key: doc.id, doc, breed, imageUrl, location });
-      });
-      this.setState({ dogsArr, isLoading: false });
-   }
+   // getDogSubcollection(querySnapshot) {
+   //    const dogsArr = [];
+   //    querySnapshot.forEach(doc => {
+   //       const { breed, imageUrl, location } = doc.data();
+   //       dogsArr.push({ key: doc.id, doc, breed, imageUrl, location });
+   //    });
+   //    this.setState({ dogsArr, isLoading: false });
+   // }
 
-   render() {
-      if (this.state.isLoading) {
-         return (
-            <View style={styles.preloader}>
-               <Text>loading..</Text>
-            </View>
+   // render() {
+   // const { email } = firebase.auth().currentUser;
+   // const [email, setEmail] = React.useState(firebase.auth().currentUser.email);
+
+   const { initializing, user } = useAuth();
+   const [error, setError] = React.useState(false);
+   const [loading, setLoading] = React.useState(true);
+   const [userId, setId] = React.useState('');
+   const [userDogs, setUserDogs] = React.useState([]);
+
+   React.useEffect(() => {
+      const unsubscribe = db
+         .collection('users')
+         .where('email', '==', user.email)
+         .onSnapshot(
+            doc => {
+               setId(doc.docs[0].id);
+            },
+            err => {
+               setError(err);
+            }
          );
+      return () => unsubscribe();
+   }, [userId]);
+   console.log(userId)
+
+   React.useEffect(() => {
+      if (userId) {
+         const unsubscribe = db
+            .collection('users')
+            .doc(userId)
+            .collection('dogs')
+            .onSnapshot(
+               snapshot => {
+                  const dogsArr = [];
+                  snapshot.forEach(doc => {
+                     const { breed, imageUrl, location } = doc.data();
+                     dogsArr.push({
+                        key: doc.id,
+                        source: 'user',
+                        breed,
+                        imageUrl,
+                        location
+                     });
+                  });
+                  setLoading(false);
+                  setUserDogs(dogsArr);
+               },
+               err => {
+                  setError(err);
+               }
+            );
+
+         return () => unsubscribe();
       }
-      console.log('state', this.state);
-      return (
-         <View style={styles.container}>
-            <View style={styles.userCard}>
+   }, [userId]);
+   console.log(userDogs);
+   return (
+      <View style={styles.container}>
+         <View style={styles.userCard}>
                <View>
-                  <Text>{this.state.userProf.name}</Text>
+                  {/* <Text>{this.state.userProf.name}</Text> */}
                </View>
                <View style={styles.cardChild}>
                   <View>
-                     <Image
+                     {/* <Image
                         style={styles.profilePic}
                         source={{
                            uri: this.state.userProf.photourl
                         }}
-                     />
+                     /> */}
                   </View>
-                  {/* <View>
+         {/* <View>
                      <Text>Friends:</Text>
                      <Text>no friends yet!</Text>
                   </View> */}
@@ -75,14 +125,13 @@ export default class UserProfile extends React.Component {
                   <Text>Doggos collected:</Text>
                </View>
                <View style={styles.cardChild}>
-                  {this.state.dogsArr.map(dog => (
+                  {userDogs.map(dog => (
                      <DogTile dog={dog} key={dog.key} />
                   ))}
                </View>
             </View>
-         </View>
-      );
-   }
+      </View>
+   );
 }
 
 const styles = StyleSheet.create({
