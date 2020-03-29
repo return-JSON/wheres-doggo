@@ -6,6 +6,7 @@ export default function DogTile(props) {
    // const [loading, setLoading] = React.useState(true)
    const { dog } = props;
 
+
    if (dog.source === 'database') {
       return (
          <View style={styles.container}>
