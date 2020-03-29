@@ -1,13 +1,6 @@
 import * as React from 'react';
-import {
-   StyleSheet,
-   Text,
-   View,
-   Image,
-   Button,
-   ScrollView
-} from 'react-native';
-// import { fetchUser } from '../src/reducers/user';
+import { StyleSheet, Text, View, Button, ScrollView } from 'react-native';
+// import { fetchUser } from '../src/reducers/user'; (reminder to delete user if needed)
 import * as firebase from 'firebase';
 import DogTile from '../components/DogTile';
 import { dog } from '../constants/dog';
@@ -47,11 +40,14 @@ export default function HomeScreen(props) {
    const [userId, setId] = React.useState('');
    const [userDogs, setUserDogs] = React.useState([]);
    const [allDogs, setAllDogs] = React.useState([]);
+   /*
    // initialize our default state
    // when the id attribute changes (including mount)
    // subscribe to the recipe document and update
-   // our state when it changes.
+   // our state when it changes. */
+
    React.useEffect(() => {
+      // dogs database (allDogs)
       const unsubscribe = db.collection('dogs').onSnapshot(
          snapshot => {
             const allDogsArr = [];
@@ -65,6 +61,7 @@ export default function HomeScreen(props) {
                } = doc.data();
                allDogsArr.push({
                   key: doc.id,
+                  source: 'database',
                   breed,
                   description,
                   imageUrl,
@@ -80,14 +77,15 @@ export default function HomeScreen(props) {
          }
       );
       return () => unsubscribe();
-   });
+   }, [userId]);
+
    React.useEffect(() => {
+      // userId
       const unsubscribe = db
          .collection('users')
          .where('email', '==', user.email)
          .onSnapshot(
             doc => {
-               setLoading(false);
                setId(doc.docs[0].id);
             },
             err => {
@@ -99,10 +97,10 @@ export default function HomeScreen(props) {
       // we unsubscribe from document changes when our id
       // changes to a different value.
       return () => unsubscribe();
-   }, []);
+   }, [userId]);
 
-   //  const myId = 'Fy5lvEPjAnWlAeP4pfdEUcjvyRD3';
    React.useEffect(() => {
+      // user dogs (userDogs)
       if (userId) {
          const unsubscribe = db
             .collection('users')
@@ -115,6 +113,7 @@ export default function HomeScreen(props) {
                      const { breed, imageUrl, location } = doc.data();
                      dogsArr.push({
                         key: doc.id,
+                        source: 'user',
                         breed,
                         imageUrl,
                         location
@@ -135,10 +134,28 @@ export default function HomeScreen(props) {
    // const { email } = firebase.auth().currentUser;
    // const [email, setEmail] = React.useState(firebase.auth().currentUser.email);
 
+   // grey out the uncaught dog photos
+   // if style can be passed down as a variable?
+   // overlay a view that is grey
+   // merge into one array, removing dupes
+   // order such that user dogs are first
+   // render all dogs
+   // can only click on dogs that have been caught
+
+   const uniqueDogs = userDogs;
+   allDogs.forEach(dog => {
+         for (let i = 0; i < userDogs.length; i++) {
+            if (dog.breed === userDogs[i].breed) {
+               return;
+            }
+         }
+         uniqueDogs.push(dog);
+      });
+  
+
    signOutUser = () => {
       firebase.auth().signOut();
    };
-
    if (initializing) {
       return <Text>Loading</Text>;
    }
@@ -146,18 +163,10 @@ export default function HomeScreen(props) {
    return (
       <ScrollView>
          <View style={styles.container}>
-            <Text>
-               Welcome to DogGo
-               {/* {user.firstName}!!! */}
-            </Text>
+            <Text>Welcome to DogGo {user.displayName}!!!</Text>
             <Text>Doggos collected:</Text>
-            {/* <View style={styles.cardChild}>
-            {userDogs.map(dog => {
-               return <DogTile dog={dog} key={dog.key} />;
-            })}
-         </View> */}
             <View style={styles.cardChild}>
-               {allDogs.map(dog => {
+               {uniqueDogs.map(dog => {
                   return <DogTile dog={dog} key={dog.key} />;
                })}
             </View>
