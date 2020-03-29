@@ -7,7 +7,7 @@ import { setPhotoUri, addPupThunk } from '../src/reducers/camera';
 class DogSnap extends Component {
   componentDidMount() {
     this.props.setPhotoUri(
-      `https://firebasestorage.googleapis.com/v0/b/wheres-doggo.appspot.com/o/${this.props.user.id}%2Flast-image?alt=media&token=82207119-f59c-4f2b-acdc-ab02dec71c9d`
+      `https://firebasestorage.googleapis.com/v0/b/wheres-doggo.appspot.com/o/${this.props.route.params.userId}%2Flast-image?alt=media&token=82207119-f59c-4f2b-acdc-ab02dec71c9d`
     );
   }
 
@@ -16,6 +16,7 @@ class DogSnap extends Component {
   // };
 
   render() {
+    const userId = this.props.route.params.userId;
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Image
@@ -28,7 +29,7 @@ class DogSnap extends Component {
         <Button
           title="Add this pup to my DoggoDex!"
           onPress={() => {
-            this.props.addPupThunk(this.props.user.id, this.props.camera);
+            this.props.addPupThunk(userId, this.props.camera);
           }}
         />
       </View>
@@ -38,8 +39,7 @@ class DogSnap extends Component {
 
 const mapState = state => {
   return {
-    camera: state.camera,
-    user: state.user
+    camera: state.camera
   };
 };
 
