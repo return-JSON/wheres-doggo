@@ -5,6 +5,7 @@ import * as firebase from 'firebase';
 import DogTile from '../components/DogTile';
 import { dog } from '../constants/dog';
 import { db } from '../config/firebase';
+import { homeScreenDogs } from '../constants/utilityFunctions'
 
 export const useAuth = () => {
    const [state, setState] = React.useState(() => {
@@ -121,18 +122,7 @@ export default function HomeScreen(props) {
       }
    }, [userId]);
 
-   // can only click on dogs that have been caught
-
-   const uniqueDogs = userDogs;
-   allDogs.forEach(dog => {
-      for (let i = 0; i < userDogs.length; i++) {
-         if (dog.breed === userDogs[i].breed) {
-            return;
-         }
-      }
-      uniqueDogs.push(dog);
-   });
-
+   const uniqueDogs = homeScreenDogs(userDogs, allDogs)
    signOutUser = () => {
       firebase.auth().signOut();
    };
