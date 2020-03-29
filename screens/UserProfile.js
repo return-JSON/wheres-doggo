@@ -7,51 +7,11 @@ import { useAuth } from './HomeScreen';
 // note user1 is still hardcoded! will need to refactor to logged in user
 
 export default function UserProfile(props) {
-   // constructor() {
-   //    super();
-   //    // will need to replace user2 with logged-in user
-   //    this.ref = db.collection('users').doc('user1');
-   //    this.dogsRef = this.ref.collection('dogs');
-   //    this.state = {
-   //       isLoading: true,
-   //       userProf: {},
-   //       dogsArr: []
-   //    };
-   //    this.getDogSubcollection = this.getDogSubcollection.bind(this);
-   // }
-
-   // componentDidMount() {
-   //    this.ref.get().then(doc => {
-   //       if (doc.exists) {
-   //          this.setState({
-   //             userProf: doc.data()
-   //          });
-   //       } else {
-   //          console.log('No such document!');
-   //       }
-   //    });
-   //    this.dogsRef.get().then(querySnapshot => {
-   //       this.getDogSubcollection(querySnapshot);
-   //    });
-   // }
-
-   // getDogSubcollection(querySnapshot) {
-   //    const dogsArr = [];
-   //    querySnapshot.forEach(doc => {
-   //       const { breed, imageUrl, location } = doc.data();
-   //       dogsArr.push({ key: doc.id, doc, breed, imageUrl, location });
-   //    });
-   //    this.setState({ dogsArr, isLoading: false });
-   // }
-
-   // render() {
-   // const { email } = firebase.auth().currentUser;
-   // const [email, setEmail] = React.useState(firebase.auth().currentUser.email);
-
    const { initializing, user } = useAuth();
    const [error, setError] = React.useState(false);
    const [loading, setLoading] = React.useState(true);
    const [userId, setId] = React.useState('');
+   const [userProf, setProf] = React.useState({})
    const [userDogs, setUserDogs] = React.useState([]);
 
    React.useEffect(() => {
@@ -61,6 +21,7 @@ export default function UserProfile(props) {
          .onSnapshot(
             doc => {
                setId(doc.docs[0].id);
+               setProf(doc.docs[0].data())
             },
             err => {
                setError(err);
@@ -68,7 +29,6 @@ export default function UserProfile(props) {
          );
       return () => unsubscribe();
    }, [userId]);
-   console.log(userId)
 
    React.useEffect(() => {
       if (userId) {
@@ -100,36 +60,39 @@ export default function UserProfile(props) {
          return () => unsubscribe();
       }
    }, [userId]);
-   console.log(userDogs);
+
+   if (initializing) {
+      return <Text>Loading</Text>;
+   }
    return (
       <View style={styles.container}>
          <View style={styles.userCard}>
+            <View>
+               <Text>{userProf.firstName}</Text>
+            </View>
+            <View style={styles.cardChild}>
                <View>
-                  {/* <Text>{this.state.userProf.name}</Text> */}
+                  <Image
+                     style={styles.profilePic}
+                     source={{
+                        uri: userProf.profilePicture
+                     }}
+                  />
                </View>
-               <View style={styles.cardChild}>
-                  <View>
-                     {/* <Image
-                        style={styles.profilePic}
-                        source={{
-                           uri: this.state.userProf.photourl
-                        }}
-                     /> */}
-                  </View>
-         {/* <View>
+               {/* <View>
                      <Text>Friends:</Text>
                      <Text>no friends yet!</Text>
                   </View> */}
-               </View>
-               <View>
-                  <Text>Doggos collected:</Text>
-               </View>
-               <View style={styles.cardChild}>
-                  {userDogs.map(dog => (
-                     <DogTile dog={dog} key={dog.key} />
-                  ))}
-               </View>
             </View>
+            <View>
+               <Text>Doggos collected:</Text>
+            </View>
+            <View style={styles.cardChild}>
+               {userDogs.map(dog => (
+                  <DogTile dog={dog} key={dog.key} />
+               ))}
+            </View>
+         </View>
       </View>
    );
 }
@@ -143,7 +106,7 @@ const styles = StyleSheet.create({
    },
    userCard: {
       backgroundColor: '#fff',
-      width: '50%'
+      width: '75%'
    },
    cardChild: {
       justifyContent: 'center',

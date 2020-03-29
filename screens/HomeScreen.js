@@ -6,15 +6,6 @@ import DogTile from '../components/DogTile';
 import { dog } from '../constants/dog';
 import { db } from '../config/firebase';
 
-const userContext = React.createContext({
-   user: null
-});
-
-export const useSession = () => {
-   const { user } = React.useContext(userContext);
-   return user;
-};
-
 export const useAuth = () => {
    const [state, setState] = React.useState(() => {
       const user = firebase.auth().currentUser;
@@ -23,7 +14,6 @@ export const useAuth = () => {
    function onChange(user) {
       setState({ initializing: false, user });
    }
-
    React.useEffect(() => {
       // listen for auth state changes
       const unsubscribe = firebase.auth().onAuthStateChanged(onChange);
@@ -43,7 +33,7 @@ export default function HomeScreen(props) {
    /*
    // initialize our default state
    // when the id attribute changes (including mount)
-   // subscribe to the recipe document and update
+   // subscribe to the document and update
    // our state when it changes. */
 
    React.useEffect(() => {
@@ -131,27 +121,17 @@ export default function HomeScreen(props) {
       }
    }, [userId]);
 
-   // const { email } = firebase.auth().currentUser;
-   // const [email, setEmail] = React.useState(firebase.auth().currentUser.email);
-
-   // grey out the uncaught dog photos
-   // if style can be passed down as a variable?
-   // overlay a view that is grey
-   // merge into one array, removing dupes
-   // order such that user dogs are first
-   // render all dogs
    // can only click on dogs that have been caught
 
    const uniqueDogs = userDogs;
    allDogs.forEach(dog => {
-         for (let i = 0; i < userDogs.length; i++) {
-            if (dog.breed === userDogs[i].breed) {
-               return;
-            }
+      for (let i = 0; i < userDogs.length; i++) {
+         if (dog.breed === userDogs[i].breed) {
+            return;
          }
-         uniqueDogs.push(dog);
-      });
-  
+      }
+      uniqueDogs.push(dog);
+   });
 
    signOutUser = () => {
       firebase.auth().signOut();
@@ -163,12 +143,14 @@ export default function HomeScreen(props) {
    return (
       <ScrollView>
          <View style={styles.container}>
-            <Text>Welcome to DogGo {user.displayName}!!!</Text>
-            <Text>Doggos collected:</Text>
-            <View style={styles.cardChild}>
-               {uniqueDogs.map(dog => {
-                  return <DogTile dog={dog} key={dog.key} />;
-               })}
+            <View style={styles.dogsCard}>
+               <Text>Welcome to DogGo {user.displayName}!!!</Text>
+               <Text>Doggos:</Text>
+               <View style={styles.cardChild}>
+                  {uniqueDogs.map(dog => {
+                     return <DogTile dog={dog} key={dog.key} />;
+                  })}
+               </View>
             </View>
             <Button title='Sign Out' onPress={signOutUser} />
          </View>
@@ -183,6 +165,10 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       alignContent: 'center'
    },
+   // dogsCard: {
+   //    // backgroundColor: '#fff',
+   //    width: '90%'
+   // },
    cardChild: {
       justifyContent: 'center',
       flexDirection: 'row',
