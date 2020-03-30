@@ -6,7 +6,6 @@ import * as Location from 'expo-location';
 import * as ImageManipulator from 'expo-image-manipulator';
 
 export const submitToGoogle = async image => {
-  console.log('test');
   try {
     let body = JSON.stringify({
       requests: [

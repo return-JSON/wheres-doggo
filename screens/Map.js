@@ -1,14 +1,14 @@
-import * as React from "react";
-import { Image, View, StyleSheet, Text, Alert } from "react-native";
-import MapView, { Marker, Callout } from "react-native-maps";
-import { db } from "../config/firebase";
+import * as React from 'react';
+import { Image, View, StyleSheet, Text, Alert } from 'react-native';
+import MapView, { Marker, Callout } from 'react-native-maps';
+import { db } from '../config/firebase';
 
 // render markers wherever there are dogs
 
 export default class Map extends React.Component {
   constructor() {
     super();
-    this.ref = db.collection("dogs");
+    this.ref = db.collection('dogs');
     this.state = {
       isLoading: true,
       coords: {
@@ -19,7 +19,7 @@ export default class Map extends React.Component {
       },
       dogArr: [],
       marker: {
-        image: require("../src/img/dog.png")
+        image: require('../src/img/dog.png')
       }
     };
     this.getDogCoords = this.getDogCoords.bind(this);
@@ -34,11 +34,11 @@ export default class Map extends React.Component {
   }
 
   showMessage = breed => {
-    Alert.alert("Best buddy!", `It's the best ${breed} around.`, [
-      { text: "Go Back", style: "cancel" }
+    Alert.alert('Best buddy!', `It's the best ${breed} around.`, [
+      { text: 'Go Back', style: 'cancel' }
     ]);
     return;
-  }
+  };
 
   getDogCoords = querySnapshot => {
     const dogArr = [];
@@ -51,7 +51,6 @@ export default class Map extends React.Component {
         points
       });
     });
-    console.log("LOOK HERE", dogArr);
     this.setState({
       dogArr,
       isLoading: false
@@ -59,7 +58,6 @@ export default class Map extends React.Component {
   };
 
   render() {
-    console.log("LOOOOOK HERE", this.state.dogArr);
     const image = this.state.marker.image;
     const dogArr = this.state.dogArr;
     return (
@@ -70,12 +68,12 @@ export default class Map extends React.Component {
               <Marker
                 key={idx}
                 coordinate={{
-                  latitude: dog.lastSeen["F"],
-                  longitude: dog.lastSeen["V"]
+                  latitude: dog.lastSeen['F'],
+                  longitude: dog.lastSeen['V']
                 }}
                 image={image}
               >
-                <Callout onPress={()=>this.showMessage(dog.breed)}>
+                <Callout onPress={() => this.showMessage(dog.breed)}>
                   <Text>{dog.breed}</Text>
                 </Callout>
               </Marker>
@@ -96,7 +94,7 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     flex: 1,
-    width: "100%",
-    height: "100%"
+    width: '100%',
+    height: '100%'
   }
 });

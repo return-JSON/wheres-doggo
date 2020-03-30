@@ -127,7 +127,6 @@ export default function HomeScreen(props) {
 
   return (
     <ScrollView>
-      {console.log(uniqueDogs)}
       <View style={styles.container}>
         <View style={styles.dogsCard}>
           <Text>Welcome to DogGo {user.displayName}!!!</Text>
