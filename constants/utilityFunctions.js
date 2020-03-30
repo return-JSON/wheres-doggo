@@ -47,3 +47,16 @@ export const dogResponseComboFunction = (googleResObj, breedList) => {
   }
   return isThisADogResponse;
 };
+// Combines unique dogs from two different arrays (i.e. user's collected dogs vs. database dogs), prioritizes the user's collected dogs
+export const homeScreenDogs = (userDogs, allDogs) => {
+   const uniqueDogs = userDogs;
+   allDogs.forEach(dog => {
+      for (let i = 0; i < userDogs.length; i++) {
+         if (dog.breed === userDogs[i].breed) {
+            return;
+         }
+      }
+      uniqueDogs.push(dog);
+   });
+   return uniqueDogs;
+};

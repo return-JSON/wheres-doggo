@@ -2,87 +2,99 @@ import * as React from 'react';
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
 import DogTile from '../components/DogTile';
 import { db } from '../config/firebase';
+import * as firebase from 'firebase';
+import { useAuth } from './HomeScreen';
 // note user1 is still hardcoded! will need to refactor to logged in user
 
-export default class UserProfile extends React.Component {
-   constructor() {
-      super();
-      // will need to replace user2 with logged-in user
-      this.ref = db.collection('users').doc('user1');
-      this.dogsRef = this.ref.collection('dogs');
-      this.state = {
-         isLoading: true,
-         userProf: {},
-         dogsArr: []
-      };
-      this.getDogSubcollection = this.getDogSubcollection.bind(this);
-   }
+export default function UserProfile(props) {
+   const { initializing, user } = useAuth();
+   const [error, setError] = React.useState(false);
+   const [loading, setLoading] = React.useState(true);
+   const [userId, setId] = React.useState('');
+   const [userProf, setProf] = React.useState({})
+   const [userDogs, setUserDogs] = React.useState([]);
 
-   componentDidMount() {
-      this.ref.get().then(doc => {
-         if (doc.exists) {
-            this.setState({
-               userProf: doc.data()
-            });
-         } else {
-            console.log('No such document!');
-         }
-      });
-      this.dogsRef.get().then(querySnapshot => {
-         this.getDogSubcollection(querySnapshot);
-      });
-   }
-
-   getDogSubcollection(querySnapshot) {
-      const dogsArr = [];
-      querySnapshot.forEach(doc => {
-         const { breed, imageUrl, location } = doc.data();
-         dogsArr.push({ key: doc.id, doc, breed, imageUrl, location });
-      });
-      this.setState({ dogsArr, isLoading: false });
-   }
-
-   render() {
-      if (this.state.isLoading) {
-         return (
-            <View style={styles.preloader}>
-               <Text>loading..</Text>
-            </View>
+   React.useEffect(() => {
+      const unsubscribe = db
+         .collection('users')
+         .where('email', '==', user.email)
+         .onSnapshot(
+            doc => {
+               setId(doc.docs[0].id);
+               setProf(doc.docs[0].data())
+            },
+            err => {
+               setError(err);
+            }
          );
+      return () => unsubscribe();
+   }, [userId]);
+
+   React.useEffect(() => {
+      if (userId) {
+         const unsubscribe = db
+            .collection('users')
+            .doc(userId)
+            .collection('dogs')
+            .onSnapshot(
+               snapshot => {
+                  const dogsArr = [];
+                  snapshot.forEach(doc => {
+                     const { breed, imageUrl, location } = doc.data();
+                     dogsArr.push({
+                        key: doc.id,
+                        source: 'user',
+                        breed,
+                        imageUrl,
+                        location
+                     });
+                  });
+                  setLoading(false);
+                  setUserDogs(dogsArr);
+               },
+               err => {
+                  setError(err);
+               }
+            );
+
+         return () => unsubscribe();
       }
-      console.log('state', this.state);
-      return (
-         <View style={styles.container}>
-            <View style={styles.userCard}>
+   }, [userId]);
+
+   if (initializing) {
+      return <Text>Loading</Text>;
+   }
+   return (
+      <View style={styles.container}>
+         <View style={styles.userCard}>
+            <View>
+               <Text>{userProf.firstName}</Text>
+            </View>
+            <View style={styles.cardChild}>
                <View>
-                  <Text>{this.state.userProf.name}</Text>
+                  <Image
+                     style={styles.profilePic}
+                     source={{
+                        uri: userProf.profilePicture
+                     }}
+                  />
                </View>
-               <View style={styles.cardChild}>
-                  <View>
-                     <Image
-                        style={styles.profilePic}
-                        source={{
-                           uri: this.state.userProf.photourl
-                        }}
-                     />
-                  </View>
-                  {/* <View>
+               {/* <View>
                      <Text>Friends:</Text>
                      <Text>no friends yet!</Text>
                   </View> */}
-               </View>
-               <View>
-                  <Text>Doggos collected:</Text>
-               </View>
-               <View style={styles.cardChild}>
-                  {this.state.dogsArr.map(dog => (
-                     <DogTile dog={dog} key={dog.key} />
-                  ))}
-               </View>
+            </View>
+            <View>
+               <Text>Doggos collected:</Text>
+            </View>
+            <View style={styles.cardChild}>
+               {userDogs.map(dog => (
+                  <DogTile dog={dog} key={dog.key} />
+               ))}
             </View>
          </View>
-      );
-   }
+      </View>
+   );
 }
 
 const styles = StyleSheet.create({
@@ -94,7 +106,7 @@ const styles = StyleSheet.create({
    },
    userCard: {
       backgroundColor: '#fff',
-      width: '50%'
+      width: '75%'
    },
    cardChild: {
       justifyContent: 'center',
