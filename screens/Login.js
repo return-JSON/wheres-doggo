@@ -45,7 +45,7 @@ function runTiming(clock, value, dest) {
 
 
 
-export default class TryOut extends React.Component {
+export default class Login extends React.Component {
     constructor(props) {
         super(props);
 

@@ -11,7 +11,7 @@ import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 import { createFirestoreInstance } from 'redux-firestore';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
-import TryOut from './screens/TryOut'
+import Login from './screens/Login'
 
 import store from './src/store';
 
@@ -35,7 +35,7 @@ if (!global.atob) {
 
 const AppSwitchNavigator = createSwitchNavigator({
   LoadingScreen: LoadingScreen,
-  LoginScreen: TryOut,
+  LoginScreen: Login,
   Register: RegisterScreen,
   DashboardScreen: InsideApp
 });
