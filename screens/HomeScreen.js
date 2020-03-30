@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Image, Button } from 'react-native';
-// import { fetchUser } from '../src/reducers/user';
+import { StyleSheet, Text, View,Button } from 'react-native';
 import * as firebase from 'firebase';
 import DogTile from '../components/DogTile';
-import { dog } from '../constants/dog';
 
 const userContext = React.createContext({
    user: null
@@ -110,13 +108,13 @@ const { initializing, user } = useAuth();
       return <Text>Loading</Text>;
    }
    
-   console.log('user', user.email)
-   console.log(dogs)
+
+
    return (
       <View style={styles.container}>
          <Text>
             Welcome to DogGo
-            {/* {user.firstName}!!! */}
+            {user.firstName}!!!
          </Text>
          <Text>Doggos collected:</Text>
          <View style={styles.cardChild}>
