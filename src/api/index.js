@@ -1,12 +1,11 @@
 import GOOGLE_VISION_API_KEY from '../../config/constants';
-import { geopointMaker } from '../../constants/utilityFunctions';
+import { geopointMaker, dogDocer } from '../../constants/utilityFunctions';
 import { db } from '../../config/firebase';
 import firebase from '../../config/firebase';
 import * as Location from 'expo-location';
 import * as ImageManipulator from 'expo-image-manipulator';
 
 export const submitToGoogle = async image => {
-  console.log('test');
   try {
     let body = JSON.stringify({
       requests: [
@@ -63,15 +62,29 @@ export const uploadImage = async (userId, uri, breed = 'last-image') => {
 };
 
 export const addPup = async (userId, stateObj) => {
-  stateObj.uri = `https://firebasestorage.googleapis.com/v0/b/wheres-doggo.appspot.com/o/${userId}%2F${stateObj.breed}?alt=media&token=82207119-f59c-4f2b-acdc-ab02dec71c9d`;
+  let urlBreed = stateObj.breed.replace(' ', '%20');
+  stateObj.imageUrl = `https://firebasestorage.googleapis.com/v0/b/wheres-doggo.appspot.com/o/${userId}%2F${urlBreed}?alt=media&token=82207119-f59c-4f2b-acdc-ab02dec71c9d`;
   let geopoint = new firebase.firestore.GeoPoint(
     stateObj.location.coords.latitude,
     stateObj.location.coords.longitude
   );
+  const breedId = dogDocer(stateObj.breed);
   stateObj.location = geopoint;
-  let ref = db
-    .collection('users')
-    .doc(userId)
-    .collection('dogs');
-  await ref.doc(stateObj.breed).set(stateObj);
+  const dogRef = await db.collection('dogs').doc(breedId);
+  let dogObj = await dogRef.get();
+  dogObj = { ...dogObj.data() };
+  stateObj.points = dogObj.points;
+  await dogRef.update({ lastSeen: stateObj.location });
+  const userRef = db.collection('users').doc(userId);
+  let user = await userRef.get();
+  user = { ...user.data() };
+  if (!user.points) {
+    user.points = 0;
+  }
+  let points = user.points + stateObj.points;
+  await userRef.update({ points: points });
+  await userRef
+    .collection('dogs')
+    .doc(breedId)
+    .set(stateObj);
 };

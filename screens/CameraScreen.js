@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { View, TouchableOpacity, Text } from 'react-native';
 
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
 import { Ionicons } from '@expo/vector-icons';
 
+import { useAuth } from './HomeScreen';
 import { uploadImage } from '../src/api';
 
 export default function CameraScreen({ navigation }) {
-  const userId = useSelector(state => state.user.id);
+  const { initializing, user } = useAuth();
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
 
@@ -27,7 +27,7 @@ export default function CameraScreen({ navigation }) {
     if (this.camera) {
       try {
         let photo = await this.camera.takePictureAsync();
-        await uploadImage(userId, photo.uri);
+        await uploadImage(user.uid, photo.uri);
       } catch (err) {
         console.log(err);
       }
@@ -36,7 +36,9 @@ export default function CameraScreen({ navigation }) {
 
   handlePress = async () => {
     await snap();
-    await navigation.navigate('DogSnap');
+    await navigation.navigate('DogSnap', {
+      userId: user.uid
+    });
   };
 
   if (hasPermission === null) {
