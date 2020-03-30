@@ -136,4 +136,16 @@ export const notADog = {
   ]
 };
 
-export const breedList = ['Rat terrier', 'Shiba inu', 'Great dane'];
+export const breedList = [
+  'Rat terrier',
+  'Shiba inu',
+  'Great dane',
+  'Australian shepard',
+  'Beagle',
+  'Border collie',
+  'Boston terrier',
+  'Chihuahua',
+  'Chow chow',
+  'German shepard',
+  'German shorthaired pointer'
+];
