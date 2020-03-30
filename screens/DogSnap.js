@@ -1,39 +1,112 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Text, View, Image, Button, Alert } from 'react-native';
 
-import { Text, View, Image, Button } from 'react-native';
+import LoadingScreen from './LoadingScreen';
 import { setPhotoUri, addPupThunk } from '../src/reducers/camera';
 
 class DogSnap extends Component {
+  constructor(props) {
+    super(props);
+    this.addPup = this.addPup.bind(this);
+  }
+
   componentDidMount() {
     this.props.setPhotoUri(
       `https://firebasestorage.googleapis.com/v0/b/wheres-doggo.appspot.com/o/${this.props.route.params.userId}%2Flast-image?alt=media&token=82207119-f59c-4f2b-acdc-ab02dec71c9d`
     );
   }
 
-  // handlePress = async () => {
-  //   await this.props.addPupThunk(this.props.camera);
-  // };
+  addPup = async (userId, props, breed, navigation) => {
+    try {
+      await this.props.addPupThunk(userId, props);
+      await Alert.alert(
+        `${breed} has been added to DoggoDex!`,
+        'Back to catching more doggos!',
+        [
+          {
+            text: 'Ok!',
+            onPress: () => navigation.navigate('Camera')
+          }
+        ],
+        { cancelable: false }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   render() {
-    const userId = this.props.route.params.userId;
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Image
-          style={{ width: 300, height: 300 }}
-          source={{
-            uri: this.props.camera.uri
+    const navigation = this.props.navigation;
+
+    if (!this.props.camera.breed) {
+      return <LoadingScreen />;
+    } else if (this.props.camera.breed === '🐶 breed not found') {
+      return (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
           }}
-        />
-        <Text>Wowie! What a cute {this.props.camera.breed}😍</Text>
-        <Button
-          title="Add this pup to my DoggoDex!"
-          onPress={() => {
-            this.props.addPupThunk(userId, this.props.camera);
+        >
+          <Image
+            style={{ width: 300, height: 300 }}
+            source={{
+              uri: this.props.camera.imageUrl
+            }}
+          />
+          <Text> 🐶 breed not found </Text>
+        </View>
+      );
+    } else if (this.props.camera.breed === 'Not a dog') {
+      return (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
           }}
-        />
-      </View>
-    );
+        >
+          <Image
+            style={{ width: 300, height: 300 }}
+            source={{
+              uri: this.props.camera.imageUrl
+            }}
+          />
+          <Text>Are you sure this is a picture of a dog?</Text>
+        </View>
+      );
+    } else {
+      return (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Image
+            style={{ width: 300, height: 300 }}
+            source={{
+              uri: this.props.camera.imageUrl
+            }}
+          />
+          <Text>Wowie! What a cute {this.props.camera.breed}😍</Text>
+          <Button
+            title="Add this pup to my DoggoDex!"
+            onPress={() => {
+              this.addPup(
+                this.props.route.params.userId,
+                this.props.camera,
+                this.props.camera.breed,
+                navigation
+              );
+            }}
+          />
+        </View>
+      );
+    }
   }
 }
 

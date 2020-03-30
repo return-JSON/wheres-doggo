@@ -5,7 +5,7 @@ import { dogResponseComboFunction } from '../../constants/utilityFunctions';
 import { dog, notADog, breedList } from '../../constants/dog';
 
 let initialState = {
-  uri: '',
+  imageUrl: '',
   breed: '',
   location: ''
 };
@@ -17,10 +17,10 @@ const SET_LOCATION = 'SET_LOCATION';
 const ADD_DOG = 'ADD_DOG';
 
 //// action creator
-const takePhoto = uri => {
+const takePhoto = imageUrl => {
   return {
     type: SET_PHOTO_URI,
-    uri
+    imageUrl
   };
 };
 
@@ -59,7 +59,7 @@ export const setPhotoUri = uri => {
 
 export const addPupThunk = (userId, stateObj) => {
   return async dispatch => {
-    await uploadImage(userId, stateObj.uri, stateObj.breed);
+    await uploadImage(userId, stateObj.imageUrl, stateObj.breed);
     await addPup(userId, stateObj);
     await dispatch(addDog());
   };
@@ -68,7 +68,7 @@ export const addPupThunk = (userId, stateObj) => {
 export default (state = {}, action) => {
   switch (action.type) {
     case SET_PHOTO_URI:
-      return { ...state, uri: action.uri };
+      return { ...state, imageUrl: action.imageUrl };
     case SET_DOG:
       return { ...state, breed: action.breed };
     case SET_LOCATION:

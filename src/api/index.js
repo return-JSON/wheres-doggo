@@ -1,5 +1,5 @@
 import GOOGLE_VISION_API_KEY from '../../config/constants';
-import { geopointMaker } from '../../constants/utilityFunctions';
+import { geopointMaker, dogDocer } from '../../constants/utilityFunctions';
 import { db } from '../../config/firebase';
 import firebase from '../../config/firebase';
 import * as Location from 'expo-location';
@@ -68,10 +68,24 @@ export const addPup = async (userId, stateObj) => {
     stateObj.location.coords.latitude,
     stateObj.location.coords.longitude
   );
+  const breedId = dogDocer(stateObj.breed);
   stateObj.location = geopoint;
-  let ref = db
-    .collection('users')
-    .doc(userId)
-    .collection('dogs');
-  await ref.doc(stateObj.breed).set(stateObj);
+  const dogRef = await db.collection('dogs').doc(breedId);
+  let dogObj = await dogRef.get();
+  dogObj = { ...dogObj.data() };
+  stateObj.points = dogObj.points;
+  await dogRef.update({ lastSeen: stateObj.location });
+  const userRef = db.collection('users').doc(userId);
+  let user = await userRef.get();
+  user = { ...user.data() };
+  console.log(user);
+  if (!user.points) {
+    user.points = 0;
+  }
+  let points = user.points + stateObj.points;
+  await userRef.update({ points: points });
+  await userRef
+    .collection('dogs')
+    .doc(breedId)
+    .set(stateObj);
 };

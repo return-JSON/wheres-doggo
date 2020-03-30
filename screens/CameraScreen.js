@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { View, TouchableOpacity, Text } from 'react-native';
 
 import { Camera } from 'expo-camera';
@@ -37,7 +36,9 @@ export default function CameraScreen({ navigation }) {
 
   handlePress = async () => {
     await snap();
-    await navigation.navigate('DogSnap', { userId: user.uid });
+    await navigation.navigate('DogSnap', {
+      userId: user.uid
+    });
   };
 
   if (hasPermission === null) {
