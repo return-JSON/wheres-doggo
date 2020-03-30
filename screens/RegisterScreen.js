@@ -138,8 +138,8 @@ const styles = StyleSheet.create({
     marginTop: 190
   },
   input: {
-    margin: 4,
-    height: 50,
+    margin: 2,
+    height: 40,
     width: 0,
     backgroundColor: '#F2F9F8',
     borderWidth: 1,
@@ -167,12 +167,12 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   footer: {
-    flex: 4,
+    flex: 7,
     backgroundColor: 'white',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingVertical: 20,
-    paddingHorizontal: 80
+    paddingHorizontal: 50
   },
   header: {
     flex: 1.4,

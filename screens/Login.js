@@ -77,7 +77,7 @@ export default class Login extends React.Component {
         })
         this.bgY = interpolate(this.buttonOpacity, {
             inputRange: [0, 1],
-            outputRange: [-height / 3 - 10, 0],
+            outputRange: [-height / 3 - 40, 0],
             extrapolate: Extrapolate.CLAMP
         })
         this.textInputZindex = interpolate(this.buttonOpacity, {
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
         resizeMode: 'contain'
     },
     lower2: {
-        top: -320,
+        top: -270,
         flex: 1,
         width: 50,
         height: 50,
