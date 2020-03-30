@@ -63,7 +63,8 @@ export const uploadImage = async (userId, uri, breed = 'last-image') => {
 };
 
 export const addPup = async (userId, stateObj) => {
-  stateObj.uri = `https://firebasestorage.googleapis.com/v0/b/wheres-doggo.appspot.com/o/${userId}%2F${stateObj.breed}?alt=media&token=82207119-f59c-4f2b-acdc-ab02dec71c9d`;
+  let urlBreed = stateObj.breed.replace(' ', '%20');
+  stateObj.imageUrl = `https://firebasestorage.googleapis.com/v0/b/wheres-doggo.appspot.com/o/${userId}%2F${urlBreed}?alt=media&token=82207119-f59c-4f2b-acdc-ab02dec71c9d`;
   let geopoint = new firebase.firestore.GeoPoint(
     stateObj.location.coords.latitude,
     stateObj.location.coords.longitude
@@ -78,7 +79,6 @@ export const addPup = async (userId, stateObj) => {
   const userRef = db.collection('users').doc(userId);
   let user = await userRef.get();
   user = { ...user.data() };
-  console.log(user);
   if (!user.points) {
     user.points = 0;
   }

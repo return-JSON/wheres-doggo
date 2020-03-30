@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Image, View, Text, StyleSheet } from 'react-native';
-import { BlurView } from 'expo-blur';
 
 export default function DogTile(props) {
    // const [loading, setLoading] = React.useState(true)
@@ -10,12 +9,10 @@ export default function DogTile(props) {
    if (dog.source === 'database') {
       return (
          <View style={styles.container}>
-            {/* <BlurView tint='light' intensity={100} style={styles.notBlurred}> */}
                <Image
                   style={styles.databaseImage}
                   source={{ uri: dog.imageUrl }}
                />
-            {/* </BlurView> */}
          </View>
       );
    } else if (dog.source === 'user') {
@@ -30,15 +27,17 @@ export default function DogTile(props) {
 
 const styles = StyleSheet.create({
    container: {
-      margin: 10
+      width: '40%',
+      margin: 10,
+      alignItems: 'center'
    },
    databaseImage: {
       opacity: 0.3,
-      width: 150,
-      height: 150
+      width: 125,
+      height: 125
    },
    userImage: {
-      width: 150,
-      height: 150
+      width: 125,
+      height: 125
    }
 });

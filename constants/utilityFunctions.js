@@ -57,3 +57,17 @@ export const dogDocer = breedString => {
   let newBreed = breedString.toLowerCase().replace(' ', '-');
   return newBreed;
 };
+
+// Combines unique dogs from two different arrays (i.e. user's collected dogs vs. database dogs), prioritizes the user's collected dogs
+export const homeScreenDogs = (userDogs, allDogs) => {
+  const uniqueDogs = userDogs;
+  allDogs.forEach(dog => {
+    for (let i = 0; i < userDogs.length; i++) {
+      if (dog.key === userDogs[i].key) {
+        return;
+      }
+    }
+    uniqueDogs.push(dog);
+  });
+  return uniqueDogs;
+};
