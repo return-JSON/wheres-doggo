@@ -1,19 +1,20 @@
-import * as React from "react";
+import * as React from 'react';
 // import { Button, View } from "react-native";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createDrawerNavigator } from '@react-navigation/drawer';
 // import { NavigationContainer } from "@react-navigation/native";
-import TabBarIcon from "../components/TabBarIcon";
+import TabBarIcon from '../components/TabBarIcon';
 import {
   HomeScreen,
   Camera,
-  UserProfile,
+  MyProfile,
   DogProfile,
-  ListTemplate,
-  Map
-} from "../screens";
+  Map,
+  Score,
+  UserList
+} from '../screens';
 
 const Drawer = createDrawerNavigator();
-const INITIAL_ROUTE_NAME = "Home";
+const INITIAL_ROUTE_NAME = 'Home';
 
 export default function DrawerNavigator({ navigation, route }) {
   // Set the header title on the parent stack navigator depending on the
@@ -27,7 +28,7 @@ export default function DrawerNavigator({ navigation, route }) {
         name="Home"
         component={HomeScreen}
         options={{
-          title: "Get Started",
+          title: 'Get Started',
           drawerIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-home" />
           )
@@ -38,7 +39,7 @@ export default function DrawerNavigator({ navigation, route }) {
         name="Map"
         component={Map}
         options={{
-          title: "DoggoMap",
+          title: 'DoggoMap',
           drawerIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="ios-map" />
           )
@@ -46,10 +47,10 @@ export default function DrawerNavigator({ navigation, route }) {
       />
 
       <Drawer.Screen
-        name="UserProfile"
-        component={UserProfile}
+        name="MyProfile"
+        component={MyProfile}
         options={{
-          title: "My Profile",
+          title: 'My Profile',
           drawerIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-person" />
           )
@@ -60,7 +61,7 @@ export default function DrawerNavigator({ navigation, route }) {
         name="DogProfile"
         component={DogProfile}
         options={{
-          title: "DoggoDex",
+          title: 'DoggoDex',
           drawerIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-heart" />
           )
@@ -68,10 +69,10 @@ export default function DrawerNavigator({ navigation, route }) {
       />
 
       <Drawer.Screen
-        name="ListTemplate"
-        component={ListTemplate}
+        name="UserList"
+        component={UserList}
         options={{
-          title: "Users",
+          title: 'Users',
           drawerIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-search" />
           )
@@ -82,7 +83,18 @@ export default function DrawerNavigator({ navigation, route }) {
         name="Camera"
         component={Camera}
         options={{
-          title: "Camera",
+          title: 'Camera',
+          drawerIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="ios-camera" />
+          )
+        }}
+      />
+
+      <Drawer.Screen
+        name="Score"
+        component={Score}
+        options={{
+          title: 'Scoreboard',
           drawerIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="ios-camera" />
           )
@@ -97,9 +109,11 @@ function getHeaderTitle(route) {
     route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
 
   switch (routeName) {
-    case "Home":
-      return "Welcome to DogGO!";
-    case "Camera":
-      return "Snap a pup!";
+    case 'Home':
+      return 'Welcome to DogGO!';
+    case 'Camera':
+      return 'Snap a pup!';
+    case 'Score':
+      return 'Leaderboard';
   }
 }
