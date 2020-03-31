@@ -44,6 +44,7 @@ export default function CameraScreen({ navigation }) {
   if (hasPermission === null) {
     return <View />;
   }
+
   if (hasPermission === false) {
     return (
       <Text>This app needs access to your camera and location, pls! 🐶</Text>

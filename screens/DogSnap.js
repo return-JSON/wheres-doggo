@@ -57,6 +57,10 @@ class DogSnap extends Component {
             }}
           />
           <Text> 🐶 breed not found </Text>
+          <Button
+            title="Try again?"
+            onPress={() => navigation.navigate('Camera')}
+          />
         </View>
       );
     } else if (this.props.camera.breed === 'Not a dog') {
@@ -75,6 +79,10 @@ class DogSnap extends Component {
             }}
           />
           <Text>Are you sure this is a picture of a dog?</Text>
+          <Button
+            title="Go snap some dogs!!!!"
+            onPress={() => navigation.navigate('Camera')}
+          />
         </View>
       );
     } else {
