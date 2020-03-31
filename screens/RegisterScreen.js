@@ -58,9 +58,9 @@ class RegisterScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={{ ...styles.text, ...styles.header }}>
-          {'Sign up to get started!'}
-        </Text>
+        <Text style={{ ...styles.text, ...styles.header }}>{`Sign up \nto get started!`}</Text>
+
+
 
         <Animatable.View
           style={styles.footer}
@@ -118,13 +118,9 @@ class RegisterScreen extends Component {
             <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Sign Up</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={{ alignSelf: 'center', marginTop: 32 }}
-            onPress={() => this.props.navigation.navigate('LoginScreen')}
-          >
-            <Text style={{ fontSize: 15 }}>
-              Already Have An Account?{' '}
-              <Text style={{ fontWeight: '500', color: 'blue' }}>Log In</Text>
+          <TouchableOpacity style={{ alignSelf: "center", marginTop: 32 }} onPress={() => this.props.navigation.navigate('LoginScreen')}>
+            <Text style={{ fontSize: 16 }}>
+              Already Have An Account?<Text style={{ fontWeight: "500", color: "blue" }}>Log In</Text>
             </Text>
           </TouchableOpacity>
         </Animatable.View>
@@ -144,7 +140,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 40,
-    marginTop: 190
+    marginTop: 90
   },
   input: {
     margin: 2,
@@ -176,15 +172,15 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   footer: {
-    flex: 7,
+    flex: 4,
     backgroundColor: 'white',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    paddingVertical: 20,
-    paddingHorizontal: 50
+    paddingVertical: 2,
+    paddingHorizontal: 80
   },
   header: {
-    flex: 1.4,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -192,7 +188,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     borderWidth: 2,
-    marginHorizontal: 10,
+    marginHorizontal: 0,
     paddingLeft: 10,
     marginVertical: 5,
     borderColor: 'rgba(0,0,0,0.2)'
@@ -201,7 +197,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFE066',
     height: 50,
     marginHorizontal: 20,
-    borderRadius: 35,
+    borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: 5,
