@@ -7,7 +7,6 @@ export default function ScoreTile(props) {
 
   return (
     <View style={styles.container}>
-      {console.log('props', user)}
       <Text>{user.firstName}</Text>
       <Text>{user.points}</Text>
     </View>

@@ -6,11 +6,11 @@ import TabBarIcon from '../components/TabBarIcon';
 import {
   HomeScreen,
   Camera,
-  UserProfile,
+  MyProfile,
   DogProfile,
-  ListTemplate,
   Map,
-  Score
+  Score,
+  UserList
 } from '../screens';
 
 const Drawer = createDrawerNavigator();
@@ -47,8 +47,8 @@ export default function DrawerNavigator({ navigation, route }) {
       />
 
       <Drawer.Screen
-        name="UserProfile"
-        component={UserProfile}
+        name="MyProfile"
+        component={MyProfile}
         options={{
           title: 'My Profile',
           drawerIcon: ({ focused }) => (
@@ -69,8 +69,8 @@ export default function DrawerNavigator({ navigation, route }) {
       />
 
       <Drawer.Screen
-        name="ListTemplate"
-        component={ListTemplate}
+        name="UserList"
+        component={UserList}
         options={{
           title: 'Users',
           drawerIcon: ({ focused }) => (
