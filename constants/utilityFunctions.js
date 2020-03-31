@@ -70,3 +70,32 @@ export const homeScreenDogs = (userDogs, allDogs) => {
   });
   return uniqueDogs;
 };
+
+//Scoreboard utility function
+
+const pointsToZero = arr => {
+  arr.map(elem => {
+    if (!elem.points) {
+      elem.points = 0;
+    }
+  });
+  return arr;
+};
+
+//if you have 0 points, you don't get to be on the board bruh
+const filterForZero = arr => {
+  arr = arr.filter(elem => {
+    if (elem.points !== 0) return elem;
+  });
+  return arr;
+};
+
+const sortByValue = arr => {
+  arr = arr.sort((a, b) => (a.points < b.points ? 1 : -1));
+  return arr;
+};
+
+export const scoreBoardCombo = arr => {
+  let newArr = sortByValue(filterForZero(pointsToZero(arr)));
+  return newArr;
+};

@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button, TextInput, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  TextInput,
+  TouchableOpacity
+} from 'react-native';
 import firebase from '../config/firebase';
-import * as Animatable from 'react-native-animatable'
-
+import * as Animatable from 'react-native-animatable';
 
 class RegisterScreen extends Component {
   constructor(props) {
@@ -17,35 +23,36 @@ class RegisterScreen extends Component {
     };
   }
 
-
   signUpUser = () => {
-
-      const { email, password, firstName, lastName } = this.state;
-      firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then(function (results) {
-          if (results.additionalUserInfo.isNewUser) {
-            firebase
-              .firestore()
-              .collection('users')
-              .doc(results.user.uid)
-              .set({
-                uid: results.user.uid,
-                firstName: firstName,
-                lastName: lastName,
-                email: results.user.email,
-                createdAt: Date.now()
-              })
-          } else {
-            firebase
-              .firestore()
-              .collection('users')
-              .doc(result.user.uid)
-              .update({
-                lastLoggedIn: Date.now()
-              });
-          }
-        })
-    .catch (error => this.setState({ errorMessage: error.message }))
+    const { email, password, firstName, lastName } = this.state;
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(function(results) {
+        if (results.additionalUserInfo.isNewUser) {
+          firebase
+            .firestore()
+            .collection('users')
+            .doc(results.user.uid)
+            .set({
+              uid: results.user.uid,
+              firstName: firstName,
+              lastName: lastName,
+              email: results.user.email,
+              points: 0,
+              createdAt: Date.now()
+            });
+        } else {
+          firebase
+            .firestore()
+            .collection('users')
+            .doc(result.user.uid)
+            .update({
+              lastLoggedIn: Date.now()
+            });
+        }
+      })
+      .catch(error => this.setState({ errorMessage: error.message }));
   };
 
   render() {
@@ -57,12 +64,13 @@ class RegisterScreen extends Component {
 
         <Animatable.View
           style={styles.footer}
-          animation='fadeInUpBig'
+          animation="fadeInUpBig"
           duration={1500}
         >
-
           <View style={styles.errorMessage}>
-            {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
+            {this.state.errorMessage && (
+              <Text style={styles.error}>{this.state.errorMessage}</Text>
+            )}
           </View>
 
           <TextInput
@@ -106,10 +114,8 @@ class RegisterScreen extends Component {
             value={this.state.password}
           />
 
-
           <TouchableOpacity style={styles.button} onPress={this.signUpUser}>
             <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Sign Up</Text>
-
           </TouchableOpacity>
 
           <TouchableOpacity style={{ alignSelf: "center", marginTop: 32 }} onPress={() => this.props.navigation.navigate('LoginScreen')}>
@@ -118,7 +124,6 @@ class RegisterScreen extends Component {
             </Text>
           </TouchableOpacity>
         </Animatable.View>
-
       </View>
     );
   }
@@ -161,10 +166,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 30
   },
   error: {
-    color: "green",
+    color: 'green',
     fontSize: 13,
-    fontWeight: "600",
-    textAlign: "center"
+    fontWeight: '600',
+    textAlign: 'center'
   },
   footer: {
     flex: 4,
@@ -187,7 +192,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     marginVertical: 5,
     borderColor: 'rgba(0,0,0,0.2)'
-  },    
+  },
   button: {
     backgroundColor: '#FFE066',
     height: 50,
@@ -197,8 +202,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginVertical: 5,
     shadowOffset: { width: 2, height: 2 },
-    shadowColor: "black",
+    shadowColor: 'black',
     shadowOpacity: 0.2
-}
-
+  }
 });
