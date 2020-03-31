@@ -77,9 +77,20 @@ export default class Login extends React.Component {
         })
         this.bgY = interpolate(this.buttonOpacity, {
             inputRange: [0, 1],
-            outputRange: [-height / 3 - 40, 0],
+            outputRange: [-height / 3 - 10, 0],
             extrapolate: Extrapolate.CLAMP
         })
+        this.bgYX = interpolate(this.buttonOpacity, {
+            inputRange: [0, 1.5],
+            outputRange: [-height / 2 - 10, 0],
+            extrapolate: Extrapolate.CLAMP
+        })
+        this.bgYXZ = interpolate(this.buttonOpacity, {
+            inputRange: [0, 3],
+            outputRange: [-height / 2- 50, 185],
+            extrapolate: Extrapolate.CLAMP
+        })
+
         this.textInputZindex = interpolate(this.buttonOpacity, {
             inputRange: [0, 1],
             outputRange: [1, -1],
@@ -223,20 +234,22 @@ export default class Login extends React.Component {
 
 
                 <View style={{ ...styles.header }}>
-                    <Animated.View style={{ transform: [{ translateY: this.bgY }] }}>
+                    <Animated.View style={{ transform: [{ translateY: this.bgYX }] }}>
                         <Animatable.Image
                             animation='bounceInDown'
                             duration={2000}
                             resizeMode='center'
                             source={require('../assets/images/Intro.png')}
-                            style={{ ...styles.image, ...styles.lower1, width: 500, height: 500 }}
+                            style={{ ...styles.image, ...styles.lower1}}
                         />
+                        </Animated.View>
+                    <Animated.View style={{ transform: [{ translateY: this.bgYXZ }] }}>
                         <Animatable.Image
                             animation='bounceInDown'
                             duration={4000}
                             resizeMode='center'
                             source={require('../assets/images/WheresDogGo.png')}
-                            style={{ ...styles.image, ...styles.lower2, width: 500, height: 500 }}
+                            style={{ ...styles.image, ...styles.lower2}}
                         />
                     </Animated.View>
                 </View>
@@ -268,7 +281,7 @@ export default class Login extends React.Component {
 
 
 
-                    <Animated.View style={{ zIndex: this.textInputZindex, opacity: this.textInputOpacity, transform: [{ translateY: this.textInputY }], height: height / 3, ...StyleSheet.absoluteFill, top: null, justifyContent: 'center' }}>
+                    <Animated.View style={{ zIndex: this.textInputZindex, opacity: this.textInputOpacity, transform: [{ translateY: this.textInputY }], height: height /3.5, ...StyleSheet.absoluteFill, top: null, justifyContent: 'center' }}>
 
                         <TapGestureHandler onHandlerStateChange={this.onCloseState}>
                             <Animated.View style={styles.closeButton}>
@@ -331,17 +344,9 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     lower1: {
-        top: -70,
-        flex: 1,
-        width: 50,
-        height: 50,
         resizeMode: 'contain'
     },
     lower2: {
-        top: -270,
-        flex: 1,
-        width: 50,
-        height: 50,
         resizeMode: 'contain'
     },
     button: {
@@ -357,7 +362,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2
     },
     textInput: {
-        height: 50,
+        height: 40,
         borderRadius: 25,
         borderWidth: 2,
         marginHorizontal: 20,
