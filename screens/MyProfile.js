@@ -2,25 +2,25 @@ import * as React from 'react';
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
 import DogTile from '../components/DogTile';
 import { db } from '../config/firebase';
-// import { useAuth } from './HomeScreen';
+import { useAuth } from './HomeScreen';
 
-export default function UserProfile(props) {
-   console.log('props in userprofile', props);
-   // const { initializing, user } = useAuth();
+export default function MyProfile(props) {
+   const { initializing, user } = useAuth();
    const [error, setError] = React.useState(false);
    const [loading, setLoading] = React.useState(true);
-   const [userId, setId] = React.useState(props.userId);
+   const [userId, setId] = React.useState('');
    const [userProf, setProf] = React.useState({});
    const [userDogs, setUserDogs] = React.useState([]);
 
    React.useEffect(() => {
+      // identify userid by email
       const unsubscribe = db
          .collection('users')
-         .doc(userId)
+         .where('email', '==', user.email)
          .onSnapshot(
             doc => {
-               setId(userId);
-               setProf(doc.data());
+               setId(doc.docs[0].id);
+               setProf(doc.docs[0].data());
             },
             err => {
                setError(err);
@@ -61,12 +61,9 @@ export default function UserProfile(props) {
       }
    }, [userId]);
 
-   console.log(userId, userDogs)
-
-
-   // if (initializing) {
-   //    return <Text>Loading</Text>;
-   // }
+   if (initializing) {
+      return <Text>Loading</Text>;
+   }
    return (
       <View style={styles.container}>
          <View style={styles.userCard}>
