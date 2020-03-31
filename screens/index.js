@@ -14,3 +14,5 @@ export { default as Map } from './Map';
 export { default as Score } from './Score';
 export { default as RegisterScreen } from './RegisterScreen';
 export { default as MyProfile } from './MyProfile';
+export { default as LinkPage} from './LinkPage'
+

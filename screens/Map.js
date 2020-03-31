@@ -1,17 +1,28 @@
-import * as React from 'react';
-import { Image, View, StyleSheet, Text, Alert } from 'react-native';
-import MapView, { Marker, Callout } from 'react-native-maps';
-import { db } from '../config/firebase';
+import * as React from "react";
+import { Image, View, StyleSheet, Text } from "react-native";
+import MapView from "react-native-map-clustering";
+import { Marker, Callout } from "react-native-maps";
+import { db } from "../config/firebase";
+import AwesomeAlert from "react-native-awesome-alerts";
+import Colors from "../constants/Colors";
+import { properCase, sentenceCase } from "../constants/utilityFunctions";
+import LinkPage from "./LinkPage";
+import { getLocation } from "../src/api";
 
 // render markers wherever there are dogs
 
 export default class Map extends React.Component {
   constructor() {
     super();
-    this.ref = db.collection('dogs');
+    this.ref = db.collection("dogs");
     this.state = {
+      showAlert: false,
+      webView: false,
+      currentBreed: null,
+      currentDescription: null,
+      slug: null,
       isLoading: true,
-      coords: {
+      location: {
         latitude: 40.705015,
         longitude: -74.009175,
         latitudeDelta: 0.09,
@@ -19,7 +30,7 @@ export default class Map extends React.Component {
       },
       dogArr: [],
       marker: {
-        image: require('../src/img/dog.png')
+        image: require("../src/img/dog.png")
       }
     };
     this.getDogCoords = this.getDogCoords.bind(this);
@@ -33,17 +44,38 @@ export default class Map extends React.Component {
     this.unsubscribe();
   }
 
-  showMessage = breed => {
-    Alert.alert('Best buddy!', `It's the best ${breed} around.`, [
-      { text: 'Go Back', style: 'cancel' }
-    ]);
-    return;
+  showAlert = (breed, description) => {
+    this.setState({
+      showAlert: true,
+      currentBreed: breed,
+      currentDescription: description
+    });
+  };
+
+  hideAlert = () => {
+    this.setState({
+      showAlert: false
+    });
+  };
+
+  showLink = () => {
+    this.setState({
+      webView: true
+    });
+  };
+
+  hideLink = () => {
+    this.setState({
+      webView: false
+    });
   };
 
   getDogCoords = querySnapshot => {
     const dogArr = [];
     querySnapshot.forEach(res => {
-      const { lastSeen, breed, description, points } = res.data();
+      let { lastSeen, breed, description, points } = res.data();
+      breed = properCase(breed);
+      description = sentenceCase(description);
       dogArr.push({
         lastSeen,
         breed,
@@ -58,28 +90,59 @@ export default class Map extends React.Component {
   };
 
   render() {
+    const { dogArr, showAlert } = this.state;
     const image = this.state.marker.image;
-    const dogArr = this.state.dogArr;
     return (
       <View style={styles.container}>
-        <MapView style={styles.mapContainer} region={this.state.coords}>
+        <MapView
+          style={styles.mapContainer}
+          initialRegion={this.state.location}
+          clusterColor={Colors.cluster}
+        >
           {dogArr.map((dog, idx) => {
             return (
               <Marker
+                tracksViewChanges={false}
                 key={idx}
                 coordinate={{
-                  latitude: dog.lastSeen['F'],
-                  longitude: dog.lastSeen['V']
+                  latitude: dog.lastSeen["F"],
+                  longitude: dog.lastSeen["V"]
                 }}
                 image={image}
               >
-                <Callout onPress={() => this.showMessage(dog.breed)}>
+                <Callout
+                  onPress={() => this.showAlert(dog.breed, dog.description)}
+                >
                   <Text>{dog.breed}</Text>
                 </Callout>
               </Marker>
             );
           })}
         </MapView>
+        <AwesomeAlert
+          show={showAlert}
+          showProgress={false}
+          title={this.state.currentBreed}
+          message={this.state.currentDescription}
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={false}
+          showCancelButton={true}
+          showConfirmButton={true}
+          cancelText="Go Back"
+          confirmText="Find Dogs"
+          confirmButtonColor={Colors.cluster}
+          onCancelPressed={() => {
+            this.hideAlert();
+          }}
+          onConfirmPressed={() => {
+            this.showLink();
+          }}
+        />
+        <LinkPage
+          visible={this.state.webView}
+          breed={this.state.currentBreed || "boston terrier"}
+          onClose={this.hideLink}
+        />
       </View>
     );
   }
@@ -94,7 +157,7 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     flex: 1,
-    width: '100%',
-    height: '100%'
+    width: "100%",
+    height: "100%"
   }
 });
