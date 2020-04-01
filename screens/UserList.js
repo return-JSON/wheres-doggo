@@ -33,13 +33,15 @@ export default class UserList extends React.Component {
    getCollection = querySnapshot => {
       const userArr = [];
       querySnapshot.forEach(res => {
-         const { name, email, photourl } = res.data();
+         console.log(res.data())
+         const { firstName, lastName, email, profilePicture } = res.data();
          userArr.push({
             key: res.id,
             res,
-            name,
+            firstName,
+            lastName,
             email,
-            photourl
+            profilePicture
          });
       });
       this.setState({
@@ -49,7 +51,7 @@ export default class UserList extends React.Component {
    };
 
    render() {
-      if (this.state.isLoading) {
+      if (this.state.isLoading === true) {
          return (
             <View style={styles.preloader}>
                {/* <ActivityIndicator size='large' color='#9E9E9E' /> */}
@@ -57,7 +59,7 @@ export default class UserList extends React.Component {
             </View>
          );
       }
-      if (this.state.toggleView) {
+      if (this.state.toggleView === true && this.state.isLoading === false) {
          return (
             <ScrollView style={styles.container}>
                <UserProfile userId={this.state.userId} />
@@ -70,7 +72,7 @@ export default class UserList extends React.Component {
                </TouchableOpacity>
             </ScrollView>
          );
-      } else {
+      } else if (this.state.toggleView === false && this.state.isLoading === false) {
          return (
             <ScrollView style={styles.container}>
                {this.state.userArr.map((item, i) => {
@@ -79,14 +81,12 @@ export default class UserList extends React.Component {
                         key={i}
                         chevron
                         bottomDivider
-                        title={item.name}
-                        subtitle={item.email}
+                        title={item.firstName + ' ' + item.lastName}
                         onPress={() => {
                            this.setState({
                               toggleView: true,
                               userId: item.key
                            });
-                           // this.props.navigation.navigate('UserProfile', {userkey: item.key})
                         }}
                      />
                   );
