@@ -10,6 +10,8 @@ import { uploadImage } from '../src/api';
 
 export default function CameraScreen({ navigation }) {
   const { initializing, user } = useAuth();
+  const [loading, setLoading] = React.useState(false);
+
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
 
@@ -35,7 +37,9 @@ export default function CameraScreen({ navigation }) {
   };
 
   handlePress = async () => {
+    setLoading(true);
     await snap();
+    setLoading(false);
     await navigation.navigate('DogSnap', {
       userId: user.uid
     });
