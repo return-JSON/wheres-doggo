@@ -30,7 +30,7 @@ const breedFinder = (isThisADogResponse, breedList) => {
     let label = isThisADogResponse[i];
     for (let j = 0; j < breedList.length; j++) {
       let breed = breedList[j];
-      if (label === breed) {
+      if (label === breed || label === breed + ' dog') {
         return breed;
       }
     }
