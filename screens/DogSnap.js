@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Text, View, Image, Button, Alert } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
-import LoadingScreen from './LoadingScreen';
-import { setPhotoUri, addPupThunk } from '../src/reducers/camera';
+import { PupLoading } from '../components/PupLoading';
+import { setPhotoUri, addPupThunk, clearDog } from '../src/reducers/camera';
 
 class DogSnap extends Component {
   constructor(props) {
@@ -15,6 +16,10 @@ class DogSnap extends Component {
     this.props.setPhotoUri(
       `https://firebasestorage.googleapis.com/v0/b/wheres-doggo.appspot.com/o/${this.props.route.params.userId}%2Flast-image?alt=media&token=82207119-f59c-4f2b-acdc-ab02dec71c9d`
     );
+  }
+
+  componentWillUnmount() {
+    this.props.clearDog();
   }
 
   addPup = async (userId, props, breed, navigation) => {
@@ -40,7 +45,7 @@ class DogSnap extends Component {
     const navigation = this.props.navigation;
 
     if (!this.props.camera.breed) {
-      return <LoadingScreen />;
+      return <PupLoading />;
     } else if (this.props.camera.breed === '🐶 breed not found') {
       return (
         <View
@@ -126,7 +131,8 @@ const mapState = state => {
 
 const mapDispatch = dispatch => ({
   setPhotoUri: uri => dispatch(setPhotoUri(uri)),
-  addPupThunk: (userId, obj) => dispatch(addPupThunk(userId, obj))
+  addPupThunk: (userId, obj) => dispatch(addPupThunk(userId, obj)),
+  clearDog: () => dispatch(clearDog())
 });
 
 export default connect(mapState, mapDispatch)(DogSnap);

@@ -14,7 +14,7 @@ let initialState = {
 const SET_PHOTO_URI = 'SET_PHOTO_URI';
 const SET_DOG = 'SET_DOG';
 const SET_LOCATION = 'SET_LOCATION';
-const ADD_DOG = 'ADD_DOG';
+const CLEAR_DOG = 'CLEAR_DOG';
 
 //// action creator
 const takePhoto = imageUrl => {
@@ -38,9 +38,9 @@ const setDogBreed = breed => {
   };
 };
 
-const addDog = () => {
+export const clearDog = () => {
   return {
-    type: ADD_DOG,
+    type: CLEAR_DOG,
     clearState: {}
   };
 };
@@ -62,7 +62,7 @@ export const addPupThunk = (userId, stateObj) => {
   return async dispatch => {
     await uploadImage(userId, stateObj.imageUrl, stateObj.breed);
     await addPup(userId, stateObj);
-    await dispatch(addDog());
+    await dispatch(clearDog());
   };
 };
 
@@ -74,7 +74,7 @@ export default (state = {}, action) => {
       return { ...state, breed: action.breed };
     case SET_LOCATION:
       return { ...state, location: action.location };
-    case ADD_DOG:
+    case CLEAR_DOG:
       return action.clearState;
     default:
       return state;

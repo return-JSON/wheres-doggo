@@ -96,7 +96,7 @@ export default function DrawerNavigator({ navigation, route }) {
         options={{
           title: 'Scoreboard',
           drawerIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="ios-camera" />
+            <TabBarIcon focused={focused} name="ios-apps" />
           )
         }}
       />

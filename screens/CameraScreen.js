@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
 import { Ionicons } from '@expo/vector-icons';
 
+import LoadingScreen from './LoadingScreen';
 import { useAuth } from './HomeScreen';
 import { uploadImage } from '../src/api';
 
 export default function CameraScreen({ navigation }) {
   const { initializing, user } = useAuth();
+  const [loading, setLoading] = React.useState(false);
+
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
 
@@ -27,15 +31,18 @@ export default function CameraScreen({ navigation }) {
     if (this.camera) {
       try {
         let photo = await this.camera.takePictureAsync();
+        setLoading(true);
         await uploadImage(user.uid, photo.uri);
       } catch (err) {
         console.log(err);
+        setLoading(false);
       }
     }
   };
 
   handlePress = async () => {
     await snap();
+    await setLoading(false);
     await navigation.navigate('DogSnap', {
       userId: user.uid
     });
@@ -43,6 +50,17 @@ export default function CameraScreen({ navigation }) {
 
   if (hasPermission === null) {
     return <View />;
+  }
+
+  if (loading === true) {
+    return (
+      <View>
+        <Animatable.Image
+          source={require('../assets/images/corgi.gif')}
+          style={{ width: 300, height: 290 }}
+        />
+      </View>
+    );
   }
 
   if (hasPermission === false) {
