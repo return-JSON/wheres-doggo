@@ -146,6 +146,6 @@ export const breedList = [
   'Boston terrier',
   'Chihuahua',
   'Chow chow',
-  'German shepard',
+  'German shepherd',
   'German shorthaired pointer'
 ];
