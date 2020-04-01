@@ -19,7 +19,7 @@ const isDog = elem => {
 const isThisADog = transformResponse => {
   let filter = transformResponse.findIndex(isDog);
   if (filter !== -1) {
-    return transformResponse.slice(filter + 1);
+    return transformResponse;
   }
   return 'Not a dog';
 };
@@ -53,7 +53,13 @@ export const dogResponseComboFunction = (googleResObj, breedList) => {
 
 //change breed to name of breed document
 export const dogDocer = breedString => {
-  let newBreed = breedString.toLowerCase().replace(' ', '-');
+  const regex = / /gi;
+  let newBreed = breedString.toLowerCase().replace(regex, '-');
+  return newBreed;
+};
+export const urlMaker = breedString => {
+  const regex = / /gi;
+  let newBreed = breedString.replace(regex, '%20');
   return newBreed;
 };
 
@@ -72,35 +78,35 @@ export const homeScreenDogs = (userDogs, allDogs) => {
 };
 
 // edits breed name for dynamic URL (Boston Terrier -> BOSTON+TERRIER)
-export const slugify = (str, delimeter="+") => {
+export const slugify = (str, delimeter = '+') => {
   str = str
     .replace(/ +/g, delimeter) //replace spaces with delimeter
     .toUpperCase();
 
   return str;
-}
+};
 
 // safer String.prototype.toLowerCase()
 const lowerCase = str => {
   return str.toLowerCase();
-}
+};
 
 // safer String.prototype.toUpperCase()
 const upperCase = str => {
   return str.toUpperCase();
-}
+};
 
 // capitalizes first letter of each word
 export const properCase = str => {
   return lowerCase(str).replace(/^\w|\s\w/g, upperCase);
-}
+};
 
 // capitalize first letter of every sentence and lowercase other chars.
 export const sentenceCase = str => {
   // Replace first char of each sentence (new line or after '.\s+') to
   // UPPERCASE
   return lowerCase(str).replace(/(^\w)|\.\s+(\w)/gm, upperCase);
-}
+};
 
 //Scoreboard utility function
 const pointsToZero = arr => {

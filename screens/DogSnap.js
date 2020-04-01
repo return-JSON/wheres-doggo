@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Text, View, Image, Button, Alert } from 'react-native';
-import * as Animatable from 'react-native-animatable';
 
 import { PupLoading } from '../components/PupLoading';
 import { setPhotoUri, addPupThunk, clearDog } from '../src/reducers/camera';
