@@ -128,9 +128,16 @@ export default function HomeScreen(props) {
   return (
     <ScrollView>
       <View style={styles.container}>
+      <Text style={styles.text}>Hello {user.displayName}!!!</Text>
+      <Text>Click here to learn how to play!</Text>
+
+
+
+
+
+      
         <View style={styles.dogsCard}>
-          <Text>Welcome to DogGo {user.displayName}!!!</Text>
-          <Text>Doggos:</Text>
+          <Text style={styles.insideText}> Your DogGo Dex:</Text>
           <View style={styles.cardChild}>
             {uniqueDogs.map(dog => {
               return <DogTile dog={dog} key={dog.key} />;
@@ -148,15 +155,39 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    alignContent: 'center'
+    alignContent: 'center',
+    backgroundColor:"#D3E9FF"
   },
-  // dogsCard: {
-  //    // backgroundColor: '#fff',
-  //    width: '90%'
-  // },
+  dogsCard: {
+    marginTop: 15,
+    backgroundColor: '#fff',
+    width: '90%',
+    borderWidth: 5,
+    borderBottomLeftRadius:30,
+    borderBottomRightRadius:30,
+    borderTopLeftRadius:30,
+    borderTopRightRadius:30,
+    borderColor:'#031A6B'
+  
+     
+  },
   cardChild: {
+    marginTop:10,
     justifyContent: 'center',
     flexDirection: 'row',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+  },
+  text:{
+    alignItems:'center',
+    fontSize: 30,
+    marginTop: 15,
+    fontFamily:'Avenir',
+    color:'#031A6B'
+  },
+  insideText:{
+    marginTop:  10,
+    fontFamily:'Avenir-Light',
+    color:'blue',
+    fontSize:20
   }
 });

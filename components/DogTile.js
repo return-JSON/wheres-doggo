@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
    databaseImage: {
       opacity: 0.3,
       width: 125,
-      height: 125
+      height: 125,
    },
    userImage: {
       width: 125,
