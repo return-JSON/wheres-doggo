@@ -33,7 +33,6 @@ export default class UserList extends React.Component {
    getCollection = querySnapshot => {
       const userArr = [];
       querySnapshot.forEach(res => {
-         console.log(res.data())
          const { firstName, lastName, email, profilePicture } = res.data();
          userArr.push({
             key: res.id,
