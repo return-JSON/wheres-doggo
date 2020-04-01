@@ -90,7 +90,7 @@ export default function HomeScreen(props) {
       const unsubscribe = db
         .collection('users')
         .doc(userId)
-        .collection('dogs')
+        .collection('userDogs')
         .onSnapshot(
           snapshot => {
             const dogsArr = [];

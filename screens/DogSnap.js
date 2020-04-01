@@ -8,6 +8,9 @@ import { setPhotoUri, addPupThunk, clearDog } from '../src/reducers/camera';
 class DogSnap extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isLoading: false
+    };
     this.addPup = this.addPup.bind(this);
   }
 
@@ -23,7 +26,13 @@ class DogSnap extends Component {
 
   addPup = async (userId, props, breed, navigation) => {
     try {
+      this.setState({
+        isLoading: true
+      });
       await this.props.addPupThunk(userId, props);
+      await this.setState({
+        isLoading: false
+      });
       await Alert.alert(
         `${breed} has been added to DoggoDex!`,
         'Back to catching more doggos!',
@@ -43,7 +52,7 @@ class DogSnap extends Component {
   render() {
     const navigation = this.props.navigation;
 
-    if (!this.props.camera.breed) {
+    if (!this.props.camera.breed || this.state.isLoading) {
       return <PupLoading />;
     } else if (this.props.camera.breed === '🐶 breed not found') {
       return (

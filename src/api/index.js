@@ -88,7 +88,7 @@ export const addPup = async (userId, stateObj) => {
   let points = user.points + stateObj.points;
   await userRef.update({ points: points });
   await userRef
-    .collection('dogs')
+    .collection('userDogs')
     .doc(breedId)
     .set(stateObj);
 };

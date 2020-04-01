@@ -140,7 +140,7 @@ export const breedList = [
   'Rat terrier',
   'Shiba inu',
   'Great dane',
-  'Australian shepard',
+  'Australian shepherd',
   'Beagle',
   'Border collie',
   'Boston terrier',
