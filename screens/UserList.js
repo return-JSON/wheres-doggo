@@ -4,7 +4,8 @@ import {
    Text,
    View,
    ScrollView,
-   TouchableOpacity
+   TouchableOpacity,
+   Image
 } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { db } from '../config/firebase';
@@ -62,12 +63,16 @@ export default class UserList extends React.Component {
          return (
             <ScrollView style={styles.container}>
                <UserProfile userId={this.state.userId} />
-               <TouchableOpacity
+               <TouchableOpacity style={styles.button}
                   onPress={() => {
                      this.setState({ toggleView: false });
                   }}
                >
-                  <Text>Back to User list</Text>
+                 <Image 
+                 source ={{uri:"https://cdn2.iconfinder.com/data/icons/navigation-set-arrows-part-two/32/Arrow_Left-512.png"}} 
+                 style={{width: 40, height: 40}}
+                 />
+                 <Text>Go Back To User List</Text>
                </TouchableOpacity>
             </ScrollView>
          );
@@ -98,6 +103,12 @@ export default class UserList extends React.Component {
 
 const styles = StyleSheet.create({
    container: {
-      flex: 1
+      flex: 1,
+      backgroundColor:"#D3E9FF",
+   },
+   button:{
+      flex:1,
+      marginTop:20,
+      alignItems:'center'
    }
 });

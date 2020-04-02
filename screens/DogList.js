@@ -9,7 +9,7 @@ const DogList = props => {
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        <Text>{dog.breed}</Text>
+        <Text style={styles.name}>{dog.breed}</Text>
           <Text>Last seen:</Text>
         <View style={styles.mapContainer}>
           <Image
@@ -41,12 +41,12 @@ const DogList = props => {
                 latitude: dog.lastSeen["F"],
                 longitude: dog.lastSeen["V"]
               }}
-              title={dog.breed}
+              title= {dog.breed}
               image={require("../src/img/dog.png")}
             />
           </MapView>
         </View>
-        <Text>{dog.description}</Text>
+        <Text style={styles.text}> {dog.description}</Text>
       </View>
     </View>
   );
@@ -58,11 +58,24 @@ const styles = StyleSheet.create({
     marginLeft: 80,
     marginRight: 80,
     justifyContent: "center",
+    borderWidth: 3,
+    borderBottomLeftRadius:30,
+    borderBottomRightRadius:30,
+    borderTopLeftRadius:30,
+    borderTopRightRadius:30,
+    borderColor:'#031A6B',
+    backgroundColor: "#fff",
+    marginTop:12
   },
   card: {
     backgroundColor: "#fff",
-    width: "50%",
+    width: "70%",
     marginVertical: 10,
+    borderBottomLeftRadius:30,
+    borderBottomRightRadius:30,
+    borderTopLeftRadius:30,
+    borderTopRightRadius:30,
+    
   },
   mapContainer: {
     flexDirection: "row",
@@ -72,6 +85,21 @@ const styles = StyleSheet.create({
   map: {
     height: '80%',
     width: '80%'
+  },
+  name:{
+    textAlign:'center',
+    fontSize: 20,
+    marginTop: 1,
+    fontFamily:'Avenir',
+    color:'#031A6B'
+  },
+  text:{
+    textAlign:'center',
+    fontSize: 15,
+    marginTop: 1,
+
+    fontFamily:'Avenir',
+    color:'#031A6B'
   }
 });
 
