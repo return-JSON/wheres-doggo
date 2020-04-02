@@ -19,12 +19,14 @@ export default function App(props) {
          snapshot => {
             const allDogsArr = [];
             snapshot.forEach(doc => {
-               const { breed, imageUrl, location, points } = doc.data();
+               const { breed, imageUrl, location, points, city, county } = doc.data();
                allDogsArr.push({
                   key: doc.id,
                   breed,
                   imageUrl,
                   location,
+                  city,
+                  county,
                   points
                });
             });
@@ -33,9 +35,11 @@ export default function App(props) {
       );
       return () => unsubscribe();
    }, []);
-   // console.log('allDogs', allDogs);
+   console.log('allDogs', allDogs);
 
+   function breedFreqByGeo(arr) {
 
+   }
 
 
    // util function to aggregate breeds
@@ -48,7 +52,7 @@ export default function App(props) {
       });
       return breedList;
    }
-   const data = breedFreq(allDogs)
+   const breedFreqData = breedFreq(allDogs)
    // console.log(data)
 
    return (
@@ -57,7 +61,7 @@ export default function App(props) {
             <VictoryBar
                horizontal
                // animate={{ duration: 2000 }}
-               data={data}
+               data={breedFreq(allDogs)}
                x='breed'
                y='count'
             />
