@@ -5,61 +5,61 @@ import { db } from '../config/firebase';
 import { useAuth } from './HomeScreen';
 
 export default function MyProfile(props) {
-   const { initializing, user } = useAuth();
-   const [error, setError] = React.useState(false);
-   const [loading, setLoading] = React.useState(true);
-   const [userId, setId] = React.useState('');
-   const [userProf, setProf] = React.useState({});
-   const [userDogs, setUserDogs] = React.useState([]);
+  const { initializing, user } = useAuth();
+  const [error, setError] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
+  const [userId, setId] = React.useState('');
+  const [userProf, setProf] = React.useState({});
+  const [userDogs, setUserDogs] = React.useState([]);
 
-   React.useEffect(() => {
-      // identify userid by email
+  React.useEffect(() => {
+    // identify userid by email
+    const unsubscribe = db
+      .collection('users')
+      .where('email', '==', user.email)
+      .onSnapshot(
+        doc => {
+          setId(doc.docs[0].id);
+          setProf(doc.docs[0].data());
+        },
+        err => {
+          setError(err);
+        }
+      );
+    return () => unsubscribe();
+  }, [userId]);
+
+  React.useEffect(() => {
+    // get user's dogs
+    if (userId) {
       const unsubscribe = db
-         .collection('users')
-         .where('email', '==', user.email)
-         .onSnapshot(
-            doc => {
-               setId(doc.docs[0].id);
-               setProf(doc.docs[0].data());
-            },
-            err => {
-               setError(err);
-            }
-         );
+        .collection('users')
+        .doc(userId)
+        .collection('userDogs')
+        .onSnapshot(
+          snapshot => {
+            const dogsArr = [];
+            snapshot.forEach(doc => {
+              const { breed, imageUrl, location } = doc.data();
+              dogsArr.push({
+                key: doc.id,
+                source: 'user',
+                breed,
+                imageUrl,
+                location
+              });
+            });
+            setLoading(false);
+            setUserDogs(dogsArr);
+          },
+          err => {
+            setError(err);
+          }
+        );
+
       return () => unsubscribe();
-   }, [userId]);
-
-   React.useEffect(() => {
-      // get user's dogs
-      if (userId) {
-         const unsubscribe = db
-            .collection('users')
-            .doc(userId)
-            .collection('dogs')
-            .onSnapshot(
-               snapshot => {
-                  const dogsArr = [];
-                  snapshot.forEach(doc => {
-                     const { breed, imageUrl, location } = doc.data();
-                     dogsArr.push({
-                        key: doc.id,
-                        source: 'user',
-                        breed,
-                        imageUrl,
-                        location
-                     });
-                  });
-                  setLoading(false);
-                  setUserDogs(dogsArr);
-               },
-               err => {
-                  setError(err);
-               }
-            );
-
-         return () => unsubscribe();
-      }
-   }, [userId]);
+    }
+  }, [userId]);
 
    if (initializing) {
       return <Text>Loading</Text>;
@@ -87,17 +87,17 @@ export default function MyProfile(props) {
                   <Text style={styles.textinside2}> Points: {userProf.points}</Text>
                   <Text style={styles.textinside2}> Friends: No friends Yet!</Text>
                </View>
-      
+
             <View style={styles.dogsCard}>
                <Text style={styles.textinside}>Doggos collected:</Text>
-            
+
             <View style={styles.cardChild}>
                {userDogs.map(dog => (
                   <DogTile dog={dog} key={dog.key} />
                ))}
             </View>
             </View>
-            
+
          </View>
          </ScrollView>
    );
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius:30,
     borderTopLeftRadius:30,
     borderTopRightRadius:30,
-    borderColor:'#031A6B'  
+    borderColor:'#031A6B'
   },
   textinside:{
    textAlign:'center',
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
    borderBottomRightRadius:30,
    borderTopLeftRadius:30,
    borderTopRightRadius:30,
-   borderColor:'#031A6B'  
+   borderColor:'#031A6B'
  },
  textinside2:{
    textAlign:'center',
@@ -170,3 +170,4 @@ const styles = StyleSheet.create({
    flexWrap: 'wrap'
 }
 });
+

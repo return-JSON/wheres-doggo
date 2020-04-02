@@ -5,64 +5,63 @@ import { db } from '../config/firebase';
 // import { useAuth } from './HomeScreen';
 
 export default function UserProfile(props) {
-   console.log('props in userprofile', props);
-   // const { initializing, user } = useAuth();
-   const [error, setError] = React.useState(false);
-   const [loading, setLoading] = React.useState(true);
-   const [userId, setId] = React.useState(props.userId);
-   const [userProf, setProf] = React.useState({});
-   const [userDogs, setUserDogs] = React.useState([]);
+  console.log('props in userprofile', props);
+  // const { initializing, user } = useAuth();
+  const [error, setError] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
+  const [userId, setId] = React.useState(props.userId);
+  const [userProf, setProf] = React.useState({});
+  const [userDogs, setUserDogs] = React.useState([]);
 
-   React.useEffect(() => {
+  React.useEffect(() => {
+    const unsubscribe = db
+      .collection('users')
+      .doc(userId)
+      .onSnapshot(
+        doc => {
+          setId(userId);
+          setProf(doc.data());
+        },
+        err => {
+          setError(err);
+        }
+      );
+    return () => unsubscribe();
+  }, [userId]);
+
+  React.useEffect(() => {
+    // get user's dogs
+    if (userId) {
       const unsubscribe = db
-         .collection('users')
-         .doc(userId)
-         .onSnapshot(
-            doc => {
-               setId(userId);
-               setProf(doc.data());
-            },
-            err => {
-               setError(err);
-            }
-         );
+        .collection('users')
+        .doc(userId)
+        .collection('userDogs')
+        .onSnapshot(
+          snapshot => {
+            const dogsArr = [];
+            snapshot.forEach(doc => {
+              const { breed, imageUrl, location } = doc.data();
+              dogsArr.push({
+                key: doc.id,
+                source: 'user',
+                breed,
+                imageUrl,
+                location
+              });
+            });
+            setLoading(false);
+            setUserDogs(dogsArr);
+          },
+          err => {
+            setError(err);
+          }
+        );
+
       return () => unsubscribe();
-   }, [userId]);
+    }
+  }, [userId]);
 
-   React.useEffect(() => {
-      // get user's dogs
-      if (userId) {
-         const unsubscribe = db
-            .collection('users')
-            .doc(userId)
-            .collection('dogs')
-            .onSnapshot(
-               snapshot => {
-                  const dogsArr = [];
-                  snapshot.forEach(doc => {
-                     const { breed, imageUrl, location } = doc.data();
-                     dogsArr.push({
-                        key: doc.id,
-                        source: 'user',
-                        breed,
-                        imageUrl,
-                        location
-                     });
-                  });
-                  setLoading(false);
-                  setUserDogs(dogsArr);
-               },
-               err => {
-                  setError(err);
-               }
-            );
-
-         return () => unsubscribe();
-      }
-   }, [userId]);
-
-   console.log(userId, userDogs)
-
+  console.log(userId, userDogs);
 
    // if (initializing) {
    //    return <Text>Loading</Text>;
@@ -111,7 +110,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       flexDirection: 'row',
       flexWrap: 'wrap'
-   },  
+   },
     container: {
       flex: 1,
       justifyContent: 'center',
@@ -146,7 +145,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius:30,
     borderTopLeftRadius:30,
     borderTopRightRadius:30,
-    borderColor:'#031A6B'  
+    borderColor:'#031A6B'
   },
   textinside:{
    textAlign:'center',
@@ -164,7 +163,7 @@ const styles = StyleSheet.create({
    borderBottomRightRadius:30,
    borderTopLeftRadius:30,
    borderTopRightRadius:30,
-   borderColor:'#031A6B'  
+   borderColor:'#031A6B'
  },
  textinside2:{
    textAlign:'center',

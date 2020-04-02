@@ -6,7 +6,7 @@ import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
 import { Ionicons } from '@expo/vector-icons';
 
-import LoadingScreen from './LoadingScreen';
+import { PupLoading } from '../components/PupLoading';
 import { useAuth } from './HomeScreen';
 import { uploadImage } from '../src/api';
 
@@ -53,14 +53,7 @@ export default function CameraScreen({ navigation }) {
   }
 
   if (loading === true) {
-    return (
-      <View>
-        <Animatable.Image
-          source={require('../assets/images/corgi.gif')}
-          style={{ width: 300, height: 290 }}
-        />
-      </View>
-    );
+    return <PupLoading />;
   }
 
   if (hasPermission === false) {

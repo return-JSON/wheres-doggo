@@ -9,6 +9,7 @@ export function PupLoading() {
         source={require('../assets/images/corgi.gif')}
         style={{ width: 300, height: 290 }}
       />
+      <Text>Loading...</Text>
     </View>
   );
 }
