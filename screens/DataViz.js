@@ -15,6 +15,7 @@ export default function App(props) {
    React.useEffect(() => {
       // dogs database (allDogs)
       const unsubscribe = db.collectionGroup('dogs').onSnapshot(
+         // will need to change to userDogs for real data
          snapshot => {
             const allDogsArr = [];
             snapshot.forEach(doc => {
@@ -39,12 +40,31 @@ export default function App(props) {
    }, []);
    console.log('allDogs', allDogs);
 
+   // util function to aggregate breeds
+   function breedFreq(arr) {
+      let breedList = [];
+      arr.forEach(dog => {
+         const i = breedList.findIndex(x => x.breed === dog.breed);
+         if (i <= -1) {
+            // if breed doesn't exist in list
+            breedList.push({ breed: dog.breed, count: 1 });
+         } else {
+            // breed does exist in list
+            breedList[i].count++;
+         }
+      });
+      return breedList;
+   }
+   const data = breedFreq(allDogs)
+   console.log(data)
+
    return (
       <ScrollView>
          <VictoryChart>
-            <VictoryBar
-            //    data = {allDogs}
-            //    x = 'breed'
+            <VictoryBar horizontal
+               data = {data}
+               x = 'breed'
+               y = 'count'
             />
          </VictoryChart>
          <VictoryChart>
