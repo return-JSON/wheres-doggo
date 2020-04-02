@@ -6,6 +6,7 @@ import DogTile from '../components/DogTile';
 import { dog } from '../constants/dog';
 import { db } from '../config/firebase';
 import { homeScreenDogs } from '../constants/utilityFunctions';
+import Modal, { ModalContent } from 'react-native-modals'
 
 export const useAuth = () => {
   const [state, setState] = React.useState(() => {
@@ -31,6 +32,7 @@ export default function HomeScreen(props) {
   const [userId, setId] = React.useState('');
   const [userDogs, setUserDogs] = React.useState([]);
   const [allDogs, setAllDogs] = React.useState([]);
+  const [showModal, setModal] = React.useState(false)
   /*
    // initialize our default state
    // when the id attribute changes (including mount)
@@ -129,13 +131,21 @@ export default function HomeScreen(props) {
     <ScrollView>
       <View style={styles.container}>
       <Text style={styles.text}>Hello {user.displayName}!!!</Text>
-      <Text>Click here to learn how to play!</Text>
+      <Button
+      title="Click here to learn how to play!"
+      onPress={() => setModal(true)}
+      />
 
+       <Modal visible={showModal} onTouchOutside={() => setModal(false)}>
+         <ModalContent>
+            <Text style={styles.insideText}>Welcome!</Text>
+            <Text style={styles.textinside2}>Your main goal: Catch dogs to complete your DogDex!</Text>
+            <Text style={styles.textinside2}>To start: Swipe right on your screen, open the camera and snap a picture of the dog you found</Text>
+            <Text style={styles.textinside2}>The more dog you find, the more points you get</Text>
+            <Text style={styles.textinside2}>Now Get Out There and Find Doggos!</Text>
+      </ModalContent>
+  </Modal>
 
-
-
-
-      
         <View style={styles.dogsCard}>
           <Text style={styles.insideText}> Your DogGo Dex:</Text>
           <View style={styles.cardChild}>
@@ -185,9 +195,18 @@ const styles = StyleSheet.create({
     color:'#031A6B'
   },
   insideText:{
-    marginTop:  10,
+    marginTop:  5,
     fontFamily:'Avenir-Light',
     color:'blue',
-    fontSize:20
+    fontSize:20,
+    textAlign:'center'
+  },
+  textinside2:{
+    fontSize: 18,
+    marginTop: 10,
+    fontFamily:'Avenir',
+    color:'#031A6B',
+    textAlign:'center',
+    alignContent: 'center',
   }
 });
