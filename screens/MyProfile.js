@@ -66,32 +66,33 @@ export default function MyProfile(props) {
   if (initializing) {
     return <Text>Loading</Text>;
   }
+
   return (
-    <View style={styles.container}>
-      <View style={styles.userCard}>
-        <View>
-          <Text>{userProf.firstName}</Text>
+    <ScrollView style={{ backgroundColor: '#D3E9FF' }}>
+      <View style={styles.container}>
+        <View style={styles.userinfo}>
+          <Image
+            style={styles.profilePic}
+            source={{
+              uri: userProf.profilePicture
+            }}
+          />
+          <Text style={styles.text}>{userProf.firstName}</Text>
         </View>
-        <View style={styles.cardChild}>
-          <View>
-            <Image
-              style={styles.profilePic}
-              source={{
-                uri: userProf.profilePicture
-              }}
-            />
+
+        <View style={styles.PointCard}>
+          <Text style={styles.textinside2}> Points: {userProf.points}</Text>
+          <Text style={styles.textinside2}> Friends: No friends Yet!</Text>
+        </View>
+
+        <View style={styles.dogsCard}>
+          <Text style={styles.textinside}>Doggos collected:</Text>
+
+          <View style={styles.cardChild}>
+            {userDogs.map(dog => (
+              <DogTile dog={dog} key={dog.key} />
+            ))}
           </View>
-          <View style={styles.userCard}>
-            <Text>Points:{userProf.points}</Text>
-          </View>
-        </View>
-        <View>
-          <Text>Doggos collected:</Text>
-        </View>
-        <View style={styles.cardChild}>
-          {userDogs.map(dog => (
-            <DogTile dog={dog} key={dog.key} />
-          ))}
         </View>
         <View>
           <Text>{userProf.firstName}'s Friends:</Text>
@@ -102,7 +103,7 @@ export default function MyProfile(props) {
           ))}
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -111,19 +112,64 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    alignContent: 'center'
+    alignContent: 'center',
+    backgroundColor: '#D3E9FF'
   },
-  userCard: {
+  profilePic: {
+    width: 175,
+    height: 175
+  },
+  text: {
+    fontSize: 30,
+    marginTop: 15,
+    fontFamily: 'Avenir',
+    color: '#031A6B'
+  },
+  userinfo: {
+    flex: 1,
+    marginTop: 2,
+    alignItems: 'center',
+    width: '90%'
+  },
+  dogsCard: {
+    marginTop: 15,
     backgroundColor: '#fff',
-    width: '75%'
+    width: '90%',
+    borderWidth: 5,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    borderColor: '#031A6B'
+  },
+  textinside: {
+    textAlign: 'center',
+    fontSize: 25,
+    marginTop: 15,
+    fontFamily: 'Avenir',
+    color: '#031A6B'
+  },
+  PointCard: {
+    marginTop: 15,
+    backgroundColor: '#fff',
+    width: '90%',
+    borderWidth: 5,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    borderColor: '#031A6B'
+  },
+  textinside2: {
+    textAlign: 'center',
+    fontSize: 20,
+    marginTop: 15,
+    fontFamily: 'Avenir',
+    color: '#031A6B'
   },
   cardChild: {
     justifyContent: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap'
-  },
-  profilePic: {
-    width: 175,
-    height: 175
   }
 });

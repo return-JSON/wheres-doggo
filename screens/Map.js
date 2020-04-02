@@ -9,7 +9,18 @@ import { properCase, sentenceCase } from "../constants/utilityFunctions";
 import LinkPage from "./LinkPage";
 import { getLocation } from "../src/api";
 
-// render markers wherever there are dogs
+// renders user location according to cell phone
+let lat;
+let long;
+
+const getLoc = async () => {
+  let location = await getLocation();
+  const { latitude, longitude } = location.coords;
+  lat = latitude || 40.705015;
+  long = longitude || -74.009175;
+};
+
+getLoc();
 
 export default class Map extends React.Component {
   constructor() {
@@ -23,10 +34,10 @@ export default class Map extends React.Component {
       slug: null,
       isLoading: true,
       location: {
-        latitude: 40.705015,
-        longitude: -74.009175,
-        latitudeDelta: 0.09,
-        longitudeDelta: 0.09
+        latitude: lat,
+        longitude: long,
+        latitudeDelta: 0.03,
+        longitudeDelta: 0.03
       },
       dogArr: [],
       marker: {
