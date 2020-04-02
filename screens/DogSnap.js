@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Text, View, Image, Button, Alert } from 'react-native';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Text, View, Image, Button, Alert } from "react-native";
 
-import { PupLoading } from '../components/PupLoading';
-import { setPhotoUri, addPupThunk, clearDog } from '../src/reducers/camera';
+import { PupLoading } from "../components/PupLoading";
+import { setPhotoUri, addPupThunk, clearDog } from "../src/reducers/camera";
 
 class DogSnap extends Component {
   constructor(props) {
@@ -35,11 +35,11 @@ class DogSnap extends Component {
       });
       await Alert.alert(
         `${breed} has been added to DoggoDex!`,
-        'Back to catching more doggos!',
+        "Back to catching more doggos!",
         [
           {
-            text: 'Ok!',
-            onPress: () => navigation.navigate('Camera')
+            text: "Ok!",
+            onPress: () => navigation.navigate("Camera")
           }
         ],
         { cancelable: false }
@@ -49,18 +49,26 @@ class DogSnap extends Component {
     }
   };
 
+  handlePress = async () => {
+    await snap();
+    await setLoading(false);
+    await navigation.navigate("DogSnap", {
+      userId: user.uid
+    });
+  };
+
   render() {
     const navigation = this.props.navigation;
 
     if (!this.props.camera.breed || this.state.isLoading) {
       return <PupLoading />;
-    } else if (this.props.camera.breed === '🐶 breed not found') {
+    } else if (this.props.camera.breed === "🐶 breed not found") {
       return (
         <View
           style={{
             flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center'
+            justifyContent: "center",
+            alignItems: "center"
           }}
         >
           <Image
@@ -71,18 +79,26 @@ class DogSnap extends Component {
           />
           <Text> 🐶 breed not found </Text>
           <Button
-            title="Try again?"
-            onPress={() => navigation.navigate('Camera')}
+            title="Try again"
+            onPress={() => navigation.navigate("Camera")}
+          />
+          <Button
+            title="Find breed"
+            onPress={() =>
+              navigation.navigate("Add A Breed", {
+                userId: this.props.route.params.userId
+              })
+            }
           />
         </View>
       );
-    } else if (this.props.camera.breed === 'Not a dog') {
+    } else if (this.props.camera.breed === "Not a dog") {
       return (
         <View
           style={{
             flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center'
+            justifyContent: "center",
+            alignItems: "center"
           }}
         >
           <Image
@@ -93,8 +109,8 @@ class DogSnap extends Component {
           />
           <Text>Are you sure this is a picture of a dog?</Text>
           <Button
-            title="Go snap some dogs!!!!"
-            onPress={() => navigation.navigate('Camera')}
+            title="Go snap some dogs!!!"
+            onPress={() => navigation.navigate("Camera")}
           />
         </View>
       );
@@ -103,8 +119,8 @@ class DogSnap extends Component {
         <View
           style={{
             flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center'
+            justifyContent: "center",
+            alignItems: "center"
           }}
         >
           <Image
@@ -144,3 +160,5 @@ const mapDispatch = dispatch => ({
 });
 
 export default connect(mapState, mapDispatch)(DogSnap);
+
+
