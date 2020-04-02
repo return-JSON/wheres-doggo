@@ -5,12 +5,12 @@ import { db } from '../config/firebase';
 
 export default function FriendsList(props) {
   const [loading, setLoading] = React.useState(true);
-  const [userFriend, setFriend] = React.useState([]);
+  const [userFriend, setFriend] = React.useState({ firstName: '' });
   const userId = props.userId;
 
   React.useEffect(() => {
     // get user's friends
-    if (userId) {
+    if (props.friend && userId) {
       const unsubscribe = db
         .collection('users')
         .doc(props.friend)
@@ -26,6 +26,9 @@ export default function FriendsList(props) {
         );
 
       return () => unsubscribe();
+    } else {
+      setLoading(false);
+      setFriend({ firstName: 'This user does not have any friends yet.' });
     }
   }, [userId]);
 

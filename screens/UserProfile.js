@@ -82,7 +82,6 @@ export default function UserProfile(props) {
 
         <View style={styles.PointCard}>
           <Text style={styles.textinside2}> Points:{userProf.points}</Text>
-          <Text style={styles.textinside2}> Friends: No friends Yet!</Text>
         </View>
 
         <View style={styles.dogsCard}>
@@ -93,8 +92,12 @@ export default function UserProfile(props) {
               <DogTile dog={dog} key={dog.key} />
             ))}
           </View>
+        </View>
+        <View style={styles.dogsCard}>
           <View>
-            <Text>{userProf.firstName}'s Friends:</Text>
+            <Text style={styles.textinside}>
+              {userProf.firstName}'s Friends:
+            </Text>
           </View>
           <View style={styles.cardChild}>
             {userProf.friends.map(friend => (

@@ -12,7 +12,6 @@ export default function MyProfile(props) {
   const [userId, setId] = React.useState('');
   const [userProf, setProf] = React.useState({ friends: [] });
   const [userDogs, setUserDogs] = React.useState([]);
-  const [userFriends, setFriends] = React.useState([]);
 
   React.useEffect(() => {
     // identify userid by email
@@ -82,7 +81,6 @@ export default function MyProfile(props) {
 
         <View style={styles.PointCard}>
           <Text style={styles.textinside2}> Points: {userProf.points}</Text>
-          <Text style={styles.textinside2}> Friends: No friends Yet!</Text>
         </View>
 
         <View style={styles.dogsCard}>
@@ -94,13 +92,15 @@ export default function MyProfile(props) {
             ))}
           </View>
         </View>
-        <View>
-          <Text>{userProf.firstName}'s Friends:</Text>
-        </View>
-        <View style={styles.cardChild}>
-          {userProf.friends.map(friend => (
-            <FriendsList key={friend} friend={friend} userId={userId} />
-          ))}
+        <View style={styles.dogsCard}>
+          <View>
+            <Text style={styles.textinside}>My Friends:</Text>
+          </View>
+          <View style={styles.cardChild}>
+            {userProf.friends.map(friend => (
+              <FriendsList key={friend} friend={friend} userId={userId} />
+            ))}
+          </View>
         </View>
       </View>
     </ScrollView>
