@@ -31,7 +31,7 @@ class DogProfile extends React.Component {
       );
     }
     return (
-      <ScrollView>
+      <ScrollView  style={{backgroundColor:"#D3E9FF"}}>
         <View style={styles.container}>
           {dogs.map((dog, i) => {
             return <DogList key={i} dog={dog} />;
@@ -46,7 +46,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor:"#D3E9FF"
   },
   map: {
     height: 200,

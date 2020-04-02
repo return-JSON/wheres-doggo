@@ -6,6 +6,7 @@ import DogTile from '../components/DogTile';
 import { dog } from '../constants/dog';
 import { db } from '../config/firebase';
 import { homeScreenDogs } from '../constants/utilityFunctions';
+import Modal, { ModalContent } from 'react-native-modals'
 
 export const useAuth = () => {
   const [state, setState] = React.useState(() => {
@@ -31,6 +32,7 @@ export default function HomeScreen(props) {
   const [userId, setId] = React.useState('');
   const [userDogs, setUserDogs] = React.useState([]);
   const [allDogs, setAllDogs] = React.useState([]);
+  const [showModal, setModal] = React.useState(false)
   /*
    // initialize our default state
    // when the id attribute changes (including mount)
@@ -128,9 +130,24 @@ export default function HomeScreen(props) {
   return (
     <ScrollView>
       <View style={styles.container}>
+      <Text style={styles.text}>Hello {user.displayName}!!!</Text>
+      <Button
+      title="Click here to learn how to play!"
+      onPress={() => setModal(true)}
+      />
+
+       <Modal visible={showModal} onTouchOutside={() => setModal(false)}>
+         <ModalContent>
+            <Text style={styles.insideText}>Welcome!</Text>
+            <Text style={styles.textinside2}>Your main goal: Catch dogs to complete your DogDex!</Text>
+            <Text style={styles.textinside2}>To start: Swipe right on your screen, open the camera and snap a picture of the dog you found</Text>
+            <Text style={styles.textinside2}>The more dog you find, the more points you get</Text>
+            <Text style={styles.textinside2}>Now Get Out There and Find Doggos!</Text>
+      </ModalContent>
+  </Modal>
+
         <View style={styles.dogsCard}>
-          <Text>Welcome to DogGo {user.displayName}!!!</Text>
-          <Text>Doggos:</Text>
+          <Text style={styles.insideText}> Your DogGo Dex:</Text>
           <View style={styles.cardChild}>
             {uniqueDogs.map(dog => {
               return <DogTile dog={dog} key={dog.key} />;
@@ -148,15 +165,46 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    alignContent: 'center'
+    alignContent: 'center',
+    backgroundColor:"#D3E9FF"
   },
-  // dogsCard: {
-  //    // backgroundColor: '#fff',
-  //    width: '90%'
-  // },
+  dogsCard: {
+    marginTop: 15,
+    backgroundColor: '#fff',
+    width: '90%',
+    borderWidth: 5,
+    borderBottomLeftRadius:30,
+    borderBottomRightRadius:30,
+    borderTopLeftRadius:30,
+    borderTopRightRadius:30,
+    borderColor:'#031A6B'
+  },
   cardChild: {
+    marginTop:10,
     justifyContent: 'center',
     flexDirection: 'row',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+  },
+  text:{
+    alignItems:'center',
+    fontSize: 30,
+    marginTop: 15,
+    fontFamily:'Avenir',
+    color:'#031A6B'
+  },
+  insideText:{
+    marginTop:  5,
+    fontFamily:'Avenir-Light',
+    color:'blue',
+    fontSize:20,
+    textAlign:'center'
+  },
+  textinside2:{
+    fontSize: 18,
+    marginTop: 10,
+    fontFamily:'Avenir',
+    color:'#031A6B',
+    textAlign:'center',
+    alignContent: 'center',
   }
 });

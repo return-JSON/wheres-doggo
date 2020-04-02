@@ -67,21 +67,26 @@ export default function Score(props) {
   }, [userId]);
 
   return (
-    <ScrollView>
+    
       <View style={styles.container}>
-        <View style={styles.dogsCard}>
-          <View style={styles.cardChild}>
+
+
+        <View style={styles.PointCard}>
+
             <View style={styles.titleContainer}>
-              <Text>User</Text>
-              <Text>Points</Text>
+              <Text style={styles.textinside}>User</Text>
+              <Text style={styles.textinside}>Points</Text>
             </View>
             {userArr.map((user, i) => {
               return <ScoreTile key={i} user={user} />;
             })}
-          </View>
+
         </View>
+
+
+
       </View>
-    </ScrollView>
+
   );
 }
 
@@ -90,12 +95,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    alignContent: 'center'
-  },
-  cardChild: {
-    justifyContent: 'center',
-    flexDirection: 'column',
-    flexWrap: 'wrap'
+    alignContent: 'center',
+    backgroundColor:'#FCC244'
   },
   titleContainer: {
     width: '100%',
@@ -104,5 +105,22 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'space-around',
     flexDirection: 'row'
+  },
+  PointCard: {
+    backgroundColor: '#F9F8F8',
+    width: '90%',
+    borderWidth: 5,
+    borderBottomLeftRadius:30,
+    borderBottomRightRadius:30,
+    borderTopLeftRadius:30,
+    borderTopRightRadius:30,
+    borderColor:'#031A6B'  
+  },
+  textinside:{
+    textAlign:'center',
+    fontSize: 30,
+    marginTop: 15,
+    fontFamily:'Avenir',
+    color:'#031A6B'
   }
 });

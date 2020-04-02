@@ -23,18 +23,18 @@ export default function DogTile(props) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    width: '40%',
-    margin: 10,
-    alignItems: 'center'
-  },
-  databaseImage: {
-    opacity: 0.3,
-    width: 125,
-    height: 125
-  },
-  userImage: {
-    width: 125,
-    height: 125
-  }
+   container: {
+      width: '40%',
+      margin: 10,
+      alignItems: 'center'
+   },
+   databaseImage: {
+      opacity: 0.3,
+      width: 125,
+      height: 125,
+   },
+   userImage: {
+      width: 125,
+      height: 125
+   }
 });
