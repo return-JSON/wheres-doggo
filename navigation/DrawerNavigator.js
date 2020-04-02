@@ -112,8 +112,8 @@ function getHeaderTitle(route) {
     case 'Home':
       return 'Welcome to DogGO!';
     case 'Camera':
-      return 'Snap a pup!';
+      return '📸  Snap a Pup!  📸';
     case 'Score':
-      return 'Leaderboard';
+      return '🏆  Leaderboard  🏆 ';
   }
 }
