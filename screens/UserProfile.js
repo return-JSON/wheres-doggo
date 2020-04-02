@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
-import DogTile from '../components/DogTile';
+import { DogTile, FriendsList } from '../components';
 import { db } from '../config/firebase';
 // import { useAuth } from './HomeScreen';
 
@@ -10,7 +10,7 @@ export default function UserProfile(props) {
   const [error, setError] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [userId, setId] = React.useState(props.userId);
-  const [userProf, setProf] = React.useState({});
+  const [userProf, setProf] = React.useState({ friends: [] });
   const [userDogs, setUserDogs] = React.useState([]);
 
   React.useEffect(() => {
@@ -67,38 +67,48 @@ export default function UserProfile(props) {
   //    return <Text>Loading</Text>;
   // }
   return (
-    <View style={styles.container}>
-      <View style={styles.userCard}>
-        <View>
-          <Text>{userProf.firstName}</Text>
-        </View>
-        <View style={styles.cardChild}>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.userCard}>
           <View>
-            <Image
-              style={styles.profilePic}
-              source={{
-                uri: userProf.profilePicture
-              }}
-            />
+            <Text>{userProf.firstName}</Text>
           </View>
-          {/* <View>
+          <View style={styles.cardChild}>
+            <View>
+              <Image
+                style={styles.profilePic}
+                source={{
+                  uri: userProf.profilePicture
+                }}
+              />
+            </View>
+            {/* <View>
                      <Text>Friends:</Text>
                      <Text>no friends yet!</Text>
                   </View> */}
-          <View style={styles.userCard}>
-            <Text>Points:{userProf.points}</Text>
+            <View style={styles.userCard}>
+              <Text>Points:{userProf.points}</Text>
+            </View>
+          </View>
+          <View>
+            <Text>Doggos collected:</Text>
+          </View>
+          <View style={styles.cardChild}>
+            {userDogs.map(dog => (
+              <DogTile dog={dog} key={dog.key} />
+            ))}
+          </View>
+          <View>
+            <Text>{userProf.firstName}'s Friends:</Text>
+          </View>
+          <View style={styles.cardChild}>
+            {userProf.friends.map(friend => (
+              <FriendsList key={friend} friend={friend} userId={userId} />
+            ))}
           </View>
         </View>
-        <View>
-          <Text>Doggos collected:</Text>
-        </View>
-        <View style={styles.cardChild}>
-          {userDogs.map(dog => (
-            <DogTile dog={dog} key={dog.key} />
-          ))}
-        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 

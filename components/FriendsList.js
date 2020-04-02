@@ -1,0 +1,54 @@
+import * as React from 'react';
+import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
+import DogTile from '../components/DogTile';
+import { db } from '../config/firebase';
+
+export default function FriendsList(props) {
+  const [loading, setLoading] = React.useState(true);
+  const [userFriend, setFriend] = React.useState([]);
+  const userId = props.userId;
+
+  React.useEffect(() => {
+    // get user's friends
+    if (userId) {
+      const unsubscribe = db
+        .collection('users')
+        .doc(props.friend)
+        .onSnapshot(
+          snapshot => {
+            let friend = snapshot.data();
+            setLoading(false);
+            setFriend(friend);
+          },
+          err => {
+            setError(err);
+          }
+        );
+
+      return () => unsubscribe();
+    }
+  }, [userId]);
+
+  return (
+    <View style={styles.container}>
+      <Text>{userFriend.firstName}</Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    width: '40%',
+    margin: 10,
+    alignItems: 'center'
+  },
+  databaseImage: {
+    opacity: 0.3,
+    width: 125,
+    height: 125
+  },
+  userImage: {
+    width: 125,
+    height: 125
+  }
+});

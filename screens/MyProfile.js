@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
-import DogTile from '../components/DogTile';
+import { DogTile, FriendsList } from '../components';
+// import { FriendsList } from '../components/FriendsList';
 import { db } from '../config/firebase';
 import { useAuth } from './HomeScreen';
 
@@ -9,8 +10,9 @@ export default function MyProfile(props) {
   const [error, setError] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [userId, setId] = React.useState('');
-  const [userProf, setProf] = React.useState({});
+  const [userProf, setProf] = React.useState({ friends: [] });
   const [userDogs, setUserDogs] = React.useState([]);
+  const [userFriends, setFriends] = React.useState([]);
 
   React.useEffect(() => {
     // identify userid by email
@@ -79,10 +81,6 @@ export default function MyProfile(props) {
               }}
             />
           </View>
-          {/* <View>
-                     <Text>Friends:</Text>
-                     <Text>no friends yet!</Text>
-                  </View> */}
           <View style={styles.userCard}>
             <Text>Points:{userProf.points}</Text>
           </View>
@@ -93,6 +91,14 @@ export default function MyProfile(props) {
         <View style={styles.cardChild}>
           {userDogs.map(dog => (
             <DogTile dog={dog} key={dog.key} />
+          ))}
+        </View>
+        <View>
+          <Text>{userProf.firstName}'s Friends:</Text>
+        </View>
+        <View style={styles.cardChild}>
+          {userProf.friends.map(friend => (
+            <FriendsList key={friend} friend={friend} userId={userId} />
           ))}
         </View>
       </View>
