@@ -135,3 +135,13 @@ export const scoreBoardCombo = arr => {
   let newArr = sortByValue(filterForZero(pointsToZero(arr)));
   return newArr;
 };
+
+export const breedFreq = (arr) => {
+      let breedList = [];
+      arr.forEach(dog => {
+         const i = breedList.findIndex(x => x.breed === dog.breed);
+         if (i <= -1) breedList.push({ breed: dog.breed, count: 1 });
+         else breedList[i].count++;
+      });
+      return breedList;
+   }

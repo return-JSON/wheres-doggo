@@ -8,7 +8,6 @@ import { db } from '../../config/firebase';
 import firebase from '../../config/firebase';
 import * as Location from 'expo-location';
 import * as ImageManipulator from 'expo-image-manipulator';
-import axios from 'axios'
 
 export const submitToGoogle = async image => {
   try {
@@ -66,13 +65,13 @@ export const uploadImage = async (userId, uri, breed = 'last-image') => {
   blob.close();
 };
 
-export const findCityCounty = async (lat, lon) => {
+const findCityCounty = async (lat, lon) => {
   const response = await fetch(
      `https://us1.locationiq.com/v1/reverse.php?key=dd8b2f143c4022&lat=${lat}&lon=${lon}&format=json`
   );
   const responseJson = await response.json()
   return {
-    city: responseJson.address.city,
+    city: `${responseJson.address.city}, ${responseJson.address.state}`,
     county: responseJson.address.county,
     country: responseJson.address.country
   }

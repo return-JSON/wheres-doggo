@@ -9,10 +9,10 @@ import {
    VictoryTheme
 } from 'victory-native';
 import { db } from '../config/firebase';
-// import {findCityCounty} from '../src/api'
+import { breedFreq } from '../constants/utilityFunctions'
 // import { dogsData } from '../src/data/data';
 
-export default function App(props) {
+export default function DataViz(props) {
    const [allDogs, setAllDogs] = React.useState([]);
    React.useEffect(() => {
       const unsubscribe = db.collectionGroup('userDogs').onSnapshot(
@@ -36,24 +36,39 @@ export default function App(props) {
       return () => unsubscribe();
    }, []);
    console.log('allDogs', allDogs);
-
-   function breedFreqByGeo(arr) {
-
-   }
-
-
+   
    // util function to aggregate breeds
-   function breedFreq(arr) {
-      let breedList = [];
-      arr.forEach(dog => {
-         const i = breedList.findIndex(x => x.breed === dog.breed);
-         if (i <= -1) breedList.push({ breed: dog.breed, count: 1 });
-         else breedList[i].count++;
-      });
-      return breedList;
-   }
-   const breedFreqData = breedFreq(allDogs)
-   // console.log(data)
+   // function breedFreq(arr) {
+   //    let breedList = [];
+   //    arr.forEach(dog => {
+   //       const i = breedList.findIndex(x => x.breed === dog.breed);
+   //       if (i <= -1) breedList.push({ breed: dog.breed, count: 1 });
+   //       else breedList[i].count++;
+   //    });
+   //    return breedList;
+   // }
+
+   // function to set borough if NYC
+
+   allDogs.forEach(dog => {
+      if (dog.city === 'New York, New York') {
+         if (dog.county === 'New York County') dog.boroughOrCity = 'Manhattan, New York'
+         else if (dog.county === 'Kings County') dog.boroughOrCity = 'Brooklyn, New York'
+         else if (dog.county === 'Queens County') dog.boroughOrCity = 'Queens, New York'
+         else if (dog.county === 'Richmond County') dog.boroughOrCity = 'Staten Island, New York'
+         else if (dog.county === 'Bronx County') dog.boroughOrCity = 'Bronx, New York'
+      } else {
+         dog.boroughOrCity = dog.city
+      }
+   })
+     console.log('allDogs', allDogs);
+
+
+   // function breedFreqByGeo(arr) {
+   //    let breedList = [];
+
+   // }
+
 
    return (
       <ScrollView>
