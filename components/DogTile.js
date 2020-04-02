@@ -14,7 +14,6 @@ export default function DogTile(props) {
   } else if (dog.source === 'user') {
     return (
       <View style={styles.container}>
-        {console.log(dog)}
         <Image style={styles.userImage} source={{ uri: dog.imageUrl }} />
         <Text>{dog.breed}</Text>
       </View>
