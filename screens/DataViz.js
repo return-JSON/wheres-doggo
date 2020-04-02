@@ -57,6 +57,7 @@ export default function DataViz(props) {
          else if (dog.county === 'Queens County') dog.boroughOrCity = 'Queens, New York'
          else if (dog.county === 'Richmond County') dog.boroughOrCity = 'Staten Island, New York'
          else if (dog.county === 'Bronx County') dog.boroughOrCity = 'Bronx, New York'
+         else dog.boroughOrCity = dog.city
       } else {
          dog.boroughOrCity = dog.city
       }
