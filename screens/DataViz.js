@@ -8,44 +8,44 @@ import {
    VictoryPie
 } from 'victory-native';
 import { db } from '../config/firebase';
-import { dogsData } from '../src/data/data';
+// import { dogsData } from '../src/data/data';
 
 export default function App(props) {
-   const [allDogs, setAllDogs] = React.useState([]);
-   React.useEffect(() => {
-      // dogs database (allDogs)
-      const unsubscribe = db.collectionGroup('dogs').onSnapshot(
-         snapshot => {
-            const allDogsArr = [];
-            snapshot.forEach(doc => {
-               const { breed, imageUrl, location, points } = doc.data();
-               allDogsArr.push({
-                  key: doc.id,
-                  breed,
-                  imageUrl,
-                  location,
-                  points
-               });
-               // console.log('hello', doc.id, ' => ', doc.data());
-            });
-            // setLoading(false);
-            setAllDogs(allDogsArr);
-         }
-         //  err => {
-         //     setError(err);
-         //  }
-      );
-      return () => unsubscribe();
-   }, []);
-   console.log('hilary', allDogs);
+//    const [allDogs, setAllDogs] = React.useState([]);
+//    React.useEffect(() => {
+//       // dogs database (allDogs)
+//       const unsubscribe = db.collectionGroup('dogs').onSnapshot(
+//          snapshot => {
+//             const allDogsArr = [];
+//             snapshot.forEach(doc => {
+//                const { breed, imageUrl, location, points } = doc.data();
+//                allDogsArr.push({
+//                   key: doc.id,
+//                   breed,
+//                   imageUrl,
+//                   location,
+//                   points
+//                });
+//                // console.log('hello', doc.id, ' => ', doc.data());
+//             });
+//             // setLoading(false);
+//             setAllDogs(allDogsArr);
+//          }
+//          //  err => {
+//          //     setError(err);
+//          //  }
+//       );
+//       return () => unsubscribe();
+//    }, []);
+//    console.log('hilary', allDogs);
 
    //    render() {
    return (
       <ScrollView>
          <VictoryChart>
             <VictoryBar
-               data = {allDogs}
-               x = 'breed'
+            //    data = {allDogs}
+            //    x = 'breed'
             />
          </VictoryChart>
          <VictoryChart>

@@ -1,7 +1,8 @@
 import { db } from '../../config/firebase';
 
 
-export const dogsData = db.collectionGroup('dogs').onSnapshot(
+export const dogsData = 
+db.collectionGroup('dogs').onSnapshot(
    snapshot => {
       const allDogsArr = [];
       snapshot.forEach(doc => {
@@ -15,8 +16,8 @@ export const dogsData = db.collectionGroup('dogs').onSnapshot(
          });
          // console.log('hello', doc.id, ' => ', doc.data());
       });
-      return allDogsArr
       // setLoading(false);
+      return allDogsArr
     //   setAllDogs(allDogsArr);
    }
    //  err => {
