@@ -8,6 +8,7 @@ import { db } from '../../config/firebase';
 import firebase from '../../config/firebase';
 import * as Location from 'expo-location';
 import * as ImageManipulator from 'expo-image-manipulator';
+import axios from 'axios'
 
 export const submitToGoogle = async image => {
   try {
@@ -65,6 +66,19 @@ export const uploadImage = async (userId, uri, breed = 'last-image') => {
   blob.close();
 };
 
+export const findCityCounty = async (lat, lon) => {
+  const response = await fetch(
+     `https://us1.locationiq.com/v1/reverse.php?key=dd8b2f143c4022&lat=${lat}&lon=${lon}&format=json`
+  );
+  const responseJson = await response.json()
+  return {
+    city: responseJson.address.city,
+    county: responseJson.address.county,
+    country: responseJson.address.country
+  }
+  
+}
+
 export const addPup = async (userId, stateObj) => {
   let urlBreed = urlMaker(stateObj.breed);
   stateObj.imageUrl = `https://firebasestorage.googleapis.com/v0/b/wheres-doggo.appspot.com/o/${userId}%2F${urlBreed}?alt=media&token=82207119-f59c-4f2b-acdc-ab02dec71c9d`;
@@ -72,8 +86,18 @@ export const addPup = async (userId, stateObj) => {
     stateObj.location.coords.latitude,
     stateObj.location.coords.longitude
   );
+
+  const cityCounty = await findCityCounty(
+     stateObj.location.coords.latitude,
+     stateObj.location.coords.longitude
+  );
+  stateObj.city = cityCounty.city
+  stateObj.county = cityCounty.county
+  stateObj.country = cityCounty.country
+
   const breedId = dogDocer(stateObj.breed);
   stateObj.location = geopoint;
+
   const dogRef = await db.collection('dogs').doc(breedId);
   let dogObj = await dogRef.get();
   dogObj = { ...dogObj.data() };
@@ -87,6 +111,7 @@ export const addPup = async (userId, stateObj) => {
   }
   let points = user.points + stateObj.points;
   await userRef.update({ points: points });
+
   await userRef
     .collection('userDogs')
     .doc(breedId)
