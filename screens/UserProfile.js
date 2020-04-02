@@ -1,12 +1,20 @@
 import * as React from 'react';
-import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Button,
+  Alert
+} from 'react-native';
 import { DogTile, FriendsList } from '../components';
+import { addFriend } from '../src/api';
 import { db } from '../config/firebase';
-// import { useAuth } from './HomeScreen';
+import { useAuth } from './HomeScreen';
 
 export default function UserProfile(props) {
-  console.log('props in userprofile', props);
-  // const { initializing, user } = useAuth();
+  const { initializing, user } = useAuth();
   const [error, setError] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [userId, setId] = React.useState(props.userId);
@@ -61,11 +69,32 @@ export default function UserProfile(props) {
     }
   }, [userId]);
 
-  console.log(userId, userDogs);
-
-  // if (initializing) {
-  //    return <Text>Loading</Text>;
-  // }
+  buttonRender = (myId, yourId, name) => {
+    if (!userProf.friends.includes(myId) && myId !== yourId) {
+      return (
+        <View>
+          <Button
+            title="Add to Friends"
+            onPress={() => handlePress(myId, yourId, name)}
+          />
+        </View>
+      );
+    }
+  };
+  handlePress = async (myId, yourId, name) => {
+    try {
+      if (myId === yourId) {
+        Alert.alert("I'm sorry, but you cannot become your own friend...");
+      }
+      let passFail = await addFriend(myId, yourId);
+      if (passFail) {
+        await Alert.alert(`Success! You are now friends with ${name}`);
+      }
+    } catch (err) {
+      Alert.alert('Something has gone wronng.');
+      console.log(err);
+    }
+  };
 
   return (
     <ScrollView style={{ backgroundColor: '#D3E9FF' }}>
@@ -78,6 +107,7 @@ export default function UserProfile(props) {
             }}
           />
           <Text style={styles.text}>{userProf.firstName}</Text>
+          {buttonRender(user.uid, userId, userProf.firstName)}
         </View>
 
         <View style={styles.PointCard}>

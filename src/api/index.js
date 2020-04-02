@@ -92,3 +92,22 @@ export const addPup = async (userId, stateObj) => {
     .doc(breedId)
     .set(stateObj);
 };
+
+export const addFriend = async (myID, yourID) => {
+  try {
+    const firstUserRef = await db.collection('users').doc(myID);
+    const secondUserRef = await db.collection('users').doc(yourID);
+
+    const addMyFriend = await firstUserRef.update({
+      friends: firebase.firestore.FieldValue.arrayUnion(yourID)
+    });
+
+    const addMe = await secondUserRef.update({
+      friends: firebase.firestore.FieldValue.arrayUnion(myID)
+    });
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+};
