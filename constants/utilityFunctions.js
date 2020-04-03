@@ -161,3 +161,21 @@ export const editCity = arr => {
  })
 }
 
+export const geoBreedFreq = (arr) => {
+  let list = [];
+  arr.forEach(dog => {
+     const i = list.findIndex(
+        x => x.boroughOrCity === dog.boroughOrCity && x.breed === dog.breed
+     );
+     if (i <= -1) {
+        list.push({
+           boroughOrCity: dog.boroughOrCity,
+           breed: dog.breed,
+           count: 1
+        });
+     } else {
+        list[i].count++;
+     }
+  });
+  return list;
+}
