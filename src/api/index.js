@@ -49,6 +49,16 @@ export const getLocation = async () => {
   return location;
 };
 
+export const getBreedList = async () => {
+  try {
+    const dogsRef = await db.collection('dogs').get();
+    let newDogsArr = dogsRef.docs.map(doc => doc.data().breed);
+    return newDogsArr;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const uploadImage = async (userId, uri, breed = 'last-image') => {
   let resizedPhoto = await ImageManipulator.manipulateAsync(
     uri,

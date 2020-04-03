@@ -1,4 +1,10 @@
-import { submitToGoogle, getLocation, uploadImage, addPup } from '../api';
+import {
+  submitToGoogle,
+  getLocation,
+  uploadImage,
+  addPup,
+  getBreedList
+} from '../api';
 import { dogResponseComboFunction } from '../../constants/utilityFunctions';
 
 //test objects
@@ -49,7 +55,8 @@ export const clearDog = () => {
 export const setPhotoUri = uri => {
   return async dispatch => {
     let response = await submitToGoogle(uri);
-    response = await dogResponseComboFunction(response, breedList);
+    let newBreedList = await getBreedList();
+    response = await dogResponseComboFunction(response, newBreedList);
     let location = await getLocation();
     await dispatch(takePhoto(uri));
     await dispatch(setDogBreed(response));
