@@ -17,7 +17,6 @@ const addPupTwo = async (userId, obj) => {
     let pup = {
       breed: obj.breed
     };
-    console.log('obj', obj, 'pup', pup);
     let urlBreed = urlMaker(pup.breed);
     pup.imageUrl = `https://firebasestorage.googleapis.com/v0/b/wheres-doggo.appspot.com/o/${userId}%2F${urlBreed}?alt=media&token=82207119-f59c-4f2b-acdc-ab02dec71c9d`;
     let breedId = dogDocer(pup.breed);
