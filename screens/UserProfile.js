@@ -18,17 +18,25 @@ export default function UserProfile(props) {
   const { initializing, user } = useAuth();
   const [error, setError] = React.useState(false);
   const [loaing, setLoading] = React.useState(true);
-  const [userId, setId] = React.useState(props.userId);
+  const [userId, setId] = React.useState('');
   const [userProf, setProf] = React.useState({ friends: [] });
   const [userDogs, setUserDogs] = React.useState([]);
+  const navigation = props.navigation;
 
   React.useEffect(() => {
+    let tempId = '';
+    if (props.userId) {
+      tempId = props.userId;
+    } else {
+      const route = props.route;
+      tempId = route.params.userId;
+    }
     const unsubscribe = db
-      .collection("users")
-      .doc(userId)
+      .collection('users')
+      .doc(tempId)
       .onSnapshot(
         doc => {
-          setId(userId);
+          setId(tempId);
           setProf(doc.data());
         },
         err => {
@@ -101,7 +109,7 @@ export default function UserProfile(props) {
   };
 
   return (
-    <ScrollView style={{ backgroundColor: "#D3E9FF" }}>
+    <ScrollView style={{ backgroundColor: Colors.background }}>
       <View style={styles.container}>
         <View style={styles.userinfo}>
           <Image

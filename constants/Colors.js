@@ -15,7 +15,11 @@ export default {
   border: '#031A6B',
   text: '#031A6B',
   cancel: '#ED254E',
-  yellow: '#FCC244'
+  yellow: '#FCC244',
+  login: '#FFE066',
+  lightBlue: '#f5fcff',
+  purple: '#9a73ef'
 };
+
 
 

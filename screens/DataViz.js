@@ -8,6 +8,7 @@ import {
 } from 'victory-native';
 import { db } from '../config/firebase';
 import { breedFreq, geoBreedFreq, editCity } from '../constants/utilityFunctions';
+import Colors from '../constants/Colors'
 import DogPoint from '../components/DogPoint'
 
 export default function DataViz(props) {
@@ -78,6 +79,6 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#f5fcff'
+      backgroundColor: Colors.lightBlue
    }
 });

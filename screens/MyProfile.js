@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
-    backgroundColor: '#D3E9FF'
+    backgroundColor: Colors.background
   },
   profilePic: {
     width: 175,
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginTop: 15,
     fontFamily: 'Avenir',
-    color: '#031A6B'
+    color: Colors.text
   },
   userinfo: {
     flex: 1,
@@ -141,14 +141,14 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 30,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    borderColor: '#031A6B'
+    borderColor: Colors.border
   },
   textinside: {
     textAlign: 'center',
     fontSize: 25,
     marginTop: 15,
     fontFamily: 'Avenir',
-    color: '#031A6B'
+    color: Colors.text
   },
   PointCard: {
     marginTop: 15,
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 30,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    borderColor: '#031A6B'
+    borderColor: Colors.border
   },
   textinside2: {
     paddingVertical: 10,

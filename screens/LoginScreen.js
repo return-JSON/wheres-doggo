@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Button, TextInput, TouchableOpacity } from 'rea
 import * as Google from 'expo-google-app-auth';
 import firebase from '../config/firebase';
 
+import Colors from '../constants/Colors'
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -131,7 +132,7 @@ class LoginScreen extends Component {
           style={styles.input}
           underlineColorAndroid="transparent"
           placeholder="Email"
-          placeholderTextColor="#9a73ef"
+          placeholderTextColor={Colors.purple}
           autoCapitalize="none"
           onChangeText={email => this.setState({ email })}
           value={this.state.email}
@@ -141,7 +142,7 @@ class LoginScreen extends Component {
           style={styles.input}
           underlineColorAndroid="transparent"
           placeholder="Password"
-          placeholderTextColor="#9a73ef"
+          placeholderTextColor={Colors.purple}
           autoCapitalize="none"
           secureTextEntry={true}
           onChangeText={password => this.setState({ password })}
