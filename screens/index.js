@@ -15,3 +15,4 @@ export { default as Score } from './Score';
 export { default as RegisterScreen } from './RegisterScreen';
 export { default as MyProfile } from './MyProfile';
 export { default as LinkPage } from './LinkPage';
+export { default as ManualBreed } from './ManualBreed';

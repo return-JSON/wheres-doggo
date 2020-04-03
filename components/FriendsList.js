@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Button, View } from 'react-native';
 import DogTile from '../components/DogTile';
 import { db } from '../config/firebase';
 
@@ -7,6 +7,7 @@ export default function FriendsList(props) {
   const [loading, setLoading] = React.useState(true);
   const [userFriend, setFriend] = React.useState({ firstName: '' });
   const userId = props.userId;
+  const navigation = props.navigation;
 
   React.useEffect(() => {
     // get user's friends
@@ -34,7 +35,7 @@ export default function FriendsList(props) {
 
   return (
     <View style={styles.container}>
-      <Text>{userFriend.firstName}</Text>
+      <Button title={userFriend.firstName} />
     </View>
   );
 }

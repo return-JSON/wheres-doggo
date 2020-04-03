@@ -14,7 +14,6 @@ export default function DogTile(props) {
   } else if (dog.source === 'user') {
     return (
       <View style={styles.container}>
-        {console.log(dog)}
         <Image style={styles.userImage} source={{ uri: dog.imageUrl }} />
         <Text>{dog.breed}</Text>
       </View>
@@ -23,18 +22,18 @@ export default function DogTile(props) {
 }
 
 const styles = StyleSheet.create({
-   container: {
-      width: '40%',
-      margin: 10,
-      alignItems: 'center'
-   },
-   databaseImage: {
-      opacity: 0.3,
-      width: 125,
-      height: 125,
-   },
-   userImage: {
-      width: 125,
-      height: 125
-   }
+  container: {
+    width: '40%',
+    margin: 10,
+    alignItems: 'center'
+  },
+  databaseImage: {
+    opacity: 0.3,
+    width: 125,
+    height: 125
+  },
+  userImage: {
+    width: 125,
+    height: 125
+  }
 });

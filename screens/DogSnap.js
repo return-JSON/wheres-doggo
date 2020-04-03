@@ -71,8 +71,16 @@ class DogSnap extends Component {
           />
           <Text> 🐶 breed not found </Text>
           <Button
-            title="Try again?"
+            title="Try again"
             onPress={() => navigation.navigate('Camera')}
+          />
+          <Button
+            title="Find breed"
+            onPress={() =>
+              navigation.navigate('Add A Breed', {
+                userId: this.props.route.params.userId
+              })
+            }
           />
         </View>
       );
@@ -93,7 +101,7 @@ class DogSnap extends Component {
           />
           <Text>Are you sure this is a picture of a dog?</Text>
           <Button
-            title="Go snap some dogs!!!!"
+            title="Go snap some dogs!!!"
             onPress={() => navigation.navigate('Camera')}
           />
         </View>
