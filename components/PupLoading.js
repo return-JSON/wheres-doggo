@@ -27,3 +27,4 @@ const styles = StyleSheet.create({
     color:'#031A6B'
   }
 })
+

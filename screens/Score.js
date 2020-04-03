@@ -14,14 +14,6 @@ export default function Score(props) {
   const [userId, setId] = React.useState('');
   const [userArr, setUserArr] = React.useState([]);
 
-  getCollection = async querySnapshot => {
-    try {
-      let data = await querySnapshot.data();
-      await console.log(`Received doc snapshot: ${data}`);
-    } catch (err) {}
-    // ...
-  };
-
   React.useEffect(() => {
     // user database
     const unsubscribe = db.collection('users').onSnapshot(
@@ -67,26 +59,17 @@ export default function Score(props) {
   }, [userId]);
 
   return (
-    
-      <View style={styles.container}>
-
-
-        <View style={styles.PointCard}>
-
-            <View style={styles.titleContainer}>
-              <Text style={styles.textinside}>User</Text>
-              <Text style={styles.textinside}>Points</Text>
-            </View>
-            {userArr.map((user, i) => {
-              return <ScoreTile key={i} user={user} />;
-            })}
-
+    <View style={styles.container}>
+      <View style={styles.PointCard}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.textinside}>User</Text>
+          <Text style={styles.textinside}>Points</Text>
         </View>
-
-
-
+        {userArr.map((user, i) => {
+          return <ScoreTile key={i} user={user} />;
+        })}
       </View>
-
+    </View>
   );
 }
 
@@ -96,7 +79,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
-    backgroundColor:'#FCC244'
+    backgroundColor: '#FCC244'
   },
   titleContainer: {
     width: '100%',
@@ -110,17 +93,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9F8F8',
     width: '90%',
     borderWidth: 5,
-    borderBottomLeftRadius:30,
-    borderBottomRightRadius:30,
-    borderTopLeftRadius:30,
-    borderTopRightRadius:30,
-    borderColor:'#031A6B'  
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    borderColor: '#031A6B'
   },
-  textinside:{
-    textAlign:'center',
+  textinside: {
+    textAlign: 'center',
     fontSize: 30,
     marginTop: 15,
-    fontFamily:'Avenir',
-    color:'#031A6B'
+    fontFamily: 'Avenir',
+    color: '#031A6B'
   }
 });
