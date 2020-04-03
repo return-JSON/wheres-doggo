@@ -16,7 +16,7 @@ import { useAuth } from './HomeScreen';
 export default function UserProfile(props) {
   const { initializing, user } = useAuth();
   const [error, setError] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
+  const [loaing, setLoading] = React.useState(true);
   const [userId, setId] = React.useState(props.userId);
   const [userProf, setProf] = React.useState({ friends: [] });
   const [userDogs, setUserDogs] = React.useState([]);

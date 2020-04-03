@@ -1,53 +1,27 @@
 import * as React from "react";
-import { StyleSheet, View, Text, Image, ScrollView } from "react-native";
-import MapView, { Marker, Circle } from "react-native-maps";
+import { StyleSheet, View, Text, Image } from "react-native";
 
-// this component renders a card for every dog in the db.
+import { properCase } from '../constants/utilityFunctions'
+
+// this component renders a card for every dog passed down as props.
 
 const DogList = props => {
   const dog = props.dog;
+  dog.breed = properCase(dog.breed);
+
   return (
     <View style={styles.container}>
       <View style={styles.card}>
         <Text style={styles.name}>{dog.breed}</Text>
-          <Text>Last seen:</Text>
-        <View style={styles.mapContainer}>
+          <Text style={styles.text}>Last seen: {dog.boroughOrCity}</Text>
           <Image
             style={{ width: 200, height: 200 }}
             source={{
               uri: dog.imageUrl
             }}
           />
-          <MapView
-            style={styles.map}
-            region={{
-              latitude: dog.lastSeen["F"],
-              longitude: dog.lastSeen["V"],
-              latitudeDelta: 0.09,
-              longitudeDelta: 0.09
-            }}
-          >
-            <Circle
-              center={{
-                latitude: dog.lastSeen["F"],
-                longitude: dog.lastSeen["V"]
-              }}
-              radius={500}
-              strokeWidth={2}
-              strokeColor={"white"}
-            />
-            <Marker
-              coordinate={{
-                latitude: dog.lastSeen["F"],
-                longitude: dog.lastSeen["V"]
-              }}
-              title= {dog.breed}
-              image={require("../src/img/dog.png")}
-            />
-          </MapView>
         </View>
-        <Text style={styles.text}> {dog.description}</Text>
-      </View>
+        <Text style={styles.text}>Points: {dog.points}</Text>
     </View>
   );
 };
@@ -75,7 +49,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius:30,
     borderTopLeftRadius:30,
     borderTopRightRadius:30,
-    
+
   },
   mapContainer: {
     flexDirection: "row",
@@ -97,7 +71,6 @@ const styles = StyleSheet.create({
     textAlign:'center',
     fontSize: 15,
     marginTop: 1,
-
     fontFamily:'Avenir',
     color:'#031A6B'
   }
