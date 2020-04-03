@@ -15,7 +15,7 @@ import {
 } from '../screens';
 
 const Drawer = createDrawerNavigator();
-const INITIAL_ROUTE_NAME = 'Home';
+const INITIAL_ROUTE_NAME = 'DataViz';
 
 export default function DrawerNavigator({ navigation, route }) {
   // Set the header title on the parent stack navigator depending on the

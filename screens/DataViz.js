@@ -4,22 +4,29 @@ import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
 import {
    VictoryBar,
    VictoryChart,
-   VictoryLine,
    VictoryPie,
-   VictoryTheme
+   VictoryScatter
 } from 'victory-native';
 import { db } from '../config/firebase';
-import { breedFreq } from '../constants/utilityFunctions'
+import { breedFreq } from '../constants/utilityFunctions';
 // import { dogsData } from '../src/data/data';
 
 export default function DataViz(props) {
    const [allDogs, setAllDogs] = React.useState([]);
    React.useEffect(() => {
-      const unsubscribe = db.collectionGroup('userDogs').onSnapshot(
-         snapshot => {
+      const unsubscribe = db
+         .collectionGroup('userDogs')
+         .onSnapshot(snapshot => {
             const allDogsArr = [];
             snapshot.forEach(doc => {
-               const { breed, imageUrl, location, points, city, county } = doc.data();
+               const {
+                  breed,
+                  imageUrl,
+                  location,
+                  points,
+                  city,
+                  county
+               } = doc.data();
                allDogsArr.push({
                   key: doc.id,
                   breed,
@@ -31,12 +38,11 @@ export default function DataViz(props) {
                });
             });
             setAllDogs(allDogsArr);
-         }
-      );
+         });
       return () => unsubscribe();
    }, []);
    console.log('allDogs', allDogs);
-   
+
    // util function to aggregate breeds
    // function breedFreq(arr) {
    //    let breedList = [];
@@ -52,27 +58,46 @@ export default function DataViz(props) {
 
    allDogs.forEach(dog => {
       if (dog.city === 'New York, New York') {
-         if (dog.county === 'New York County') dog.boroughOrCity = 'Manhattan, New York'
-         else if (dog.county === 'Kings County') dog.boroughOrCity = 'Brooklyn, New York'
-         else if (dog.county === 'Queens County') dog.boroughOrCity = 'Queens, New York'
-         else if (dog.county === 'Richmond County') dog.boroughOrCity = 'Staten Island, New York'
-         else if (dog.county === 'Bronx County') dog.boroughOrCity = 'Bronx, New York'
-         else dog.boroughOrCity = dog.city
+         if (dog.county === 'New York County')
+            dog.boroughOrCity = 'Manhattan, New York';
+         else if (dog.county === 'Kings County')
+            dog.boroughOrCity = 'Brooklyn, New York';
+         else if (dog.county === 'Queens County')
+            dog.boroughOrCity = 'Queens, New York';
+         else if (dog.county === 'Richmond County')
+            dog.boroughOrCity = 'Staten Island, New York';
+         else if (dog.county === 'Bronx County')
+            dog.boroughOrCity = 'Bronx, New York';
+         else dog.boroughOrCity = dog.city;
       } else {
-         dog.boroughOrCity = dog.city
+         dog.boroughOrCity = dog.city;
       }
-   })
-     console.log('allDogs', allDogs);
-
+   });
+   console.log('allDogs', allDogs);
 
    // function breedFreqByGeo(arr) {
    //    let breedList = [];
 
    // }
 
-
    return (
       <ScrollView>
+         <VictoryChart>
+            <VictoryScatter
+               bubbleProperty='count'
+               maxBubbleSize={25}
+               minBubbleSize={5}
+               data={[ // sample data
+                  { location: 'NYC', breed: 'shiba', count: 30 },
+                  { location: 'NYC', breed: 'werewolf', count: 40 },
+                  { location: 'Paterson, NJ', breed: 'shiba', count: 25 },
+                  { location: 'Chicago, IL', breed: 'rat terrier', count: 10 },
+                  { location: 'Alaska', breed: 'german shep', count: 45 }
+               ]}
+               x='location'
+               y='breed'
+            />
+         </VictoryChart>
          <VictoryChart width={350}>
             <VictoryBar
                horizontal
@@ -82,10 +107,7 @@ export default function DataViz(props) {
                y='count'
             />
          </VictoryChart>
-         <VictoryChart>
-            <VictoryLine />
-         </VictoryChart>
-         <VictoryPie />
+         <VictoryPie data={breedFreq(allDogs)} x='breed' y='count' />
          {/* <VictoryChart width={350} theme={VictoryTheme.material}>
                <VictoryBar data={data} x='quarter' y='earnings' />
             </VictoryChart> */}
