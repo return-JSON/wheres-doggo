@@ -40,6 +40,7 @@ class RegisterScreen extends Component {
               lastName: lastName,
               email: results.user.email,
               points: 0,
+              friends: [],
               createdAt: Date.now()
             });
         } else {
@@ -58,9 +59,9 @@ class RegisterScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={{ ...styles.text, ...styles.header }}>{`Sign up \nto get started!`}</Text>
-
-
+        <Text
+          style={{ ...styles.text, ...styles.header }}
+        >{`Sign up \nto get started!`}</Text>
 
         <Animatable.View
           style={styles.footer}
@@ -118,9 +119,13 @@ class RegisterScreen extends Component {
             <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Sign Up</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ alignSelf: "center", marginTop: 32 }} onPress={() => this.props.navigation.navigate('LoginScreen')}>
+          <TouchableOpacity
+            style={{ alignSelf: 'center', marginTop: 32 }}
+            onPress={() => this.props.navigation.navigate('LoginScreen')}
+          >
             <Text style={{ fontSize: 16 }}>
-              Already Have An Account?<Text style={{ fontWeight: "500", color: "blue" }}>Log In</Text>
+              Already Have An Account?
+              <Text style={{ fontWeight: '500', color: 'blue' }}>Log In</Text>
             </Text>
           </TouchableOpacity>
         </Animatable.View>

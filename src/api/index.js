@@ -49,6 +49,16 @@ export const getLocation = async () => {
   return location;
 };
 
+export const getBreedList = async () => {
+  try {
+    const dogsRef = await db.collection('dogs').get();
+    let newDogsArr = dogsRef.docs.map(doc => doc.data().breed);
+    return newDogsArr;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const uploadImage = async (userId, uri, breed = 'last-image') => {
   let resizedPhoto = await ImageManipulator.manipulateAsync(
     uri,
@@ -115,4 +125,23 @@ export const addPup = async (userId, stateObj) => {
     .collection('userDogs')
     .doc(breedId)
     .set(stateObj);
+};
+
+export const addFriend = async (myID, yourID) => {
+  try {
+    const firstUserRef = await db.collection('users').doc(myID);
+    const secondUserRef = await db.collection('users').doc(yourID);
+
+    const addMyFriend = await firstUserRef.update({
+      friends: firebase.firestore.FieldValue.arrayUnion(yourID)
+    });
+
+    const addMe = await secondUserRef.update({
+      friends: firebase.firestore.FieldValue.arrayUnion(myID)
+    });
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
 };

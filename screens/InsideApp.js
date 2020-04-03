@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import DrawerNavigator from '../navigation/DrawerNavigator';
 import DogSnap from './DogSnap';
+import UserProfile from './UserProfile';
 import useLinking from '../navigation/useLinking';
 const Stack = createStackNavigator();
 
@@ -26,6 +27,7 @@ export default function App(props) {
         <Stack.Navigator>
           <Stack.Screen name="Where's DogGo?" component={DrawerNavigator} />
           <Stack.Screen name="DogSnap" component={DogSnap} />
+          <Stack.Screen name="UserProfile" component={UserProfile} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
