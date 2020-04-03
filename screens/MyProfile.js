@@ -4,6 +4,7 @@ import { DogTile, FriendsList } from '../components';
 // import { FriendsList } from '../components/FriendsList';
 import { db } from '../config/firebase';
 import { useAuth } from './HomeScreen';
+import Colors from '../constants/Colors'
 
 export default function MyProfile(props) {
   const { initializing, user } = useAuth();
@@ -161,11 +162,11 @@ const styles = StyleSheet.create({
     borderColor: '#031A6B'
   },
   textinside2: {
-    textAlign: 'center',
+    paddingVertical: 10,
+    textAlign: "center",
     fontSize: 20,
-    marginTop: 15,
-    fontFamily: 'Avenir',
-    color: '#031A6B'
+    fontFamily: "Avenir",
+    color: Colors.text
   },
   cardChild: {
     justifyContent: 'center',

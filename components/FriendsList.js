@@ -2,6 +2,7 @@ import * as React from 'react';
 import { StyleSheet, Button, View } from 'react-native';
 import DogTile from '../components/DogTile';
 import { db } from '../config/firebase';
+import Colors from '../constants/Colors'
 
 export default function FriendsList(props) {
   const [loading, setLoading] = React.useState(true);
@@ -35,7 +36,7 @@ export default function FriendsList(props) {
 
   return (
     <View style={styles.container}>
-      <Button title={userFriend.firstName} />
+      <Button color={Colors.cluster} title={userFriend.firstName} />
     </View>
   );
 }

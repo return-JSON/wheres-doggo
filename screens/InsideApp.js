@@ -10,6 +10,7 @@ import DogSnap from './DogSnap';
 import UserProfile from './UserProfile';
 import ManualBreed from './ManualBreed';
 import useLinking from '../navigation/useLinking';
+import Colors from '../constants/Colors'
 const Stack = createStackNavigator();
 
 export default function App(props) {
@@ -39,6 +40,6 @@ export default function App(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: Colors.background
   }
 });

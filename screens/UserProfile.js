@@ -12,6 +12,7 @@ import { DogTile, FriendsList, Card } from "../components";
 import { addFriend } from "../src/api";
 import { db } from "../config/firebase";
 import { useAuth } from "./HomeScreen";
+import Colors from '../constants/Colors'
 
 export default function UserProfile(props) {
   const { initializing, user } = useAuth();
@@ -154,7 +155,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     alignContent: "center",
-    backgroundColor: "#D3E9FF"
+    backgroundColor: Colors.background
   },
   profilePic: {
     width: 175,
@@ -163,57 +164,56 @@ const styles = StyleSheet.create({
   text: {
     alignItems: "center",
     fontSize: 30,
-    marginTop: 15,
+    marginVertical: 15,
     fontFamily: "Avenir",
-    color: "#031A6B"
+    color: Colors.text
   },
   userinfo: {
     flex: 1,
-    marginTop: 2,
+    marginVertical: 2,
     alignItems: "center",
     width: "90%"
   },
   dogsCard: {
-    marginTop: 15,
-    backgroundColor: "#fff",
+    paddingVertical: 10,
+    marginVertical: 15,
+    backgroundColor: "white",
     width: "90%",
     borderWidth: 5,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    borderColor: "#031A6B"
+    borderColor: Colors.border
   },
   textinside: {
     textAlign: "center",
     fontSize: 25,
-    marginTop: 15,
     fontFamily: "Avenir",
-    color: "#031A6B"
+    color: Colors.border
   },
   PointCard: {
-    marginTop: 15,
-    backgroundColor: "#fff",
+    backgroundColor: "white",
     width: "90%",
     borderWidth: 5,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    borderColor: "#031A6B"
+    borderColor: Colors.border
   },
   textinside2: {
+    paddingVertical: 10,
     textAlign: "center",
     fontSize: 20,
-    marginTop: 15,
     fontFamily: "Avenir",
-    color: "#031A6B"
+    color: Colors.text
   },
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "center",
     marginTop: 20,
     width: 300,
-    maxWidth: "80%"
+    maxWidth: "50%"
   }
 });

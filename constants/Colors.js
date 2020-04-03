@@ -14,5 +14,8 @@ export default {
   background: '#D3E9FF',
   border: '#031A6B',
   text: '#031A6B',
-  cancel: '#ED254E'
+  cancel: '#ED254E',
+  yellow: '#FCC244'
 };
+
+
