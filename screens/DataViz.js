@@ -8,8 +8,7 @@ import {
    VictoryScatter
 } from 'victory-native';
 import { db } from '../config/firebase';
-import { breedFreq } from '../constants/utilityFunctions';
-// import { dogsData } from '../src/data/data';
+import { breedFreq, geoBreedFreq } from '../constants/utilityFunctions';
 
 export default function DataViz(props) {
    const [allDogs, setAllDogs] = React.useState([]);
@@ -41,21 +40,8 @@ export default function DataViz(props) {
          });
       return () => unsubscribe();
    }, []);
-   console.log('allDogs', allDogs);
-
-   // util function to aggregate breeds
-   // function breedFreq(arr) {
-   //    let breedList = [];
-   //    arr.forEach(dog => {
-   //       const i = breedList.findIndex(x => x.breed === dog.breed);
-   //       if (i <= -1) breedList.push({ breed: dog.breed, count: 1 });
-   //       else breedList[i].count++;
-   //    });
-   //    return breedList;
-   // }
 
    // function to set borough if NYC
-
    allDogs.forEach(dog => {
       if (dog.city === 'New York, New York') {
          if (dog.county === 'New York County')
@@ -73,12 +59,6 @@ export default function DataViz(props) {
          dog.boroughOrCity = dog.city;
       }
    });
-   console.log('allDogs', allDogs);
-
-   // function breedFreqByGeo(arr) {
-   //    let breedList = [];
-
-   // }
 
    return (
       <ScrollView>
@@ -87,30 +67,12 @@ export default function DataViz(props) {
                bubbleProperty='count'
                maxBubbleSize={25}
                minBubbleSize={5}
-               data={[ // sample data
-                  { location: 'NYC', breed: 'shiba', count: 30 },
-                  { location: 'NYC', breed: 'werewolf', count: 40 },
-                  { location: 'Paterson, NJ', breed: 'shiba', count: 25 },
-                  { location: 'Chicago, IL', breed: 'rat terrier', count: 10 },
-                  { location: 'Alaska', breed: 'german shep', count: 45 }
-               ]}
-               x='location'
+               data={geoBreedFreq(allDogs)}
+               x='boroughOrCity'
                y='breed'
             />
          </VictoryChart>
-         <VictoryChart width={350}>
-            <VictoryBar
-               horizontal
-               // animate={{ duration: 2000 }}
-               data={breedFreq(allDogs)}
-               x='breed'
-               y='count'
-            />
-         </VictoryChart>
          <VictoryPie data={breedFreq(allDogs)} x='breed' y='count' />
-         {/* <VictoryChart width={350} theme={VictoryTheme.material}>
-               <VictoryBar data={data} x='quarter' y='earnings' />
-            </VictoryChart> */}
       </ScrollView>
    );
 }
