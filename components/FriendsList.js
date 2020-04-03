@@ -2,12 +2,13 @@ import * as React from 'react';
 import { StyleSheet, Button, View } from 'react-native';
 import DogTile from '../components/DogTile';
 import { db } from '../config/firebase';
+import { useNavigation } from '@react-navigation/native';
 
 export default function FriendsList(props) {
   const [loading, setLoading] = React.useState(true);
   const [userFriend, setFriend] = React.useState({ firstName: '' });
   const userId = props.userId;
-  const navigation = props.navigation;
+  const navigation = useNavigation();
 
   React.useEffect(() => {
     // get user's friends
@@ -18,6 +19,7 @@ export default function FriendsList(props) {
         .onSnapshot(
           snapshot => {
             let friend = snapshot.data();
+            friend.id = props.friend;
             setLoading(false);
             setFriend(friend);
           },
@@ -33,17 +35,17 @@ export default function FriendsList(props) {
     }
   }, [userId]);
 
-  handlePress = navigation => {
-    navigation.navigate('UserProfile', {
-      userId: props.friend
+  handlePress = id => {
+    navigation.push('UserProfile', {
+      userId: id
     });
   };
   return (
     <View style={styles.container}>
-      {console.log(navigation)}
+      {console.log('props!u', navigation)}
       <Button
         title={userFriend.firstName}
-        onPress={() => handlePress(navigation)}
+        onPress={() => handlePress(userFriend.id)}
       />
     </View>
   );

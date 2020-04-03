@@ -135,3 +135,29 @@ export const scoreBoardCombo = arr => {
   let newArr = sortByValue(filterForZero(pointsToZero(arr)));
   return newArr;
 };
+
+export const breedFreq = (arr) => {
+      let breedList = [];
+      arr.forEach(dog => {
+         const i = breedList.findIndex(x => x.breed === dog.breed);
+         if (i <= -1) breedList.push({ breed: dog.breed, count: 1 });
+         else breedList[i].count++;
+      });
+      return breedList;
+   }
+
+export const editCity = arr => {
+  return arr.forEach(dog => {
+    if (dog.city === 'New York, New York') {
+       if (dog.county === 'New York County') dog.boroughOrCity = 'Manhattan, New York'
+       else if (dog.county === 'Kings County') dog.boroughOrCity = 'Brooklyn, New York'
+       else if (dog.county === 'Queens County') dog.boroughOrCity = 'Queens, New York'
+       else if (dog.county === 'Richmond County') dog.boroughOrCity = 'Staten Island, New York'
+       else if (dog.county === 'Bronx County') dog.boroughOrCity = 'Bronx, New York'
+       else dog.boroughOrCity = dog.city
+    } else {
+       dog.boroughOrCity = dog.city
+    }
+ })
+}
+

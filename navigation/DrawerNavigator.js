@@ -10,7 +10,8 @@ import {
   DogProfile,
   Map,
   Score,
-  UserList
+  UserList,
+  DataViz
 } from '../screens';
 
 const Drawer = createDrawerNavigator();
@@ -23,84 +24,95 @@ export default function DrawerNavigator({ navigation, route }) {
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   return (
-    <Drawer.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
-      <Drawer.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          title: 'Get Started',
-          drawerIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-home" />
-          )
-        }}
-      />
+     <Drawer.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+        <Drawer.Screen
+           name='Home'
+           component={HomeScreen}
+           options={{
+              title: 'Get Started',
+              drawerIcon: ({ focused }) => (
+                 <TabBarIcon focused={focused} name='md-home' />
+              )
+           }}
+        />
 
-      <Drawer.Screen
-        name="Map"
-        component={Map}
-        options={{
-          title: 'DoggoMap',
-          drawerIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="ios-map" />
-          )
-        }}
-      />
+        <Drawer.Screen
+           name='Map'
+           component={Map}
+           options={{
+              title: 'DoggoMap',
+              drawerIcon: ({ focused }) => (
+                 <TabBarIcon focused={focused} name='ios-map' />
+              )
+           }}
+        />
 
-      <Drawer.Screen
-        name="MyProfile"
-        component={MyProfile}
-        options={{
-          title: 'My Profile',
-          drawerIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-person" />
-          )
-        }}
-      />
+        <Drawer.Screen
+           name='MyProfile'
+           component={MyProfile}
+           options={{
+              title: 'My Profile',
+              drawerIcon: ({ focused }) => (
+                 <TabBarIcon focused={focused} name='md-person' />
+              )
+           }}
+        />
 
-      <Drawer.Screen
-        name="DogProfile"
-        component={DogProfile}
-        options={{
-          title: 'DoggoDex',
-          drawerIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-heart" />
-          )
-        }}
-      />
+        <Drawer.Screen
+           name='DogProfile'
+           component={DogProfile}
+           options={{
+              title: 'DoggoDex',
+              drawerIcon: ({ focused }) => (
+                 <TabBarIcon focused={focused} name='md-heart' />
+              )
+           }}
+        />
 
-      <Drawer.Screen
-        name="UserList"
-        component={UserList}
-        options={{
-          title: 'Users',
-          drawerIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-search" />
-          )
-        }}
-      />
+        <Drawer.Screen
+           name='UserList'
+           component={UserList}
+           options={{
+              title: 'Users',
+              drawerIcon: ({ focused }) => (
+                 <TabBarIcon focused={focused} name='md-search' />
+              )
+           }}
+        />
 
-      <Drawer.Screen
-        name="Camera"
-        component={Camera}
-        options={{
-          title: 'Camera',
-          drawerIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="ios-camera" />
-          )
-        }}
-      />
+        <Drawer.Screen
+           name='DataViz'
+           component={DataViz}
+           options={{
+              title: 'Insights',
+              drawerIcon: ({ focused }) => (
+                 <TabBarIcon focused={focused} name='md-stats' />
+              )
+           }}
+        />
 
-      <Drawer.Screen
-        name="Score"
-        component={Score}
-        options={{
-          title: 'Scoreboard',
-          drawerIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="ios-apps" />
-          )
-        }}
-      />
-    </Drawer.Navigator>
+        <Drawer.Screen
+           name='Camera'
+           component={Camera}
+           options={{
+              title: 'Camera',
+              drawerIcon: ({ focused }) => (
+                 <TabBarIcon focused={focused} name='ios-camera' />
+              )
+           }}
+        />
+
+        <Drawer.Screen
+           name='Score'
+           component={Score}
+           options={{
+              title: 'Scoreboard',
+              drawerIcon: ({ focused }) => (
+                 <TabBarIcon focused={focused} name='ios-apps' />
+              )
+           }}
+        />
+     </Drawer.Navigator>
   );
 }
 

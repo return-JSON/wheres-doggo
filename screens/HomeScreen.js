@@ -178,8 +178,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius:30,
     borderTopRightRadius:30,
     borderColor:'#031A6B'
-  
-     
   },
   cardChild: {
     marginTop:10,

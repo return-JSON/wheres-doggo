@@ -16,18 +16,26 @@ import { useAuth } from './HomeScreen';
 export default function UserProfile(props) {
   const { initializing, user } = useAuth();
   const [error, setError] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
-  const [userId, setId] = React.useState(props.userId);
+  const [loaing, setLoading] = React.useState(true);
+  const [userId, setId] = React.useState('');
   const [userProf, setProf] = React.useState({ friends: [] });
   const [userDogs, setUserDogs] = React.useState([]);
+  const navigation = props.navigation;
 
   React.useEffect(() => {
+    let tempId = '';
+    if (props.userId) {
+      tempId = props.userId;
+    } else {
+      const route = props.route;
+      tempId = route.params.userId;
+    }
     const unsubscribe = db
       .collection('users')
-      .doc(userId)
+      .doc(tempId)
       .onSnapshot(
         doc => {
-          setId(userId);
+          setId(tempId);
           setProf(doc.data());
         },
         err => {

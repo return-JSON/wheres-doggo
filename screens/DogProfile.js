@@ -1,53 +1,56 @@
-import * as React from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import { fetchDogs } from '../src/reducers/dog';
-import { connect } from 'react-redux';
-import { db } from '../config/firebase';
-import DogList from './DogList';
+import * as React from "react";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { db } from "../config/firebase";
 
-class DogProfile extends React.Component {
-  constructor() {
-    super();
-    this.ref = db.collection('dogs');
-    this.state = {
-      isLoading: true
-    };
-  }
+import { PupLoading } from "../components/PupLoading";
+import { editCity } from "../constants/utilityFunctions";
+import DogList from "./DogList";
 
-  componentDidMount() {
-    this.props.fetchDogs();
-    this.setState({
-      isLoading: false
+export default function DogProfile(props) {
+  const [dogs, setDogs] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+  React.useEffect(() => {
+    setIsLoading(true);
+    const unsubscribe = db.collectionGroup("userDogs").onSnapshot(snapshot => {
+      const allDogsArr = [];
+      snapshot.forEach(doc => {
+        const { breed, imageUrl, location, points, city, county } = doc.data();
+        allDogsArr.push({
+          key: doc.id,
+          breed,
+          imageUrl,
+          location,
+          city,
+          county,
+          points
+        });
+      });
+      setDogs(allDogsArr);
     });
-  }
+    return () => unsubscribe();
+  }, []);
 
-  render() {
-    const dogs = this.props.dogs;
-    if (this.state.isLoading) {
-      return (
-        <View style={styles.preloader}>
-          <Text>Loading...</Text>
-        </View>
-      );
-    }
-    return (
-      <ScrollView  style={{backgroundColor:"#D3E9FF"}}>
-        <View style={styles.container}>
-          {dogs.map((dog, i) => {
+  editCity(dogs);
+
+  return (
+    <ScrollView style={{ backgroundColor: "#D3E9FF" }}>
+      <View style={styles.container}>
+        {dogs.map((dog, i) => {
+          if (dog.boroughOrCity) {
             return <DogList key={i} dog={dog} />;
-          })}
-        </View>
-      </ScrollView>
-    );
-  }
+          }
+        })}
+      </View>
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor:"#D3E9FF"
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#D3E9FF"
   },
   map: {
     height: 200,
@@ -55,24 +58,11 @@ const styles = StyleSheet.create({
     marginVertical: 10
   },
   userCard: {
-    backgroundColor: '#fff',
-    width: '50%'
+    backgroundColor: "#fff",
+    width: "50%"
   },
   cardChild: {
-    flexDirection: 'row',
-    flexWrap: 'wrap'
+    flexDirection: "row",
+    flexWrap: "wrap"
   }
 });
-
-const mapState = state => {
-  return {
-    user: state.user,
-    dogs: state.dogs
-  };
-};
-
-const mapDispatch = dispatch => ({
-  fetchDogs: () => dispatch(fetchDogs())
-});
-
-export default connect(mapState, mapDispatch)(DogProfile);

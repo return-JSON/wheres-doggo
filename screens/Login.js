@@ -294,7 +294,7 @@ export default class Login extends React.Component {
                         <View style={styles.errorMessage}>
                             {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
                         </View>
-                    
+
                         <TextInput
                             placeholder="Email"
                             style={styles.textInput}
