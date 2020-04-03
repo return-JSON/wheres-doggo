@@ -49,7 +49,6 @@ export const clearDog = () => {
 export const setPhotoUri = uri => {
   return async dispatch => {
     let response = await submitToGoogle(uri);
-
     response = await dogResponseComboFunction(response, breedList);
     let location = await getLocation();
     await dispatch(takePhoto(uri));
