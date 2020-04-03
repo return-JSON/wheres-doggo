@@ -1,8 +1,13 @@
 import * as React from 'react';
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
-import { VictoryChart, VictoryPie, VictoryScatter, VictoryLabel } from 'victory-native';
+import {
+   VictoryChart,
+   VictoryPie,
+   VictoryScatter,
+   VictoryVoronoiContainer, VictoryTooltip
+} from 'victory-native';
 import { db } from '../config/firebase';
-import { breedFreq, geoBreedFreq } from '../constants/utilityFunctions';
+import { breedFreq, geoBreedFreq, editCity } from '../constants/utilityFunctions';
 import DogPoint from '../components/DogPoint'
 
 export default function DataViz(props) {
@@ -31,45 +36,23 @@ export default function DataViz(props) {
                   points
                });
             });
+            editCity(allDogsArr)
             setAllDogs(allDogsArr);
          });
       return () => unsubscribe();
    }, []);
 
-   // function to set borough if NYC
-   allDogs.forEach(dog => {
-      if (dog.city === 'New York, New York') {
-         if (dog.county === 'New York County')
-            dog.boroughOrCity = 'Manhattan, New York';
-         else if (dog.county === 'Kings County')
-            dog.boroughOrCity = 'Brooklyn, New York';
-         else if (dog.county === 'Queens County')
-            dog.boroughOrCity = 'Queens, New York';
-         else if (dog.county === 'Richmond County')
-            dog.boroughOrCity = 'Staten Island, New York';
-         else if (dog.county === 'Bronx County')
-            dog.boroughOrCity = 'Bronx, New York';
-         else dog.boroughOrCity = dog.city;
-      } else {
-         dog.boroughOrCity = dog.city;
-      }
-   });
 
    return (
       <ScrollView>
-         <VictoryChart>
+         <VictoryChart containerComponent={<VictoryVoronoiContainer />}>
             <VictoryScatter
                // animate={{ duration: 2000 }}
-               labelComponent={
-                  <VictoryLabel
-                     angle={45}
-                     verticalAnchor='middle'
-                     textAnchor='end'
-                  />
-               }
+               labelComponent={<VictoryTooltip renderInPortal={false}/>}
+               labels={({ datum }) => `${datum.breed} ${datum.count}`}
                bubbleProperty='count'
-               maxBubbleSize={25}
-               minBubbleSize={5}
+               maxBubbleSize={20}
+               minBubbleSize={8}
                data={geoBreedFreq(allDogs)}
                x='boroughOrCity'
                y='breed'

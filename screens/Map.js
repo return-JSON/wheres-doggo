@@ -10,6 +10,7 @@ import LinkPage from "./LinkPage";
 import { getLocation } from "../src/api";
 
 // renders user location according to cell phone
+
 let lat;
 let long;
 
