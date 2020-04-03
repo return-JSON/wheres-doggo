@@ -84,7 +84,7 @@ export default function MyProfile(props) {
         </View>
 
         <View style={styles.dogsCard}>
-          <Text style={styles.textinside}>Doggos collected:</Text>
+          <Text style={styles.textinside}>DogGos Collected</Text>
 
           <View style={styles.cardChild}>
             {userDogs.map(dog => (
@@ -94,7 +94,7 @@ export default function MyProfile(props) {
         </View>
         <View style={styles.dogsCard}>
           <View>
-            <Text style={styles.textinside}>My Friends:</Text>
+            <Text style={styles.textinside}>My Friends</Text>
           </View>
           <View style={styles.cardChild}>
             {userProf.friends.map(friend => (

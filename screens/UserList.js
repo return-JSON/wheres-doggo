@@ -68,11 +68,11 @@ export default class UserList extends React.Component {
                      this.setState({ toggleView: false });
                   }}
                >
-                 <Image 
-                 source ={{uri:"https://cdn2.iconfinder.com/data/icons/navigation-set-arrows-part-two/32/Arrow_Left-512.png"}} 
+                 <Image
+                 source ={{uri:"https://cdn2.iconfinder.com/data/icons/navigation-set-arrows-part-two/32/Arrow_Left-512.png"}}
                  style={{width: 40, height: 40}}
                  />
-                 <Text>Go Back To User List</Text>
+                 <Text>Back To User List</Text>
                </TouchableOpacity>
             </ScrollView>
          );

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   Image,
   StyleSheet,
@@ -7,11 +7,11 @@ import {
   ScrollView,
   Button,
   Alert
-} from 'react-native';
-import { DogTile, FriendsList } from '../components';
-import { addFriend } from '../src/api';
-import { db } from '../config/firebase';
-import { useAuth } from './HomeScreen';
+} from "react-native";
+import { DogTile, FriendsList, Card } from "../components";
+import { addFriend } from "../src/api";
+import { db } from "../config/firebase";
+import { useAuth } from "./HomeScreen";
 
 export default function UserProfile(props) {
   const { initializing, user } = useAuth();
@@ -23,7 +23,7 @@ export default function UserProfile(props) {
 
   React.useEffect(() => {
     const unsubscribe = db
-      .collection('users')
+      .collection("users")
       .doc(userId)
       .onSnapshot(
         doc => {
@@ -41,9 +41,9 @@ export default function UserProfile(props) {
     // get user's dogs
     if (userId) {
       const unsubscribe = db
-        .collection('users')
+        .collection("users")
         .doc(userId)
-        .collection('userDogs')
+        .collection("userDogs")
         .onSnapshot(
           snapshot => {
             const dogsArr = [];
@@ -51,7 +51,7 @@ export default function UserProfile(props) {
               const { breed, imageUrl, location } = doc.data();
               dogsArr.push({
                 key: doc.id,
-                source: 'user',
+                source: "user",
                 breed,
                 imageUrl,
                 location
@@ -73,10 +73,13 @@ export default function UserProfile(props) {
     if (!userProf.friends.includes(myId) && myId !== yourId) {
       return (
         <View>
-          <Button
-            title="Add to Friends"
-            onPress={() => handlePress(myId, yourId, name)}
-          />
+          <Card style={styles.buttonContainer}>
+            <Button
+              title="Add Friend"
+              color="white"
+              onPress={() => handlePress(myId, yourId, name)}
+            />
+          </Card>
         </View>
       );
     }
@@ -91,13 +94,13 @@ export default function UserProfile(props) {
         await Alert.alert(`Success! You are now friends with ${name}`);
       }
     } catch (err) {
-      Alert.alert('Something has gone wronng.');
+      Alert.alert("Something has gone wrong.");
       console.log(err);
     }
   };
 
   return (
-    <ScrollView style={{ backgroundColor: '#D3E9FF' }}>
+    <ScrollView style={{ backgroundColor: "#D3E9FF" }}>
       <View style={styles.container}>
         <View style={styles.userinfo}>
           <Image
@@ -107,15 +110,14 @@ export default function UserProfile(props) {
             }}
           />
           <Text style={styles.text}>{userProf.firstName}</Text>
-          {buttonRender(user.uid, userId, userProf.firstName)}
         </View>
 
         <View style={styles.PointCard}>
-          <Text style={styles.textinside2}> Points:{userProf.points}</Text>
+          <Text style={styles.textinside2}> Points: {userProf.points}</Text>
         </View>
 
         <View style={styles.dogsCard}>
-          <Text style={styles.textinside}>Doggos Collected:</Text>
+          <Text style={styles.textinside}>DogGos Collected</Text>
 
           <View style={styles.cardChild}>
             {userDogs.map(dog => (
@@ -135,6 +137,7 @@ export default function UserProfile(props) {
             ))}
           </View>
         </View>
+        {buttonRender(user.uid, userId, userProf.firstName)}
       </View>
     </ScrollView>
   );
@@ -142,68 +145,75 @@ export default function UserProfile(props) {
 
 const styles = StyleSheet.create({
   cardChild: {
-    justifyContent: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap'
+    justifyContent: "center",
+    flexDirection: "row",
+    flexWrap: "wrap"
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    backgroundColor: '#D3E9FF'
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    backgroundColor: "#D3E9FF"
   },
   profilePic: {
     width: 175,
     height: 175
   },
   text: {
-    alignItems: 'center',
+    alignItems: "center",
     fontSize: 30,
     marginTop: 15,
-    fontFamily: 'Avenir',
-    color: '#031A6B'
+    fontFamily: "Avenir",
+    color: "#031A6B"
   },
   userinfo: {
     flex: 1,
     marginTop: 2,
-    alignItems: 'center',
-    width: '90%'
+    alignItems: "center",
+    width: "90%"
   },
   dogsCard: {
     marginTop: 15,
-    backgroundColor: '#fff',
-    width: '90%',
+    backgroundColor: "#fff",
+    width: "90%",
     borderWidth: 5,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    borderColor: '#031A6B'
+    borderColor: "#031A6B"
   },
   textinside: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 25,
     marginTop: 15,
-    fontFamily: 'Avenir',
-    color: '#031A6B'
+    fontFamily: "Avenir",
+    color: "#031A6B"
   },
   PointCard: {
     marginTop: 15,
-    backgroundColor: '#fff',
-    width: '90%',
+    backgroundColor: "#fff",
+    width: "90%",
     borderWidth: 5,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    borderColor: '#031A6B'
+    borderColor: "#031A6B"
   },
   textinside2: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 20,
     marginTop: 15,
-    fontFamily: 'Avenir',
-    color: '#031A6B'
+    fontFamily: "Avenir",
+    color: "#031A6B"
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: 20,
+    width: 300,
+    maxWidth: "80%"
   }
 });
