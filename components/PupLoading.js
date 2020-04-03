@@ -9,7 +9,7 @@ export function PupLoading() {
         source={require('../assets/images/corgi.gif')}
         style={{ width: 300, height: 290 }}
       />
-      <Text>Loading...</Text>
+      <Text style={styles.title}>Loading...</Text>
     </View>
   );
 }
@@ -19,5 +19,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center"
+  },
+  title: {
+    fontSize: 20,
+    marginTop: 1,
+    fontFamily:'Avenir',
+    color:'#031A6B'
   }
-});
+})
+
