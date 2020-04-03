@@ -14,10 +14,6 @@ export { default as Map } from './Map';
 export { default as Score } from './Score';
 export { default as RegisterScreen } from './RegisterScreen';
 export { default as MyProfile } from './MyProfile';
-<<<<<<< HEAD
 export { default as LinkPage} from './LinkPage'
 export { default as DataViz } from './DataViz'
 
-=======
-export { default as LinkPage } from './LinkPage';
->>>>>>> 3122f8394377d067afcfde965265d399dc751763
