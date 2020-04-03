@@ -73,7 +73,7 @@ export default function DataViz(props) {
 
    return (
       <ScrollView>
-         <VictoryChart width={350} theme={VictoryTheme.material}>
+         <VictoryChart width={350}>
             <VictoryBar
                horizontal
                // animate={{ duration: 2000 }}
