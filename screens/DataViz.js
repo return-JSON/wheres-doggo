@@ -1,14 +1,9 @@
 import * as React from 'react';
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
-// import { VictoryBar, VictoryChart, VictoryTheme } from 'victory-native';
-import {
-   VictoryBar,
-   VictoryChart,
-   VictoryPie,
-   VictoryScatter
-} from 'victory-native';
+import { VictoryChart, VictoryPie, VictoryScatter, VictoryLabel } from 'victory-native';
 import { db } from '../config/firebase';
 import { breedFreq, geoBreedFreq } from '../constants/utilityFunctions';
+import DogPoint from '../components/DogPoint'
 
 export default function DataViz(props) {
    const [allDogs, setAllDogs] = React.useState([]);
@@ -64,15 +59,33 @@ export default function DataViz(props) {
       <ScrollView>
          <VictoryChart>
             <VictoryScatter
+               // animate={{ duration: 2000 }}
+               labelComponent={
+                  <VictoryLabel
+                     angle={45}
+                     verticalAnchor='middle'
+                     textAnchor='end'
+                  />
+               }
                bubbleProperty='count'
                maxBubbleSize={25}
                minBubbleSize={5}
                data={geoBreedFreq(allDogs)}
                x='boroughOrCity'
                y='breed'
+               // dataComponent={<DogPoint />}
+               // style={{ data: { fill: "#c43a31" } }}
             />
          </VictoryChart>
-         <VictoryPie data={breedFreq(allDogs)} x='breed' y='count' />
+         <VictoryPie
+            // animate={{ duration: 2000 }}
+            data={breedFreq(allDogs)}
+            x='breed'
+            y='count'
+            sortKey='count'
+            innerRadius={70}
+            colorScale={['tomato', 'orange', 'gold', 'cyan', 'navy']}
+         />
       </ScrollView>
    );
 }
