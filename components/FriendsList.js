@@ -42,7 +42,6 @@ export default function FriendsList(props) {
   };
   return (
     <View style={styles.container}>
-      {console.log('props!u', navigation)}
       <Button
         title={userFriend.firstName}
         onPress={() => handlePress(userFriend.id)}
