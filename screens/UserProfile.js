@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Image,
   StyleSheet,
@@ -7,12 +7,12 @@ import {
   ScrollView,
   Button,
   Alert
-} from "react-native";
-import { DogTile, FriendsList, Card } from "../components";
-import { addFriend } from "../src/api";
-import { db } from "../config/firebase";
-import { useAuth } from "./HomeScreen";
-import Colors from '../constants/Colors'
+} from 'react-native';
+import { DogTile, FriendsList, Card } from '../components';
+import { addFriend } from '../src/api';
+import { db } from '../config/firebase';
+import { useAuth } from './HomeScreen';
+import Colors from '../constants/Colors';
 
 export default function UserProfile(props) {
   const { initializing, user } = useAuth();
@@ -50,9 +50,9 @@ export default function UserProfile(props) {
     // get user's dogs
     if (userId) {
       const unsubscribe = db
-        .collection("users")
+        .collection('users')
         .doc(userId)
-        .collection("userDogs")
+        .collection('userDogs')
         .onSnapshot(
           snapshot => {
             const dogsArr = [];
@@ -60,7 +60,7 @@ export default function UserProfile(props) {
               const { breed, imageUrl, location } = doc.data();
               dogsArr.push({
                 key: doc.id,
-                source: "user",
+                source: 'user',
                 breed,
                 imageUrl,
                 location
@@ -78,6 +78,22 @@ export default function UserProfile(props) {
     }
   }, [userId]);
 
+  handleButtonPress = async (myId, yourId, name) => {
+    try {
+      if (myId === yourId) {
+        Alert.alert("I'm sorry, but you cannot become your own friend...");
+      }
+      console;
+      let passFail = await addFriend(myId, yourId);
+      if (passFail) {
+        await Alert.alert(`Success! You are now friends with ${name}`);
+      }
+    } catch (err) {
+      Alert.alert('Something has gone wrong.');
+      console.log(err);
+    }
+  };
+
   buttonRender = (myId, yourId, name) => {
     if (!userProf.friends.includes(myId) && myId !== yourId) {
       return (
@@ -86,25 +102,11 @@ export default function UserProfile(props) {
             <Button
               title="Add Friend"
               color="white"
-              onPress={() => handlePress(myId, yourId, name)}
+              onPress={() => handleButtonPress(myId, yourId, name)}
             />
           </Card>
         </View>
       );
-    }
-  };
-  handlePress = async (myId, yourId, name) => {
-    try {
-      if (myId === yourId) {
-        Alert.alert("I'm sorry, but you cannot become your own friend...");
-      }
-      let passFail = await addFriend(myId, yourId);
-      if (passFail) {
-        await Alert.alert(`Success! You are now friends with ${name}`);
-      }
-    } catch (err) {
-      Alert.alert("Something has gone wrong.");
-      console.log(err);
     }
   };
 
@@ -154,15 +156,15 @@ export default function UserProfile(props) {
 
 const styles = StyleSheet.create({
   cardChild: {
-    justifyContent: "center",
-    flexDirection: "row",
-    flexWrap: "wrap"
+    justifyContent: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap'
   },
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
     backgroundColor: Colors.background
   },
   profilePic: {
@@ -170,23 +172,23 @@ const styles = StyleSheet.create({
     height: 175
   },
   text: {
-    alignItems: "center",
+    alignItems: 'center',
     fontSize: 30,
     marginVertical: 15,
-    fontFamily: "Avenir",
+    fontFamily: 'Avenir',
     color: Colors.text
   },
   userinfo: {
     flex: 1,
     marginVertical: 2,
-    alignItems: "center",
-    width: "90%"
+    alignItems: 'center',
+    width: '90%'
   },
   dogsCard: {
     paddingVertical: 10,
     marginVertical: 15,
-    backgroundColor: "white",
-    width: "90%",
+    backgroundColor: 'white',
+    width: '90%',
     borderWidth: 5,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
@@ -195,14 +197,14 @@ const styles = StyleSheet.create({
     borderColor: Colors.border
   },
   textinside: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 25,
-    fontFamily: "Avenir",
+    fontFamily: 'Avenir',
     color: Colors.border
   },
   PointCard: {
-    backgroundColor: "white",
-    width: "90%",
+    backgroundColor: 'white',
+    width: '90%',
     borderWidth: 5,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
@@ -212,16 +214,16 @@ const styles = StyleSheet.create({
   },
   textinside2: {
     paddingVertical: 10,
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 20,
-    fontFamily: "Avenir",
+    fontFamily: 'Avenir',
     color: Colors.text
   },
   buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
     marginTop: 20,
     width: 300,
-    maxWidth: "50%"
+    maxWidth: '50%'
   }
 });
