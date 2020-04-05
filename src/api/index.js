@@ -88,9 +88,10 @@ export const uploadImage = async (userId, uri, breed = 'last-image') => {
 
 const findCityCounty = async (lat, lon) => {
   const response = await fetch(
-    `https://us1.locationiq.com/v1/reverse.php?key=dd8b2f143c4022&lat=${lat}&lon=${lon}&format=json`
+     `https://us1.locationiq.com/v1/reverse.php?key=dd8b2f143c4022&lat=${lat}&lon=${lon}&format=json&accept-language=en`
   );
   const responseJson = await response.json();
+  console.log('api output', responseJson.address)
   return {
     city: `${responseJson.address.city}, ${responseJson.address.state}`,
     county: responseJson.address.county,
