@@ -83,12 +83,11 @@ export default function DataViz(props) {
          <View style={styles.container}>
             <Text style={styles.title}>Breeds Found By City/Borough</Text>
             <VictoryChart
-            animate={{duration: 500 }}
             theme={VictoryTheme.material}
-            domain={{ x: [0, 4], y: [0, 10] }}
-               height={450}
-               width={400}
-               padding={{ left: 75, right: 100, top: 20, bottom: 150}}
+            domain={{ x: [0, 4], y: [0, 12] }}
+               height={690}
+               width={450}
+               padding={{ left: 75, right: 100, top: 30, bottom: 150}}
                containerComponent={<VictoryVoronoiContainer />}
             >
                <VictoryAxis
@@ -136,7 +135,7 @@ export default function DataViz(props) {
                <Text style={styles.title}>Total Breed Distribution</Text>
                <VictoryPie
                   height={400}
-                  padding={{ top: 20, bottom: 80, left: 65, right: 65 }}
+                  padding={{ top: 85, bottom: 80, left: 65, right: 65 }}
                   data={breedFreq(allDogs)}
                   x='breed'
                   y='count'
@@ -146,7 +145,7 @@ export default function DataViz(props) {
                   colorScale={['navy','gold']}
                   labels={({ datum }) => `${datum.breed}\n${datum.count}`}
                   style={{
-                     labels: {fontSize: 15, fill: "#c43a31", padding: 9
+                     labels: {fontSize: 12, fill: "#c43a31", padding: 9
                      },
                      data: {fillOpacity: 0.9, stroke: "white", strokeWidth:3}}}
 
