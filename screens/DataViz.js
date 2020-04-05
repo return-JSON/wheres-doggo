@@ -1,28 +1,69 @@
 import * as React from 'react';
-import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
-// import { VictoryBar, VictoryChart, VictoryTheme } from 'victory-native';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import {
-   VictoryBar,
    VictoryChart,
-   VictoryLine,
    VictoryPie,
+   VictoryScatter,
+   VictoryAxis,
+   VictoryVoronoiContainer,
+   VictoryTooltip,
+   VictoryLabel,
    VictoryTheme
 } from 'victory-native';
 import { db } from '../config/firebase';
-import { breedFreq } from '../constants/utilityFunctions'
-// import { dogsData } from '../src/data/data';
+import {
+   breedFreq,
+   geoBreedFreq,
+   editCity
+} from '../constants/utilityFunctions';
+
+class CustomLabel extends React.Component {
+   render() {
+      return (
+         <g>
+            <VictoryLabel {...this.props} />
+            <VictoryTooltip
+               {...this.props}
+               x={200}
+               y={250}
+               orientation='top'
+               pointerLength={0}
+               cornerRadius={50}
+               flyoutWidth={100}
+               flyoutHeight={100}
+               flyoutStyle={{ fill: 'black' }}
+            />
+         </g>
+      );
+   }
+}
+
+CustomLabel.defaultEvents = VictoryTooltip.defaultEvents;
+
+
 
 export default function DataViz(props) {
    const [allDogs, setAllDogs] = React.useState([]);
+
+
+   
    React.useEffect(() => {
-      const unsubscribe = db.collectionGroup('userDogs').onSnapshot(
-         snapshot => {
+      const unsubscribe = db
+         .collectionGroup('userDogs')
+         .onSnapshot(snapshot => {
             const allDogsArr = [];
             snapshot.forEach(doc => {
-               const { breed, imageUrl, location, points, city, county } = doc.data();
+               const {
+                  breed,
+                  imageUrl,
+                  location,
+                  points,
+                  city,
+                  county
+               } = doc.data();
                allDogsArr.push({
                   key: doc.id,
-                  breed,
+                  breed: breed.split(' ').join('\n'),
                   imageUrl,
                   location,
                   city,
@@ -30,41 +71,11 @@ export default function DataViz(props) {
                   points
                });
             });
+            editCity(allDogsArr);
             setAllDogs(allDogsArr);
-         }
-      );
+         });
       return () => unsubscribe();
    }, []);
-   console.log('allDogs', allDogs);
-   
-   // util function to aggregate breeds
-   // function breedFreq(arr) {
-   //    let breedList = [];
-   //    arr.forEach(dog => {
-   //       const i = breedList.findIndex(x => x.breed === dog.breed);
-   //       if (i <= -1) breedList.push({ breed: dog.breed, count: 1 });
-   //       else breedList[i].count++;
-   //    });
-   //    return breedList;
-   // }
-
-   // function to set borough if NYC
-
-   allDogs.forEach(dog => {
-      if (dog.city === 'New York, New York') {
-         if (dog.county === 'New York County') dog.boroughOrCity = 'Manhattan, New York'
-         else if (dog.county === 'Kings County') dog.boroughOrCity = 'Brooklyn, New York'
-         else if (dog.county === 'Queens County') dog.boroughOrCity = 'Queens, New York'
-         else if (dog.county === 'Richmond County') dog.boroughOrCity = 'Staten Island, New York'
-         else if (dog.county === 'Bronx County') dog.boroughOrCity = 'Bronx, New York'
-         else dog.boroughOrCity = dog.city
-      } else {
-         dog.boroughOrCity = dog.city
-      }
-   })
-     console.log('allDogs', allDogs);
-
-   console.log('city/borough', geoBreedFreq(allDogs));
 
    return (
       <ScrollView style={{ backgroundColor: "#D3E9FF" }}>
@@ -119,30 +130,29 @@ export default function DataViz(props) {
             </VictoryChart>
             </View>
 
-   // function breedFreqByGeo(arr) {
-   //    let breedList = [];
-
-   // }
 
 
-   return (
-      <ScrollView>
-         <VictoryChart width={350}>
-            <VictoryBar
-               horizontal
-               // animate={{ duration: 2000 }}
-               data={breedFreq(allDogs)}
-               x='breed'
-               y='count'
-            />
-         </VictoryChart>
-         <VictoryChart>
-            <VictoryLine />
-         </VictoryChart>
-         <VictoryPie />
-         {/* <VictoryChart width={350} theme={VictoryTheme.material}>
-               <VictoryBar data={data} x='quarter' y='earnings' />
-            </VictoryChart> */}
+            <View style={styles.containerIn}>
+               <Text style={styles.title}>Total Breed Distribution</Text>
+               <VictoryPie
+                  height={400}
+                  padding={{ top: 20, bottom: 80, left: 65, right: 65 }}
+                  data={breedFreq(allDogs)}
+                  x='breed'
+                  y='count'
+                  sortKey='count'
+                  innerRadius={70}
+                  labelRadius={125}
+                  colorScale={['navy','gold']}
+                  labels={({ datum }) => `${datum.breed}\n${datum.count}`}
+                  style={{
+                     labels: {fontSize: 15, fill: "#c43a31", padding: 9
+                     },
+                     data: {fillOpacity: 0.9, stroke: "white", strokeWidth:3}}}
+
+               />
+            </View>
+         </View>
       </ScrollView>
    );
 }
@@ -150,8 +160,17 @@ export default function DataViz(props) {
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#f5fcff'
+   },
+   title: {
+      textAlign:'center',
+      alignItems:'center',
+      fontSize: 30,
+      marginTop: 15,
+      fontFamily:'Avenir',
+      color:'#031A6B'
+   },
+   containerIn: {
+      flex: 1,
+      marginTop: 90
    }
 });
