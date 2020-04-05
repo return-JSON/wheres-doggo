@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { Text, View, Image, Button, Alert, StyleSheet } from "react-native";
 import AwesomeAlert from "react-native-awesome-alerts";
 
-import { PupLoading, Card } from "../components";
+import { PupLoading} from "../components/PupLoading";
+import Card from "../components/Card"
 import Colors from "../constants/Colors";
 import { setPhotoUri, addPupThunk, clearDog } from "../src/reducers/camera";
 
@@ -73,7 +74,7 @@ class DogSnap extends Component {
           />
           <Text style={styles.text}> 🐶 Breed not found </Text>
           <View style={styles.buttonContainer}>
-            <Card style={{ backgroundColor: Colors.cancel }}>
+            <Card style={styles.tryAgain}>
               <Button
                 color={"white"}
                 title="Try again"
@@ -178,6 +179,9 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     fontFamily: "Avenir",
     color: Colors.text
+  },
+  tryAgain: {
+    backgroundColor: Colors.cancel
   }
 });
 
