@@ -128,14 +128,14 @@ export default function HomeScreen(props) {
   }
 
   return (
-    <ScrollView>
+    <ScrollView style={{backgroundColor:"#D3E9FF"}}>
       <View style={styles.container}>
       <Text style={styles.text}>Hello {user.displayName}!!!</Text>
       <Button
       title="Click here to learn how to play!"
       onPress={() => setModal(true)}
       />
-
+<View>
        <Modal visible={showModal} onTouchOutside={() => setModal(false)}>
          <ModalContent>
             <Text style={styles.insideText}>Welcome!</Text>
@@ -145,6 +145,7 @@ export default function HomeScreen(props) {
             <Text style={styles.textinside2}>Now Get Out There and Find Doggos!</Text>
       </ModalContent>
   </Modal>
+  </View>
 
         <View style={styles.dogsCard}>
           <Text style={styles.insideText}> Your DogGo Dex:</Text>
