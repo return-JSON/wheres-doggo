@@ -8,14 +8,12 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { PupLoading } from '../components/PupLoading';
 import { useAuth } from './HomeScreen';
-import { uploadImage } from '../src/api';
+import { resizeFromCamera } from '../src/api';
 
 export default function CameraScreen({ navigation }) {
   const { initializing, user } = useAuth();
   const [loading, setLoading] = React.useState(false);
-
-  const [hasPermission, setHasPermission] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
+  const [hasPermission, setHasPermission] = React.useState(null);
 
   useEffect(() => {
     (async () => {
@@ -30,9 +28,10 @@ export default function CameraScreen({ navigation }) {
   snap = async () => {
     if (this.camera) {
       try {
-        let photo = await this.camera.takePictureAsync();
+        let camPhoto = await this.camera.takePictureAsync();
+        let photo = await resizeFromCamera(camPhoto.uri);
         setLoading(true);
-        await uploadImage(user.uid, photo.uri);
+        return photo;
       } catch (err) {
         console.log(err);
         setLoading(false);
@@ -41,10 +40,11 @@ export default function CameraScreen({ navigation }) {
   };
 
   handlePress = async () => {
-    await snap();
+    let photo = await snap();
     await setLoading(false);
     await navigation.navigate('DogSnap', {
-      userId: user.uid
+      userId: user.uid,
+      photo: photo
     });
   };
 

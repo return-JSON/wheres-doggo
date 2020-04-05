@@ -9,17 +9,20 @@ import firebase from '../../config/firebase';
 import * as Location from 'expo-location';
 import * as ImageManipulator from 'expo-image-manipulator';
 
-export const submitToGoogle = async image => {
+export const submitToGoogle = async base64 => {
   try {
     let body = JSON.stringify({
       requests: [
         {
-          features: [{ type: 'LABEL_DETECTION', maxResults: 10 }],
           image: {
-            source: {
-              imageUri: image
+            content: base64
+          },
+          features: [
+            {
+              type: 'LABEL_DETECTION',
+              maxResults: 10
             }
-          }
+          ]
         }
       ]
     });
@@ -59,34 +62,41 @@ export const getBreedList = async () => {
   }
 };
 
-export const uploadImage = async (userId, uri, breed = 'last-image') => {
+export const resizeFromCamera = async uri => {
   let resizedPhoto = await ImageManipulator.manipulateAsync(
     uri,
     [{ resize: { width: 500 } }],
-    { compress: 0.5, format: 'png', base64: false }
+    { compress: 0.5, format: 'png', base64: true }
   );
-  const response = await fetch(resizedPhoto.uri);
-  const blob = await response.blob();
-  const ref = await firebase
-    .storage()
-    .ref()
-    .child(`${userId}/${breed}`);
-  const snapshot = await ref.put(blob);
-  blob.close();
+  return resizedPhoto;
+};
+
+export const uploadImage = async (userId, uri, breed = 'last-image') => {
+  try {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const ref = await firebase
+      .storage()
+      .ref()
+      .child(`${userId}/${breed}`);
+    const snapshot = await ref.put(blob);
+    blob.close();
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const findCityCounty = async (lat, lon) => {
   const response = await fetch(
-     `https://us1.locationiq.com/v1/reverse.php?key=dd8b2f143c4022&lat=${lat}&lon=${lon}&format=json`
+    `https://us1.locationiq.com/v1/reverse.php?key=dd8b2f143c4022&lat=${lat}&lon=${lon}&format=json`
   );
-  const responseJson = await response.json()
+  const responseJson = await response.json();
   return {
     city: `${responseJson.address.city}, ${responseJson.address.state}`,
     county: responseJson.address.county,
     country: responseJson.address.country
-  }
-  
-}
+  };
+};
 
 export const addPup = async (userId, stateObj) => {
   let urlBreed = urlMaker(stateObj.breed);
@@ -97,12 +107,12 @@ export const addPup = async (userId, stateObj) => {
   );
 
   const cityCounty = await findCityCounty(
-     stateObj.location.coords.latitude,
-     stateObj.location.coords.longitude
+    stateObj.location.coords.latitude,
+    stateObj.location.coords.longitude
   );
-  stateObj.city = cityCounty.city
-  stateObj.county = cityCounty.county
-  stateObj.country = cityCounty.country
+  stateObj.city = cityCounty.city;
+  stateObj.county = cityCounty.county;
+  stateObj.country = cityCounty.country;
 
   const breedId = dogDocer(stateObj.breed);
   stateObj.location = geopoint;
