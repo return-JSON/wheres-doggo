@@ -118,7 +118,7 @@ export default function DataViz(props) {
                         renderInPortal={false}
                      />
                   }
-                  labels={({ datum }) => `${datum.breed}\n${datum.count}\n${datum.boroughOrCity}`}
+                  labels={({ datum }) => `${datum.breed}\n${datum.count}`}
                   bubbleProperty='count'
                   maxBubbleSize={10}
                   minBubbleSize={5}
