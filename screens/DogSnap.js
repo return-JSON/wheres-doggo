@@ -1,9 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Text, View, Image, Button, Alert } from 'react-native';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Text, View, Image, Button, Alert, StyleSheet } from "react-native";
+import AwesomeAlert from "react-native-awesome-alerts";
 
-import { PupLoading } from '../components/PupLoading';
-import { setPhotoUri, addPupThunk, clearDog } from '../src/reducers/camera';
+import { PupLoading, Card } from "../components";
+import Colors from "../constants/Colors";
+import { setPhotoUri, addPupThunk, clearDog } from "../src/reducers/camera";
 
 class DogSnap extends Component {
   constructor(props) {
@@ -33,11 +35,11 @@ class DogSnap extends Component {
       });
       await Alert.alert(
         `${breed} has been added to DoggoDex!`,
-        'Back to catching more doggos!',
+        "Back to catching more doggos!",
         [
           {
-            text: 'Ok!',
-            onPress: () => navigation.navigate('Camera')
+            text: "Ok!",
+            onPress: () => navigation.navigate("Camera")
           }
         ],
         { cancelable: false }
@@ -52,13 +54,13 @@ class DogSnap extends Component {
 
     if (!this.props.camera.breed || this.state.isLoading) {
       return <PupLoading />;
-    } else if (this.props.camera.breed === '🐶 breed not found') {
+    } else if (this.props.camera.breed === "🐶 breed not found") {
       return (
         <View
           style={{
             flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center'
+            justifyContent: "center",
+            alignItems: "center"
           }}
         >
           <Image
@@ -67,28 +69,36 @@ class DogSnap extends Component {
               uri: this.props.camera.imageUrl
             }}
           />
-          <Text> 🐶 breed not found </Text>
-          <Button
-            title="Try again"
-            onPress={() => navigation.navigate('Camera')}
-          />
-          <Button
-            title="Find breed"
-            onPress={() =>
-              navigation.navigate('Add A Breed', {
-                userId: this.props.route.params.userId
-              })
-            }
-          />
+          <Text style={styles.text}> 🐶 Breed not found </Text>
+          <View style={styles.buttonContainer}>
+            <Card style={{ backgroundColor: Colors.cancel }}>
+              <Button
+                color={"white"}
+                title="Try again"
+                onPress={() => navigation.navigate("Camera")}
+              />
+            </Card>
+            <Card>
+              <Button
+                color={"white"}
+                title="Find breed"
+                onPress={() =>
+                  navigation.navigate("Add A Breed", {
+                    userId: this.props.route.params.userId
+                  })
+                }
+              />
+            </Card>
+          </View>
         </View>
       );
-    } else if (this.props.camera.breed === 'Not a dog') {
+    } else if (this.props.camera.breed === "Not a dog") {
       return (
         <View
           style={{
             flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center'
+            justifyContent: "center",
+            alignItems: "center"
           }}
         >
           <Image
@@ -97,11 +107,16 @@ class DogSnap extends Component {
               uri: this.props.camera.imageUrl
             }}
           />
-          <Text>Are you sure this is a picture of a dog?</Text>
-          <Button
-            title="Go snap some dogs!!!"
-            onPress={() => navigation.navigate('Camera')}
-          />
+          <Text style={styles.text}>
+            Are you sure this is a picture of a dog?
+          </Text>
+          <Card>
+            <Button
+              color={"white"}
+              title="Find dogs"
+              onPress={() => navigation.navigate("Camera")}
+            />
+          </Card>
         </View>
       );
     } else {
@@ -109,8 +124,8 @@ class DogSnap extends Component {
         <View
           style={{
             flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center'
+            justifyContent: "center",
+            alignItems: "center"
           }}
         >
           <Image
@@ -119,23 +134,50 @@ class DogSnap extends Component {
               uri: this.props.route.params.photo.uri
             }}
           />
-          <Text>Wowie! What a cute {this.props.camera.breed}😍</Text>
-          <Button
-            title="Add this pup to my DoggoDex!"
-            onPress={() => {
-              this.addPup(
-                this.props.route.params.userId,
-                this.props.camera,
-                this.props.camera.breed,
-                navigation
-              );
-            }}
-          />
+          <Text style={styles.text}>
+            Wowie! What a cute {this.props.camera.breed}😍
+          </Text>
+          <Card>
+            <Button
+              color={"white"}
+              title="Add to DoggoDex"
+              onPress={() => {
+                this.addPup(
+                  this.props.route.params.userId,
+                  this.props.camera,
+                  this.props.camera.breed,
+                  navigation
+                );
+              }}
+            />
+          </Card>
         </View>
       );
     }
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20,
+    width: 300,
+    maxWidth: "70%"
+  },
+  text: {
+    fontSize: 30,
+    textAlign: "center",
+    marginVertical: 20,
+    fontFamily: "Avenir",
+    color: Colors.text
+  }
+});
 
 const mapState = state => {
   return {

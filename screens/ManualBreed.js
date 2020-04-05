@@ -4,7 +4,7 @@ import { Image, StyleSheet, Picker, View, Button, Alert } from 'react-native';
 import * as Location from 'expo-location';
 import * as ImageManipulator from 'expo-image-manipulator';
 
-import Card from './Card';
+import Card from '../components/Card';
 import { getBreedList, uploadImage } from '../src/api';
 import { dogDocer, urlMaker } from '../constants/utilityFunctions';
 import { db } from '../config/firebase';

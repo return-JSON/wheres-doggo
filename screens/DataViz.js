@@ -1,25 +1,32 @@
 import * as React from 'react';
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
-// import { VictoryBar, VictoryChart, VictoryTheme } from 'victory-native';
 import {
-   VictoryBar,
    VictoryChart,
-   VictoryLine,
    VictoryPie,
-   VictoryTheme
+   VictoryScatter,
+   VictoryVoronoiContainer, VictoryTooltip
 } from 'victory-native';
 import { db } from '../config/firebase';
-import { breedFreq } from '../constants/utilityFunctions'
-// import { dogsData } from '../src/data/data';
+import { breedFreq, geoBreedFreq, editCity } from '../constants/utilityFunctions';
+import Colors from '../constants/Colors'
+import DogPoint from '../components/DogPoint'
 
 export default function DataViz(props) {
    const [allDogs, setAllDogs] = React.useState([]);
    React.useEffect(() => {
-      const unsubscribe = db.collectionGroup('userDogs').onSnapshot(
-         snapshot => {
+      const unsubscribe = db
+         .collectionGroup('userDogs')
+         .onSnapshot(snapshot => {
             const allDogsArr = [];
             snapshot.forEach(doc => {
-               const { breed, imageUrl, location, points, city, county } = doc.data();
+               const {
+                  breed,
+                  imageUrl,
+                  location,
+                  points,
+                  city,
+                  county
+               } = doc.data();
                allDogsArr.push({
                   key: doc.id,
                   breed,
@@ -30,65 +37,39 @@ export default function DataViz(props) {
                   points
                });
             });
+            editCity(allDogsArr)
             setAllDogs(allDogsArr);
-         }
-      );
+         });
       return () => unsubscribe();
    }, []);
-   console.log('allDogs', allDogs);
-   
-   // util function to aggregate breeds
-   // function breedFreq(arr) {
-   //    let breedList = [];
-   //    arr.forEach(dog => {
-   //       const i = breedList.findIndex(x => x.breed === dog.breed);
-   //       if (i <= -1) breedList.push({ breed: dog.breed, count: 1 });
-   //       else breedList[i].count++;
-   //    });
-   //    return breedList;
-   // }
-
-   // function to set borough if NYC
-
-   allDogs.forEach(dog => {
-      if (dog.city === 'New York, New York') {
-         if (dog.county === 'New York County') dog.boroughOrCity = 'Manhattan, New York'
-         else if (dog.county === 'Kings County') dog.boroughOrCity = 'Brooklyn, New York'
-         else if (dog.county === 'Queens County') dog.boroughOrCity = 'Queens, New York'
-         else if (dog.county === 'Richmond County') dog.boroughOrCity = 'Staten Island, New York'
-         else if (dog.county === 'Bronx County') dog.boroughOrCity = 'Bronx, New York'
-         else dog.boroughOrCity = dog.city
-      } else {
-         dog.boroughOrCity = dog.city
-      }
-   })
-     console.log('allDogs', allDogs);
-
-
-   // function breedFreqByGeo(arr) {
-   //    let breedList = [];
-
-   // }
 
 
    return (
       <ScrollView>
-         <VictoryChart width={350}>
-            <VictoryBar
-               horizontal
+         <VictoryChart containerComponent={<VictoryVoronoiContainer />}>
+            <VictoryScatter
                // animate={{ duration: 2000 }}
-               data={breedFreq(allDogs)}
-               x='breed'
-               y='count'
+               labelComponent={<VictoryTooltip renderInPortal={false}/>}
+               labels={({ datum }) => `${datum.breed} ${datum.count}`}
+               bubbleProperty='count'
+               maxBubbleSize={20}
+               minBubbleSize={8}
+               data={geoBreedFreq(allDogs)}
+               x='boroughOrCity'
+               y='breed'
+               // dataComponent={<DogPoint />}
+               // style={{ data: { fill: "#c43a31" } }}
             />
          </VictoryChart>
-         <VictoryChart>
-            <VictoryLine />
-         </VictoryChart>
-         <VictoryPie />
-         {/* <VictoryChart width={350} theme={VictoryTheme.material}>
-               <VictoryBar data={data} x='quarter' y='earnings' />
-            </VictoryChart> */}
+         <VictoryPie
+            // animate={{ duration: 2000 }}
+            data={breedFreq(allDogs)}
+            x='breed'
+            y='count'
+            sortKey='count'
+            innerRadius={70}
+            colorScale={['tomato', 'orange', 'gold', 'cyan', 'navy']}
+         />
       </ScrollView>
    );
 }
@@ -98,6 +79,6 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#f5fcff'
+      backgroundColor: Colors.lightBlue
    }
 });

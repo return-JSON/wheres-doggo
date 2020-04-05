@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { Image, View, Text, StyleSheet } from 'react-native';
 
+import { properCase } from '../constants/utilityFunctions'
+
 export default function DogTile(props) {
   // const [loading, setLoading] = React.useState(true)
   const { dog } = props;
+  dog.breed = properCase(dog.breed)
 
   if (dog.source === 'database') {
     return (

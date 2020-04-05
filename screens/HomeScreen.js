@@ -1,12 +1,14 @@
-import * as React from 'react';
-import { StyleSheet, Text, View, Button, ScrollView } from 'react-native';
+import * as React from "react";
+import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
 // import { fetchUser } from '../src/reducers/user'; (reminder to delete user if needed)
-import * as firebase from 'firebase';
-import DogTile from '../components/DogTile';
-import { dog } from '../constants/dog';
-import { db } from '../config/firebase';
-import { homeScreenDogs } from '../constants/utilityFunctions';
-import Modal, { ModalContent } from 'react-native-modals'
+import * as firebase from "firebase";
+import DogTile from "../components/DogTile";
+import { dog } from "../constants/dog";
+import { db } from "../config/firebase";
+import { homeScreenDogs } from "../constants/utilityFunctions";
+import Modal, { ModalContent } from "react-native-modals";
+import Card from "../components/Card";
+import Colors from "../constants/Colors";
 
 export const useAuth = () => {
   const [state, setState] = React.useState(() => {
@@ -29,10 +31,10 @@ export default function HomeScreen(props) {
   const { initializing, user } = useAuth();
   const [error, setError] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
-  const [userId, setId] = React.useState('');
+  const [userId, setId] = React.useState("");
   const [userDogs, setUserDogs] = React.useState([]);
   const [allDogs, setAllDogs] = React.useState([]);
-  const [showModal, setModal] = React.useState(false)
+  const [showModal, setModal] = React.useState(false);
   /*
    // initialize our default state
    // when the id attribute changes (including mount)
@@ -41,14 +43,14 @@ export default function HomeScreen(props) {
 
   React.useEffect(() => {
     // dogs database (allDogs)
-    const unsubscribe = db.collection('dogs').onSnapshot(
+    const unsubscribe = db.collection("dogs").onSnapshot(
       snapshot => {
         const allDogsArr = [];
         snapshot.forEach(doc => {
           const { breed, description, imageUrl, lastSeen, points } = doc.data();
           allDogsArr.push({
             key: doc.id,
-            source: 'database',
+            source: "database",
             breed,
             description,
             imageUrl,
@@ -69,8 +71,8 @@ export default function HomeScreen(props) {
   React.useEffect(() => {
     // userId
     const unsubscribe = db
-      .collection('users')
-      .where('email', '==', user.email)
+      .collection("users")
+      .where("email", "==", user.email)
       .onSnapshot(
         doc => {
           setId(doc.docs[0].id);
@@ -90,9 +92,9 @@ export default function HomeScreen(props) {
     // user dogs (userDogs)
     if (userId) {
       const unsubscribe = db
-        .collection('users')
+        .collection("users")
         .doc(userId)
-        .collection('userDogs')
+        .collection("userDogs")
         .onSnapshot(
           snapshot => {
             const dogsArr = [];
@@ -100,7 +102,7 @@ export default function HomeScreen(props) {
               const { breed, imageUrl, location } = doc.data();
               dogsArr.push({
                 key: doc.id,
-                source: 'user',
+                source: "user",
                 breed,
                 imageUrl,
                 location
@@ -130,31 +132,47 @@ export default function HomeScreen(props) {
   return (
     <ScrollView>
       <View style={styles.container}>
-      <Text style={styles.text}>Hello {user.displayName}!!!</Text>
-      <Button
-      title="Click here to learn how to play!"
-      onPress={() => setModal(true)}
-      />
+        <Text style={styles.text}>Hello, {user.displayName}</Text>
 
-       <Modal visible={showModal} onTouchOutside={() => setModal(false)}>
-         <ModalContent>
+        <Modal visible={showModal} onTouchOutside={() => setModal(false)}>
+          <ModalContent>
             <Text style={styles.insideText}>Welcome!</Text>
-            <Text style={styles.textinside2}>Your main goal: Catch dogs to complete your DogDex!</Text>
-            <Text style={styles.textinside2}>To start: Swipe right on your screen, open the camera and snap a picture of the dog you found</Text>
-            <Text style={styles.textinside2}>The more dog you find, the more points you get</Text>
-            <Text style={styles.textinside2}>Now Get Out There and Find Doggos!</Text>
-      </ModalContent>
-  </Modal>
+            <Text style={styles.textinside2}>
+              Your main goal: Catch dogs to complete your DoggoDex.
+            </Text>
+            <Text style={styles.textinside2}>
+              To start: Swipe right on your screen, open the camera and snap a
+              picture of the dog you found.
+            </Text>
+            <Text style={styles.textinside2}>
+              The more dogs you find, the more points you collect.
+            </Text>
+            <Text style={styles.textinside2}>
+              Get out there and find DogGos!
+            </Text>
+          </ModalContent>
+        </Modal>
 
         <View style={styles.dogsCard}>
-          <Text style={styles.insideText}> Your DogGo Dex:</Text>
+          <Text style={styles.insideText}> Your DogGos</Text>
           <View style={styles.cardChild}>
             {uniqueDogs.map(dog => {
               return <DogTile dog={dog} key={dog.key} />;
             })}
           </View>
         </View>
-        <Button title="Sign Out" onPress={signOutUser} />
+        <View style={styles.buttonContainer}>
+        <Card>
+          <Button
+            color={"white"}
+            title="How to Play"
+            onPress={() => setModal(true)}
+          />
+        </Card>
+        <Card style={{backgroundColor: Colors.cancel}}>
+          <Button color={"white"} title="Sign Out" onPress={signOutUser} />
+        </Card>
+        </View>
       </View>
     </ScrollView>
   );
@@ -163,48 +181,55 @@ export default function HomeScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    backgroundColor:"#D3E9FF"
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    backgroundColor: Colors.background
   },
   dogsCard: {
     marginTop: 15,
-    backgroundColor: '#fff',
-    width: '90%',
+    backgroundColor: "white",
+    width: "90%",
     borderWidth: 5,
-    borderBottomLeftRadius:30,
-    borderBottomRightRadius:30,
-    borderTopLeftRadius:30,
-    borderTopRightRadius:30,
-    borderColor:'#031A6B'
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    borderColor: Colors.border
   },
   cardChild: {
-    marginTop:10,
-    justifyContent: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    marginTop: 10,
+    justifyContent: "center",
+    flexDirection: "row",
+    flexWrap: "wrap"
   },
-  text:{
-    alignItems:'center',
+  text: {
+    alignItems: "center",
     fontSize: 30,
     marginTop: 15,
-    fontFamily:'Avenir',
-    color:'#031A6B'
+    fontFamily: "Avenir",
+    color: Colors.text
   },
-  insideText:{
-    marginTop:  5,
-    fontFamily:'Avenir-Light',
-    color:'blue',
-    fontSize:20,
-    textAlign:'center'
+  insideText: {
+    marginTop: 5,
+    fontFamily: "Avenir-Light",
+    color: "blue",
+    fontSize: 20,
+    textAlign: "center"
   },
-  textinside2:{
+  textinside2: {
     fontSize: 18,
     marginTop: 10,
-    fontFamily:'Avenir',
-    color:'#031A6B',
-    textAlign:'center',
-    alignContent: 'center',
+    fontFamily: "Avenir",
+    color: Colors.text,
+    textAlign: "center",
+    alignContent: "center"
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: 20,
+    width: 300,
+    maxWidth: "80%"
   }
 });

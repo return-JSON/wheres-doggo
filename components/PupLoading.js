@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import Colors from '../constants/Colors'
 
 export function PupLoading() {
   return (
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 1,
     fontFamily:'Avenir',
-    color:'#031A6B'
+    color: Colors.border
   }
 })
 
