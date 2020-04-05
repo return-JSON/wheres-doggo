@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import LoadingScreen from './screens/LoadingScreen';
-import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import InsideApp from './screens/InsideApp';
 import {Asset} from 'expo-asset'
@@ -12,8 +11,12 @@ import { createFirestoreInstance } from 'redux-firestore';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import Login from './screens/Login'
-
+import { YellowBox } from 'react-native'
 import store from './src/store';
+
+YellowBox.ignoreWarnings(['AppRegistry.setWrapperComponentProvider has no effect in managed Expo apps']);
+YellowBox.ignoreWarnings(['Deprecated: Native Google Sign-In has been moved to Expo.GoogleSignIn'])
+
 
 const rrfConfig = { userProfile: 'users', useFirestoreForProfile: true };
 
