@@ -82,4 +82,8 @@ https://expo.io/
 
 ## Examples
 
-<img src='https://github.com/return-JSON/wheres-doggo/blob/readMe/assets/images/jack.png' />
+<img src='https://github.com/return-JSON/wheres-doggo/blob/readMe/assets/images/hanky.png' />
+
+<img src='https://github.com/return-JSON/wheres-doggo/blob/readMe/assets/images/doggomap.png' />
+
+<img src='https://github.com/return-JSON/wheres-doggo/blob/readMe/assets/images/homescreen.png' />
