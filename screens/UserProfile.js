@@ -8,7 +8,8 @@ import {
   Button,
   Alert
 } from "react-native";
-import { DogTile, FriendsList, Card } from "../components";
+import { DogTile, FriendsList } from "../components";
+import Card from '../components/Card'
 import { addFriend } from "../src/api";
 import { db } from "../config/firebase";
 import { useAuth } from "./HomeScreen";
