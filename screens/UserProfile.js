@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Image,
   StyleSheet,
@@ -7,13 +7,14 @@ import {
   ScrollView,
   Button,
   Alert
-} from "react-native";
-import { DogTile, FriendsList } from "../components";
-import Card from '../components/Card'
-import { addFriend } from "../src/api";
-import { db } from "../config/firebase";
-import { useAuth } from "./HomeScreen";
-import Colors from '../constants/Colors'
+} from 'react-native';
+import { DogTile, FriendsList } from '../components';
+import { addFriend } from '../src/api';
+import { db } from '../config/firebase';
+import { useAuth } from './HomeScreen';
+
+
+
 
 export default function UserProfile(props) {
   const { initializing, user } = useAuth();
@@ -51,9 +52,9 @@ export default function UserProfile(props) {
     // get user's dogs
     if (userId) {
       const unsubscribe = db
-        .collection("users")
+        .collection('users')
         .doc(userId)
-        .collection("userDogs")
+        .collection('userDogs')
         .onSnapshot(
           snapshot => {
             const dogsArr = [];
@@ -61,7 +62,7 @@ export default function UserProfile(props) {
               const { breed, imageUrl, location } = doc.data();
               dogsArr.push({
                 key: doc.id,
-                source: "user",
+                source: 'user',
                 breed,
                 imageUrl,
                 location
@@ -83,18 +84,15 @@ export default function UserProfile(props) {
     if (!userProf.friends.includes(myId) && myId !== yourId) {
       return (
         <View>
-          <Card style={styles.buttonContainer}>
-            <Button
-              title="Add Friend"
-              color="white"
-              onPress={() => handlePress(myId, yourId, name)}
-            />
-          </Card>
+          <Button
+            title="Add to Friends"
+            onPress={() => handleButtonPress(myId, yourId, name)}
+          />
         </View>
       );
     }
   };
-  handlePress = async (myId, yourId, name) => {
+  handleButtonPress = async (myId, yourId, name) => {
     try {
       if (myId === yourId) {
         Alert.alert("I'm sorry, but you cannot become your own friend...");
@@ -104,30 +102,32 @@ export default function UserProfile(props) {
         await Alert.alert(`Success! You are now friends with ${name}`);
       }
     } catch (err) {
-      Alert.alert("Something has gone wrong.");
+      Alert.alert('Something has gone wronng.');
       console.log(err);
     }
   };
 
+  console.log(userProf.profilePicture)
+
   return (
-    <ScrollView style={{ backgroundColor: Colors.background }}>
+    <ScrollView style={{ backgroundColor: '#D3E9FF' }}>
       <View style={styles.container}>
         <View style={styles.userinfo}>
+
           <Image
             style={styles.profilePic}
-            source={{
-              uri: userProf.profilePicture
-            }}
+            source={userProf.profilePicture === undefined ? require('../assets/images/dogpic.png') : {uri: userProf.profilePicture}} 
           />
           <Text style={styles.text}>{userProf.firstName}</Text>
+          {buttonRender(user.uid, userId, userProf.firstName)}
         </View>
 
         <View style={styles.PointCard}>
-          <Text style={styles.textinside2}> Points: {userProf.points}</Text>
+          <Text style={styles.textinside2}> Points:{userProf.points}</Text>
         </View>
 
         <View style={styles.dogsCard}>
-          <Text style={styles.textinside}>DogGos Collected</Text>
+          <Text style={styles.textinside}>Doggos Collected:</Text>
 
           <View style={styles.cardChild}>
             {userDogs.map(dog => (
@@ -147,7 +147,6 @@ export default function UserProfile(props) {
             ))}
           </View>
         </View>
-        {buttonRender(user.uid, userId, userProf.firstName)}
       </View>
     </ScrollView>
   );
@@ -155,74 +154,68 @@ export default function UserProfile(props) {
 
 const styles = StyleSheet.create({
   cardChild: {
-    justifyContent: "center",
-    flexDirection: "row",
-    flexWrap: "wrap"
+    justifyContent: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap'
   },
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent: "center",
-    backgroundColor: Colors.background
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    backgroundColor: '#D3E9FF'
   },
   profilePic: {
     width: 175,
     height: 175
   },
   text: {
-    alignItems: "center",
+    alignItems: 'center',
     fontSize: 30,
-    marginVertical: 15,
-    fontFamily: "Avenir",
-    color: Colors.text
+    marginTop: 15,
+    fontFamily: 'Avenir',
+    color: '#031A6B'
   },
   userinfo: {
     flex: 1,
-    marginVertical: 2,
-    alignItems: "center",
-    width: "90%"
+    marginTop: 2,
+    alignItems: 'center',
+    width: '90%'
   },
   dogsCard: {
-    paddingVertical: 10,
-    marginVertical: 15,
-    backgroundColor: "white",
-    width: "90%",
+    marginTop: 15,
+    backgroundColor: '#fff',
+    width: '90%',
     borderWidth: 5,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    borderColor: Colors.border
+    borderColor: '#031A6B'
   },
   textinside: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 25,
-    fontFamily: "Avenir",
-    color: Colors.border
+    marginTop: 15,
+    fontFamily: 'Avenir',
+    color: '#031A6B'
   },
   PointCard: {
-    backgroundColor: "white",
-    width: "90%",
+    marginTop: 15,
+    backgroundColor: '#fff',
+    width: '90%',
     borderWidth: 5,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    borderColor: Colors.border
+    borderColor: '#031A6B'
   },
   textinside2: {
-    paddingVertical: 10,
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 20,
-    fontFamily: "Avenir",
-    color: Colors.text
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 20,
-    width: 300,
-    maxWidth: "50%"
+    marginTop: 15,
+    fontFamily: 'Avenir',
+    color: '#031A6B'
   }
 });
