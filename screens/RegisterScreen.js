@@ -10,6 +10,8 @@ import {
 import firebase from '../config/firebase';
 import * as Animatable from 'react-native-animatable';
 
+import Colors from '../constants/Colors'
+
 class RegisterScreen extends Component {
   constructor(props) {
     super(props);
@@ -125,7 +127,7 @@ class RegisterScreen extends Component {
           >
             <Text style={{ fontSize: 16 }}>
               Already Have An Account?
-              <Text style={{ fontWeight: '500', color: 'blue' }}>Log In</Text>
+              <Text style={{ fontWeight: '500', color: 'blue' }}> Log In</Text>
             </Text>
           </TouchableOpacity>
         </Animatable.View>
@@ -141,7 +143,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#D3E9FF'
+    backgroundColor: Colors.background
   },
   text: {
     fontSize: 40,
@@ -199,7 +201,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0,0,0,0.2)'
   },
   button: {
-    backgroundColor: '#FFE066',
+    backgroundColor: Colors.login,
     height: 50,
     marginHorizontal: 20,
     borderRadius: 30,

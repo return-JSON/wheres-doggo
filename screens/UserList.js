@@ -10,6 +10,7 @@ import {
 import { ListItem } from 'react-native-elements';
 import { db } from '../config/firebase';
 import UserProfile from '../screens/UserProfile';
+import Colors from '../constants/Colors'
 
 export default class UserList extends React.Component {
    constructor() {
@@ -68,11 +69,11 @@ export default class UserList extends React.Component {
                      this.setState({ toggleView: false });
                   }}
                >
-                 <Image 
-                 source ={{uri:"https://cdn2.iconfinder.com/data/icons/navigation-set-arrows-part-two/32/Arrow_Left-512.png"}} 
+                 <Image
+                 source ={{uri:"https://cdn2.iconfinder.com/data/icons/navigation-set-arrows-part-two/32/Arrow_Left-512.png"}}
                  style={{width: 40, height: 40}}
                  />
-                 <Text>Go Back To User List</Text>
+                 <Text>Back To User List</Text>
                </TouchableOpacity>
             </ScrollView>
          );
@@ -104,7 +105,7 @@ export default class UserList extends React.Component {
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-      backgroundColor:"#D3E9FF",
+      backgroundColor: Colors.background,
    },
    button:{
       flex:1,

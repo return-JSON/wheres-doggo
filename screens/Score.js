@@ -6,6 +6,7 @@ import ScoreTile from '../components/ScoreTile';
 import { db } from '../config/firebase';
 import { useAuth } from './HomeScreen';
 import { scoreBoardCombo } from '../constants/utilityFunctions';
+import Colors from '../constants/Colors'
 
 export default function Score(props) {
   const { initializing, user } = useAuth();
@@ -62,8 +63,8 @@ export default function Score(props) {
     <View style={styles.container}>
       <View style={styles.PointCard}>
         <View style={styles.titleContainer}>
-          <Text style={styles.textinside}>User</Text>
-          <Text style={styles.textinside}>Points</Text>
+          <Text style={styles.textInside}>User</Text>
+          <Text style={styles.textInside}>Points</Text>
         </View>
         {userArr.map((user, i) => {
           return <ScoreTile key={i} user={user} />;
@@ -78,8 +79,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    alignContent: 'center',
-    backgroundColor: '#FCC244'
+    backgroundColor: Colors.yellow
   },
   titleContainer: {
     width: '100%',
@@ -92,18 +92,18 @@ const styles = StyleSheet.create({
   PointCard: {
     backgroundColor: '#F9F8F8',
     width: '90%',
+    paddingVertical: 10,
     borderWidth: 5,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    borderColor: '#031A6B'
+    borderColor: Colors.border
   },
-  textinside: {
+  textInside: {
     textAlign: 'center',
     fontSize: 30,
-    marginTop: 15,
     fontFamily: 'Avenir',
-    color: '#031A6B'
+    color: Colors.border
   }
 });
