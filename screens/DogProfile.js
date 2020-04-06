@@ -5,6 +5,7 @@ import { db } from "../config/firebase";
 import { PupLoading } from "../components/PupLoading";
 import { editCity } from "../constants/utilityFunctions";
 import DogList from "./DogList";
+import Colors from '../constants/Colors'
 
 export default function DogProfile(props) {
   const [dogs, setDogs] = React.useState([]);
@@ -33,7 +34,7 @@ export default function DogProfile(props) {
   editCity(dogs);
 
   return (
-    <ScrollView style={{ backgroundColor: "#D3E9FF" }}>
+    <ScrollView style={{ backgroundColor: Colors.background }}>
       <View style={styles.container}>
         {dogs.map((dog, i) => {
           if (dog.boroughOrCity) {
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#D3E9FF"
+    backgroundColor: Colors.background
   },
   map: {
     height: 200,

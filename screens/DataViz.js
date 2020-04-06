@@ -18,6 +18,7 @@ import {
 
 export default function DataViz(props) {
    const [allDogs, setAllDogs] = React.useState([]);
+
    React.useEffect(() => {
       const unsubscribe = db
          .collectionGroup('userDogs')

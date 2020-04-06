@@ -4,6 +4,7 @@ import { DogTile, FriendsList } from '../components';
 // import { FriendsList } from '../components/FriendsList';
 import { db } from '../config/firebase';
 import { useAuth } from './HomeScreen';
+import Colors from '../constants/Colors'
 
 export default function MyProfile(props) {
   const { initializing, user } = useAuth();
@@ -84,7 +85,7 @@ export default function MyProfile(props) {
         </View>
 
         <View style={styles.dogsCard}>
-          <Text style={styles.textinside}>Doggos collected:</Text>
+          <Text style={styles.textinside}>DogGos Collected</Text>
 
           <View style={styles.cardChild}>
             {userDogs.map(dog => (
@@ -94,7 +95,7 @@ export default function MyProfile(props) {
         </View>
         <View style={styles.dogsCard}>
           <View>
-            <Text style={styles.textinside}>My Friends:</Text>
+            <Text style={styles.textinside}>My Friends</Text>
           </View>
           <View style={styles.cardChild}>
             {userProf.friends.map(friend => (
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
-    backgroundColor: '#D3E9FF'
+    backgroundColor: Colors.background
   },
   profilePic: {
     width: 175,
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginTop: 15,
     fontFamily: 'Avenir',
-    color: '#031A6B'
+    color: Colors.text
   },
   userinfo: {
     flex: 1,
@@ -140,14 +141,14 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 30,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    borderColor: '#031A6B'
+    borderColor: Colors.border
   },
   textinside: {
     textAlign: 'center',
     fontSize: 25,
     marginTop: 15,
     fontFamily: 'Avenir',
-    color: '#031A6B'
+    color: Colors.text
   },
   PointCard: {
     marginTop: 15,
@@ -158,14 +159,14 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 30,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    borderColor: '#031A6B'
+    borderColor: Colors.border
   },
   textinside2: {
-    textAlign: 'center',
+    paddingVertical: 10,
+    textAlign: "center",
     fontSize: 20,
-    marginTop: 15,
-    fontFamily: 'Avenir',
-    color: '#031A6B'
+    fontFamily: "Avenir",
+    color: Colors.text
   },
   cardChild: {
     justifyContent: 'center',
