@@ -57,10 +57,10 @@ https://expo.io/
 ## Tutorial
 
 ### View your dogs...
-<img src='https://github.com/return-JSON/wheres-doggo/blob/dev/assets/images/homescreen.png' width='30%' />
 ### Catch dogs...
-<img src='https://github.com/return-JSON/wheres-doggo/blob/dev/assets/images/hanky.png' width='30%' />
 ### Look for more dogs.
+<img src='https://github.com/return-JSON/wheres-doggo/blob/dev/assets/images/homescreen.png' width='30%' />
+<img src='https://github.com/return-JSON/wheres-doggo/blob/dev/assets/images/hanky.png' width='30%' />
 <img src='https://github.com/return-JSON/wheres-doggo/blob/dev/assets/images/doggomap.png' width='30%' />
 
 ## Team
