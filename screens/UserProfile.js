@@ -94,7 +94,7 @@ export default function UserProfile(props) {
       );
     }
   };
-  handleButtonPress = async (myId, yourId, name) => {
+  handlePress = async (myId, yourId, name) => {
     try {
       if (myId === yourId) {
         Alert.alert("I'm sorry, but you cannot become your own friend...");
