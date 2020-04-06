@@ -144,6 +144,7 @@ export default function UserProfile(props) {
           <View style={styles.cardChild}>
             {userProf.friends.map(friend => (
               <FriendsList key={friend} friend={friend} userId={userId} />
+              
             ))}
           </View>
         </View>
