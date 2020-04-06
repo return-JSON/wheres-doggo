@@ -10,6 +10,8 @@ const DogList = props => {
   const dog = props.dog;
   dog.breed = properCase(dog.breed);
 
+
+
   return (
     <View style={styles.container}>
       <View style={styles.card}>

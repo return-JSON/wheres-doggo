@@ -108,7 +108,6 @@ export default function UserProfile(props) {
   };
 
   console.log(userProf.profilePicture)
-
   return (
     <ScrollView style={{ backgroundColor: '#D3E9FF' }}>
       <View style={styles.container}>
