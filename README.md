@@ -15,7 +15,7 @@ Visit [Where's DogGo](https://expo.io/@cpascale43) to try it out!
   - [Hilary Ly](#Hilary-Ly)
   - [Cass Spain](#Cass-Spain)
 - [Tech Stack](#Tech-Stack)
-  - [React](#React)
+  - [React Native](#React-Native)
   - [Redux](#Redux)
   - [Firebase](#Firebase)
   - [Expo](#Expo)
