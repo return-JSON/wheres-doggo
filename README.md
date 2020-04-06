@@ -22,32 +22,6 @@ npm run start
 With your phone, scan the QR code in the terminal to use Where's DogGo!
 ```
 
-## Team
-
-### `Carrie Pascale`
-
-Github: https://github.com/cpascale43
-
-LinkedIn: https://www.linkedin.com/in/carrie-pascale-9862658a/
-
-### `Nuria Rodriguez`
-
-Github: https://github.com/NuriaLuz
-
-LinkedIn: https://www.linkedin.com/in/nrodriguezrios/
-
-### `Hilary Ly`
-
-Github: https://github.com/Hilary-Ly
-
-LinkedIn: https://www.linkedin.com/in/hilary-ly/
-
-### `Cass Spain`
-
-Github: https://github.com/dreamwasp
-
-LinkedIn: https://www.linkedin.com/in/ceaspain/
-
 ## Tech Stack
 
 Technologies used in this project:
@@ -85,3 +59,29 @@ https://expo.io/
 <img src='https://github.com/return-JSON/wheres-doggo/blob/dev/assets/images/homescreen.png' width='30%' />
 <img src='https://github.com/return-JSON/wheres-doggo/blob/dev/assets/images/hanky.png' width='30%' />
 <img src='https://github.com/return-JSON/wheres-doggo/blob/dev/assets/images/doggomap.png' width='30%' />
+
+## Team
+
+### `Carrie Pascale`
+
+Github: https://github.com/cpascale43
+
+LinkedIn: https://www.linkedin.com/in/carrie-pascale-9862658a/
+
+### `Nuria Rodriguez`
+
+Github: https://github.com/NuriaLuz
+
+LinkedIn: https://www.linkedin.com/in/nrodriguezrios/
+
+### `Hilary Ly`
+
+Github: https://github.com/Hilary-Ly
+
+LinkedIn: https://www.linkedin.com/in/hilary-ly/
+
+### `Cass Spain`
+
+Github: https://github.com/dreamwasp
+
+LinkedIn: https://www.linkedin.com/in/ceaspain/
