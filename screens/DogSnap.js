@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     maxWidth: "70%"
   },
   text: {
-    fontSize: 30,
+    fontSize: 20,
     textAlign: "center",
     marginVertical: 20,
     fontFamily: "Avenir",
