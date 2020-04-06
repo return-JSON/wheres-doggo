@@ -2,6 +2,7 @@ import * as React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 
 import { properCase } from '../constants/utilityFunctions'
+import Colors from '../constants/Colors'
 
 // this component renders a card for every dog passed down as props.
 
@@ -65,14 +66,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 1,
     fontFamily:'Avenir',
-    color:'#031A6B'
+    color: Colors.text
   },
   text:{
     textAlign:'center',
     fontSize: 15,
     marginTop: 1,
     fontFamily:'Avenir',
-    color:'#031A6B'
+    color: Colors.text
   }
 });
 

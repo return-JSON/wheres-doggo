@@ -7,7 +7,7 @@ import * as Animatable from 'react-native-animatable'
 import * as Google from 'expo-google-app-auth';
 import firebase from '../config/firebase';
 
-
+import Colors from '../constants/Colors'
 
 const { width, height } = Dimensions.get('window')
 const { Value, event, block, cond, eq, set, Clock, startClock, stopClock, debug, timing, clockRunning, interpolate, Extrapolate, concat } = Animated
@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
         resizeMode: 'contain'
     },
     button: {
-        backgroundColor: '#FFE066',
+        backgroundColor: Colors.login,
         height: 50,
         marginHorizontal: 20,
         borderRadius: 35,

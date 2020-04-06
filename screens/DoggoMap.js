@@ -10,6 +10,7 @@ import LinkPage from "./LinkPage";
 import { getLocation } from "../src/api";
 
 // renders user location according to cell phone
+
 let lat;
 let long;
 
@@ -22,7 +23,7 @@ const getLoc = async () => {
 
 getLoc();
 
-export default class Map extends React.Component {
+export default class DoggoMap extends React.Component {
   constructor() {
     super();
     this.ref = db.collection("dogs");

@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { StyleSheet, Button, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 import DogTile from '../components/DogTile';
 import { db } from '../config/firebase';
-import { useNavigation } from '@react-navigation/native';
+import Colors from '../constants/Colors'
 
 export default function FriendsList(props) {
   const [loading, setLoading] = React.useState(true);
@@ -43,6 +45,7 @@ export default function FriendsList(props) {
   return (
     <View style={styles.container}>
       <Button
+      color={Colors.cluster}
         title={userFriend.firstName}
         onPress={() => handlePress(userFriend.id)}
       />
