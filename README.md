@@ -4,23 +4,6 @@ Where's DogGo is a mobile dog-scouting game which uses your mobile device GPS to
 
 Visit [Where's DogGo](https://expo.io/@cpascale43) to try it out!
 
-## Table of Contents
-
-- [Where's DogGo](#Where's-DogGo)
-- [Table of Contents](#Table-of-Contents)
-- [Download](#Download)
-- [Team](#Team)
-  - [Carrie Pascale](#Carrie-Pascale)
-  - [Nuria Rodriguez](#Nuria-Rodriguez)
-  - [Hilary Ly](#Hilary-Ly)
-  - [Cass Spain](#Cass-Spain)
-- [Tech Stack](#Tech-Stack)
-  - [React Native](#React-Native)
-  - [Redux](#Redux)
-  - [Firebase](#Firebase)
-  - [Expo](#Expo)
-- [Examples](#Examples)
-
 ## Download
 
 Step by step guide for downloading repo:
