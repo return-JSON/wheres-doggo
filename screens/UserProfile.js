@@ -6,6 +6,7 @@ import {
   View,
   ScrollView,
   Button,
+
   Alert,
 } from 'react-native';
 import { DogTile, FriendsList } from '../components';
@@ -94,7 +95,6 @@ export default function UserProfile(props) {
       );
     }
   };
-
   handleButtonPress = async (myId, yourId, name) => {
     try {
       if (myId === yourId) {
@@ -105,30 +105,31 @@ export default function UserProfile(props) {
         await Alert.alert(`Success! You are now friends with ${name}`);
       }
     } catch (err) {
+
       Alert.alert('Something has gone wrong.');
       console.log(err);
     }
   };
 
+  console.log(userProf.profilePicture)
   return (
-    <ScrollView style={{ backgroundColor: Colors.background }}>
+    <ScrollView style={{ backgroundColor: '#D3E9FF' }}>
       <View style={styles.container}>
         <View style={styles.userinfo}>
+
           <Image
             style={styles.profilePic}
-            source={{
-              uri: userProf.profilePicture,
-            }}
-          />
+            source={userProf.profilePicture === undefined ? require('../assets/images/dogpic.png') : {uri: userProf.profilePicture}} />
           <Text style={styles.text}>{userProf.firstName}</Text>
+          {buttonRender(user.uid, userId, userProf.firstName)}
         </View>
 
         <View style={styles.PointCard}>
-          <Text style={styles.textinside2}> Points: {userProf.points}</Text>
+          <Text style={styles.textinside2}> Points:{userProf.points}</Text>
         </View>
 
         <View style={styles.dogsCard}>
-          <Text style={styles.textinside}>DogGos Collected</Text>
+          <Text style={styles.textinside}>Doggos Collected:</Text>
 
           <View style={styles.cardChild}>
             {userDogs.map((dog) => (
@@ -145,10 +146,10 @@ export default function UserProfile(props) {
           <View style={styles.cardChild}>
             {userProf.friends.map((friend) => (
               <FriendsList key={friend} friend={friend} userId={userId} />
+              
             ))}
           </View>
         </View>
-        {buttonRender(user.uid, userId, userProf.firstName)}
       </View>
     </ScrollView>
   );
@@ -158,7 +159,7 @@ const styles = StyleSheet.create({
   cardChild: {
     justifyContent: 'center',
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
   container: {
     flex: 1,
@@ -199,10 +200,12 @@ const styles = StyleSheet.create({
   textinside: {
     textAlign: 'center',
     fontSize: 25,
+    marginTop: 15,
     fontFamily: 'Avenir',
     color: Colors.border,
   },
   PointCard: {
+    marginTop: 15,
     backgroundColor: 'white',
     width: '90%',
     borderWidth: 5,
