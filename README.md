@@ -4,6 +4,7 @@ Where's DogGo is a mobile dog-scouting game which uses your mobile device GPS to
 
 Visit [Where's DogGo](https://expo.io/@cpascale43) to try it out!
 
+<<<<<<< HEAD
 ## Table of Contents
 
 - [Where's DogGo](#Where's-DogGo)
@@ -21,6 +22,8 @@ Visit [Where's DogGo](https://expo.io/@cpascale43) to try it out!
   - [Expo](#Expo)
 - [Examples](#Examples)
 
+=======
+>>>>>>> bf509bcb2c459f8f931e366cf34eb6bd989c3d87
 ## Download
 
 Step by step guide for downloading repo:
@@ -98,9 +101,12 @@ https://expo.io/
 - Expo is an open-source platform for making universal native apps for Android, iOS, and the web with JavaScript and React.
 
 ## Examples
+<<<<<<< HEAD
 
 <!-- <img src='https://github.com/megan-donnelly/retire-rich/blob/master/public/home.png' width='800' />
 
 <img src='https://github.com/megan-donnelly/retire-rich/blob/master/public/calculator.png' width='800' />
 
 <img src='https://github.com/megan-donnelly/retire-rich/blob/master/public/chart.png' width='800' /> -->
+=======
+>>>>>>> bf509bcb2c459f8f931e366cf34eb6bd989c3d87
