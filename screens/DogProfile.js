@@ -1,71 +1,57 @@
 import * as React from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { db } from "../config/firebase";
-import DogList from './DogList'
 
-export default class DogProfile extends React.Component {
-  constructor() {
-    super();
-    this.ref = db.collection("dogs");
-    this.state = {
-      isLoading: true,
-      dogArr: []
-    };
-  }
+import { PupLoading } from "../components/PupLoading";
+import { editCity } from "../constants/utilityFunctions";
+import DogList from "./DogList";
+import Colors from '../constants/Colors'
 
-  componentDidMount() {
-    this.unsubscribe = this.ref.onSnapshot(this.getDogCollection);
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  getDogCollection = querySnapshot => {
-    // console.log('querySnapshot list template', querySnapshot)
-    const dogArr = [];
-    querySnapshot.forEach(res => {
-      const { breed, description, imageUrl, lastSeen, points } = res.data();
-      dogArr.push({
-        key: res.id,
-        breed,
-        description,
-        imageUrl,
-        lastSeen,
-        points
+export default function DogProfile(props) {
+  const [dogs, setDogs] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+  React.useEffect(() => {
+    setIsLoading(true);
+    const unsubscribe = db.collectionGroup("userDogs").onSnapshot(snapshot => {
+      const allDogsArr = [];
+      snapshot.forEach(doc => {
+        const { breed, imageUrl, location, points, city, county } = doc.data();
+        allDogsArr.push({
+          key: doc.id,
+          breed,
+          imageUrl,
+          location,
+          city,
+          county,
+          points
+        });
       });
+      setDogs(allDogsArr);
     });
-    this.setState({
-      dogArr,
-      isLoading: false
-    });
-  };
+    return () => unsubscribe();
+  }, []);
 
-  render() {
-    if (this.state.isLoading) {
-      return (
-        <View style={styles.preloader}>
-          <Text>loading..</Text>
-        </View>
-      );
-    }
-    return (
-      <ScrollView>
-        <View style={styles.container}>
-          {this.state.dogArr.map((dog, i) => {
-            return <DogList key={i} dog={dog} />
-          })}
-        </View>
-        </ScrollView>
-    );
-  }
+  editCity(dogs);
+
+  return (
+    <ScrollView style={{ backgroundColor: Colors.background }}>
+      <View style={styles.container}>
+        {dogs.map((dog, i) => {
+          if (dog.boroughOrCity) {
+            return <DogList key={i} dog={dog} />;
+          }
+        })}
+      </View>
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    backgroundColor: Colors.background
   },
   map: {
     height: 200,

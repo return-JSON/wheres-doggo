@@ -1,19 +1,21 @@
-import * as React from "react";
-import { Button, View } from "react-native";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { NavigationContainer } from "@react-navigation/native";
-import TabBarIcon from "../components/TabBarIcon";
+import * as React from 'react';
+// import { Button, View } from "react-native";
+import { createDrawerNavigator } from '@react-navigation/drawer';
+// import { NavigationContainer } from "@react-navigation/native";
+import TabBarIcon from '../components/TabBarIcon';
 import {
   HomeScreen,
   Camera,
-  UserProfile,
+  MyProfile,
   DogProfile,
-  ListTemplate,
-  Map
-} from "../screens";
+  DoggoMap,
+  Score,
+  UserList,
+  DataViz,
+} from '../screens';
 
 const Drawer = createDrawerNavigator();
-const INITIAL_ROUTE_NAME = "Home";
+const INITIAL_ROUTE_NAME = 'Home';
 
 export default function DrawerNavigator({ navigation, route }) {
   // Set the header title on the parent stack navigator depending on the
@@ -27,32 +29,32 @@ export default function DrawerNavigator({ navigation, route }) {
         name="Home"
         component={HomeScreen}
         options={{
-          title: "Get Started",
+          title: 'Get Started',
           drawerIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-home" />
-          )
+          ),
         }}
       />
 
       <Drawer.Screen
         name="Map"
-        component={Map}
+        component={DoggoMap}
         options={{
-          title: "DoggoMap",
+          title: 'DoggoMap',
           drawerIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="ios-map" />
-          )
+          ),
         }}
       />
 
       <Drawer.Screen
-        name="UserProfile"
-        component={UserProfile}
+        name="MyProfile"
+        component={MyProfile}
         options={{
-          title: "My Profile",
+          title: 'My Profile',
           drawerIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-person" />
-          )
+          ),
         }}
       />
 
@@ -60,21 +62,32 @@ export default function DrawerNavigator({ navigation, route }) {
         name="DogProfile"
         component={DogProfile}
         options={{
-          title: "DoggoDex",
+          title: 'DoggoDex',
           drawerIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-heart" />
-          )
+          ),
         }}
       />
 
       <Drawer.Screen
-        name="ListTemplate"
-        component={ListTemplate}
+        name="UserList"
+        component={UserList}
         options={{
-          title: "Users",
+          title: 'Users',
           drawerIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-search" />
-          )
+          ),
+        }}
+      />
+
+      <Drawer.Screen
+        name="DataViz"
+        component={DataViz}
+        options={{
+          title: 'Insights',
+          drawerIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="md-stats" />
+          ),
         }}
       />
 
@@ -82,10 +95,21 @@ export default function DrawerNavigator({ navigation, route }) {
         name="Camera"
         component={Camera}
         options={{
-          title: "Camera",
+          title: 'Camera',
           drawerIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="ios-camera" />
-          )
+          ),
+        }}
+      />
+
+      <Drawer.Screen
+        name="Score"
+        component={Score}
+        options={{
+          title: 'Scoreboard',
+          drawerIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name="ios-apps" />
+          ),
         }}
       />
     </Drawer.Navigator>
@@ -97,9 +121,23 @@ function getHeaderTitle(route) {
     route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
 
   switch (routeName) {
-    case "Home":
-      return "Welcome to DogGO!";
-    case "Camera":
-      return "Snap a pup!";
+    case 'Home':
+      return 'Get Started';
+    case 'Map':
+      return 'DoggoMap';
+    case 'MyProfile':
+      return 'My Profile';
+    case 'DogProfile':
+      return 'DoggoDex';
+    case 'UserList':
+      return 'Users';
+    case 'DataViz':
+      return 'Insights';
+    case 'UserProfile':
+      return '🐶';
+    case 'Camera':
+      return '📸  Snap a Pup  📸';
+    case 'Score':
+      return '🏆  Leaderboard  🏆 ';
   }
 }

@@ -1,53 +1,30 @@
 import * as React from "react";
-import { StyleSheet, View, Text, Image, ScrollView } from "react-native";
-import MapView, { Marker, Circle } from "react-native-maps";
+import { StyleSheet, View, Text, Image } from "react-native";
 
-// this component renders a card for every dog in the db.
+import { properCase } from '../constants/utilityFunctions'
+import Colors from '../constants/Colors'
+
+// this component renders a card for every dog passed down as props.
 
 const DogList = props => {
   const dog = props.dog;
+  dog.breed = properCase(dog.breed);
+
+
+
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        <Text>{dog.breed}</Text>
-          <Text>Last seen:</Text>
-        <View style={styles.mapContainer}>
+        <Text style={styles.name}>{dog.breed}</Text>
+          <Text style={styles.text}>Last seen: {dog.boroughOrCity}</Text>
           <Image
             style={{ width: 200, height: 200 }}
             source={{
               uri: dog.imageUrl
             }}
           />
-          <MapView
-            style={styles.map}
-            region={{
-              latitude: dog.lastSeen["F"],
-              longitude: dog.lastSeen["V"],
-              latitudeDelta: 0.09,
-              longitudeDelta: 0.09
-            }}
-          >
-            <Circle
-              center={{
-                latitude: dog.lastSeen["F"],
-                longitude: dog.lastSeen["V"]
-              }}
-              radius={500}
-              strokeWidth={2}
-              strokeColor={"white"}
-            />
-            <Marker
-              coordinate={{
-                latitude: dog.lastSeen["F"],
-                longitude: dog.lastSeen["V"]
-              }}
-              title={dog.breed}
-              image={require("../src/img/dog.png")}
-            />
-          </MapView>
         </View>
-        <Text>{dog.description}</Text>
-      </View>
+        <Text style={styles.text}>Points: {dog.points}</Text>
     </View>
   );
 };
@@ -58,11 +35,24 @@ const styles = StyleSheet.create({
     marginLeft: 80,
     marginRight: 80,
     justifyContent: "center",
+    borderWidth: 3,
+    borderBottomLeftRadius:30,
+    borderBottomRightRadius:30,
+    borderTopLeftRadius:30,
+    borderTopRightRadius:30,
+    borderColor:'#031A6B',
+    backgroundColor: "#fff",
+    marginTop:12
   },
   card: {
     backgroundColor: "#fff",
-    width: "50%",
+    width: "70%",
     marginVertical: 10,
+    borderBottomLeftRadius:30,
+    borderBottomRightRadius:30,
+    borderTopLeftRadius:30,
+    borderTopRightRadius:30,
+
   },
   mapContainer: {
     flexDirection: "row",
@@ -72,6 +62,20 @@ const styles = StyleSheet.create({
   map: {
     height: '80%',
     width: '80%'
+  },
+  name:{
+    textAlign:'center',
+    fontSize: 20,
+    marginTop: 1,
+    fontFamily:'Avenir',
+    color: Colors.text
+  },
+  text:{
+    textAlign:'center',
+    fontSize: 15,
+    marginTop: 1,
+    fontFamily:'Avenir',
+    color: Colors.text
   }
 });
 

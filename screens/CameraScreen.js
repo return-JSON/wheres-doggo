@@ -1,50 +1,65 @@
 import React, { useState, useEffect } from 'react';
-import { Button, View, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useFirebase } from 'react-redux-firebase';
+import { View, TouchableOpacity, Text } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
 import { Camera } from 'expo-camera';
+import * as Permissions from 'expo-permissions';
+import { Ionicons } from '@expo/vector-icons';
+
+import { PupLoading } from '../components/PupLoading';
+import { useAuth } from './HomeScreen';
+import { resizeFromCamera } from '../src/api';
 
 export default function CameraScreen({ navigation }) {
-  const [hasPermission, setHasPermission, image] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
-  const firebase = useFirebase();
+  const { initializing, user } = useAuth();
+  const [loading, setLoading] = React.useState(false);
+  const [hasPermission, setHasPermission] = React.useState(null);
 
   useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
+      let camObject = await Camera.requestPermissionsAsync();
+      let locationObject = await Permissions.askAsync(Permissions.LOCATION);
+      const camStatus = camObject.status;
+      const locationStatus = locationObject.status;
+      setHasPermission(camStatus === 'granted' && locationStatus === 'granted');
     })();
   }, []);
 
   snap = async () => {
     if (this.camera) {
       try {
-        let photo = await this.camera.takePictureAsync();
-        const response = await fetch(photo.uri);
-        const blob = await response.blob();
-        var ref = await firebase
-          .storage()
-          .ref()
-          .child('userid/last-image');
-        const snapshot = await ref.put(blob);
-        blob.close();
+        let camPhoto = await this.camera.takePictureAsync();
+        let photo = await resizeFromCamera(camPhoto.uri);
+        setLoading(true);
+        return photo;
       } catch (err) {
         console.log(err);
+        setLoading(false);
       }
     }
   };
 
   handlePress = async () => {
-    await snap();
-    await navigation.navigate('DogSnap');
+    let photo = await snap();
+    await setLoading(false);
+    await navigation.navigate('DogSnap', {
+      userId: user.uid,
+      photo: photo
+    });
   };
 
   if (hasPermission === null) {
     return <View />;
   }
+
+  if (loading === true) {
+    return <PupLoading />;
+  }
+
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return (
+      <Text>This app needs access to your camera and location, pls! 🐶</Text>
+    );
   }
   return (
     <View style={{ flex: 1 }}>

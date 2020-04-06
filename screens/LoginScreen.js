@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Button, TextInput, TouchableOpacity } from 'rea
 import * as Google from 'expo-google-app-auth';
 import firebase from '../config/firebase';
 
+import Colors from '../constants/Colors'
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -61,20 +62,20 @@ class LoginScreen extends Component {
           firebase
             .auth()
             .signInWithCredential(credential)
-            .then(function (result) { 
+            .then(function (result) {
               if (result.additionalUserInfo.isNewUser) {
                 firebase
                   .firestore()
                   .collection('users')
                   .doc(result.user.uid)
                   .set({
-                    gmail: result.user.email,
-                    profile_picture:
+                    email: result.user.email,
+                    profilePicture:
                       result.additionalUserInfo.profile.picture,
                     locale: result.additionalUserInfo.profile.locale,
-                    first_name: result.additionalUserInfo.profile.given_name,
-                    last_name: result.additionalUserInfo.profile.family_name,
-                    created_at: Date.now()
+                    firstName: result.additionalUserInfo.profile.given_name,
+                    lastName: result.additionalUserInfo.profile.family_name,
+                    createdAt: Date.now()
                   });
               } else {
                 firebase
@@ -82,7 +83,7 @@ class LoginScreen extends Component {
                   .collection('users')
                   .doc(result.user.uid)
                   .update({
-                    last_logged_in: Date.now()
+                    lastLoggedIn: Date.now()
                   });
               }
             })
@@ -131,7 +132,7 @@ class LoginScreen extends Component {
           style={styles.input}
           underlineColorAndroid="transparent"
           placeholder="Email"
-          placeholderTextColor="#9a73ef"
+          placeholderTextColor={Colors.purple}
           autoCapitalize="none"
           onChangeText={email => this.setState({ email })}
           value={this.state.email}
@@ -141,7 +142,7 @@ class LoginScreen extends Component {
           style={styles.input}
           underlineColorAndroid="transparent"
           placeholder="Password"
-          placeholderTextColor="#9a73ef"
+          placeholderTextColor={Colors.purple}
           autoCapitalize="none"
           secureTextEntry={true}
           onChangeText={password => this.setState({ password })}
