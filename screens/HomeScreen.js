@@ -130,7 +130,7 @@ export default function HomeScreen(props) {
   }
 
   return (
-    <ScrollView>
+    <ScrollView style={{backgroundColor:"#D3E9FF"}}>
       <View style={styles.container}>
         <Text style={styles.text}>Hello, {user.displayName}</Text>
 

@@ -18,9 +18,7 @@ class DogSnap extends Component {
   }
 
   componentDidMount() {
-    this.props.setPhotoUri(
-      `https://firebasestorage.googleapis.com/v0/b/wheres-doggo.appspot.com/o/${this.props.route.params.userId}%2Flast-image?alt=media&token=82207119-f59c-4f2b-acdc-ab02dec71c9d`
-    );
+    this.props.setPhotoUri(this.props.route.params.photo);
   }
 
   componentWillUnmount() {
@@ -134,7 +132,7 @@ class DogSnap extends Component {
           <Image
             style={{ width: 300, height: 300 }}
             source={{
-              uri: this.props.camera.imageUrl
+              uri: this.props.route.params.photo.uri
             }}
           />
           <Text style={styles.text}>

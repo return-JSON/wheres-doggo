@@ -52,13 +52,13 @@ export const clearDog = () => {
 };
 
 //thunk creator
-export const setPhotoUri = uri => {
+export const setPhotoUri = photo => {
   return async dispatch => {
-    let response = await submitToGoogle(uri);
+    let response = await submitToGoogle(photo.base64);
     let newBreedList = await getBreedList();
     response = await dogResponseComboFunction(response, newBreedList);
     let location = await getLocation();
-    await dispatch(takePhoto(uri));
+    await dispatch(takePhoto(photo.uri));
     await dispatch(setDogBreed(response));
     await dispatch(setLocation(location));
   };

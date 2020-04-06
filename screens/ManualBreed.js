@@ -10,7 +10,6 @@ import { dogDocer, urlMaker } from '../constants/utilityFunctions';
 import { db } from '../config/firebase';
 import firebase from '../config/firebase';
 import { PupLoading } from '../components/PupLoading';
-import { breedList } from '../constants/dog';
 
 const addPupTwo = async (userId, obj) => {
   try {
