@@ -54,11 +54,14 @@ https://expo.io/
 
 - Expo is an open-source platform for making universal native apps for Android, iOS, and the web with JavaScript and React.
 
-## Examples
+## Tutorial
 
 <img src='https://github.com/return-JSON/wheres-doggo/blob/dev/assets/images/homescreen.png' width='30%' />
+View your dogs,
 <img src='https://github.com/return-JSON/wheres-doggo/blob/dev/assets/images/hanky.png' width='30%' />
+Catch dogs,
 <img src='https://github.com/return-JSON/wheres-doggo/blob/dev/assets/images/doggomap.png' width='30%' />
+Check for other dogs.
 
 ## Team
 
