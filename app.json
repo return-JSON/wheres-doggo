@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Where's Doggo?",
-    "slug": "wheresDoggo",
+    "name": "Where's DogGo?",
+    "slug": "wheresdoggo",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [
@@ -28,5 +28,6 @@
       "supportsTablet": true
     },
     "description": "Where's DogGo is a mobile dog-scouting game which uses your mobile device GPS to locate and capture virtual dogs, which appear as if they were in your real-time location."
+    "githubUrl": "https://github.com/return-JSON/wheres-doggo/"
   }
 }
