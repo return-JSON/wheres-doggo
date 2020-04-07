@@ -179,3 +179,15 @@ export const geoBreedFreq = (arr) => {
   });
   return list;
 }
+
+export const chartBreedNames = (arr) => {
+  const list = arr.forEach(dog => {
+     if (dog.breed === 'West highland white terrier') dog.breed = 'Westie';
+     else if (dog.breed === 'Yorkshire terrier') dog.breed = 'Yorkie';
+     else if (dog.breed === 'Shiba inu') dog.breed = 'Shiba';
+     else if (dog.breed === 'Chow chow' || dog.breed === 'Rat terrier')
+        dog.breed = dog.breed;
+     else dog.breed = dog.breed.split(' ').join('\n');
+  })
+  return list
+}

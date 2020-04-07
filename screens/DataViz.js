@@ -13,7 +13,8 @@ import { db } from '../config/firebase';
 import {
    breedFreq,
    geoBreedFreq,
-   editCity
+   editCity,
+   chartBreedNames
 } from '../constants/utilityFunctions';
 
 export default function DataViz(props) {
@@ -35,15 +36,16 @@ export default function DataViz(props) {
                } = doc.data();
                allDogsArr.push({
                   key: doc.id,
-                  breed: breed.split(' ').join('\n'),
+                  breed: breed,
                   imageUrl,
                   location,
                   city,
                   county,
-                  points
+                  points,
                });
             });
             editCity(allDogsArr);
+            chartBreedNames(allDogsArr)
             setAllDogs(allDogsArr);
          });
       return () => unsubscribe();
@@ -55,8 +57,8 @@ export default function DataViz(props) {
             <View style={styles.container}>
                <Text style={styles.title}>Breeds Found By City/Borough</Text>
                <VictoryChart
-                  domain={{ x: [0, 4], y: [0, 12] }}
-                  height={690}
+                  domain={{ x: [0, 4], y: [0.5, 12] }}
+                  height={540}
                   width={450}
                   padding={{ left: 75, right: 100, top: 30, bottom: 150 }}
                   containerComponent={<VictoryVoronoiContainer />}
@@ -92,8 +94,8 @@ export default function DataViz(props) {
                      }
                      labels={({ datum }) => `${datum.breed}\n${datum.count}`}
                      bubbleProperty='count'
-                     maxBubbleSize={15}
-                     minBubbleSize={8}
+                     maxBubbleSize={25}
+                     minBubbleSize={7}
                      data={geoBreedFreq(allDogs)}
                      x='boroughOrCity'
                      y='breed'
@@ -108,13 +110,14 @@ export default function DataViz(props) {
             <View style={styles.containerIn}>
                <Text style={styles.title}>Total Breed Distribution</Text>
                <VictoryPie
+               //  sortKey='breed'
                   height={410}
                   padding={{ top: 85, bottom: 80, left: 65, right: 65 }}
                   data={breedFreq(allDogs)}
                   x='breed'
                   y='count'
                   innerRadius={70}
-                  labelRadius={140}
+                  labelRadius={130}
                   colorScale={[
                      '#031A6B',
                      '#FFE066',
