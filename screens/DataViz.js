@@ -57,7 +57,7 @@ export default function DataViz(props) {
             <View style={styles.container}>
                <Text style={styles.title}>Breeds Found By City/Borough</Text>
                <VictoryChart
-                  domain={{ x: [0, 4], y: [0.5, 12] }}
+                  domain={{ x: [0.5, 4], y: [0.5, 12] }}
                   height={540}
                   width={450}
                   padding={{ left: 75, right: 100, top: 30, bottom: 150 }}
