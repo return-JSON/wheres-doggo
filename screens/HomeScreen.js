@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
+import { StyleSheet, Text, View, Button, ScrollView, TouchableOpacity } from "react-native";
 // import { fetchUser } from '../src/reducers/user'; (reminder to delete user if needed)
 import * as firebase from "firebase";
 import DogTile from "../components/DogTile";
@@ -162,16 +162,15 @@ export default function HomeScreen(props) {
           </View>
         </View>
         <View style={styles.buttonContainer}>
-        <Card>
-          <Button
-            color={"white"}
-            title="How to Play"
-            onPress={() => setModal(true)}
-          />
-        </Card>
-        <Card style={{backgroundColor: Colors.cancel}}>
-          <Button color={"white"} title="Sign Out" onPress={signOutUser} />
-        </Card>
+
+        <TouchableOpacity style={styles.button2} onPress={() => setModal(true)}>
+              <Text style={{ fontSize: 17, fontWeight: 'bold', color:'white'}}>How to Play</Text>
+        </TouchableOpacity>
+
+
+        <TouchableOpacity style={styles.button} onPress={signOutUser}>
+              <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white'}}>Sign Out</Text>
+        </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
@@ -231,5 +230,39 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: 300,
     maxWidth: "80%"
+  },
+  buttontext:{
+    fontSize: 30,
+    color:'white'
+  },
+  button: {
+    backgroundColor: Colors.cancel,
+    height: 60,
+    width:120,
+    borderBottomLeftRadius:10,
+    borderBottomRightRadius:10,
+    borderTopRightRadius:10,
+    borderTopLeftRadius:10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 5,
+    shadowOffset: { width: 2, height: 2 },
+    shadowColor: 'black',
+    shadowOpacity: 0.2,
+  },
+  button2: {
+    backgroundColor: Colors.purple,
+    height: 60,
+    width:120,
+    borderBottomLeftRadius:10,
+    borderBottomRightRadius:10,
+    borderTopRightRadius:10,
+    borderTopLeftRadius:10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 5,
+    shadowOffset: { width: 2, height: 2 },
+    shadowColor: 'black',
+    shadowOpacity: 0.2,
   }
 });

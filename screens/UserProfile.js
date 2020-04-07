@@ -6,7 +6,7 @@ import {
   View,
   ScrollView,
   Button,
-
+  TouchableOpacity,
   Alert,
 } from 'react-native';
 import { DogTile, FriendsList } from '../components';
@@ -83,14 +83,12 @@ export default function UserProfile(props) {
   buttonRender = (myId, yourId, name) => {
     if (!userProf.friends.includes(myId) && myId !== yourId) {
       return (
-        <View>
-          <Card style={styles.buttonContainer}>
-            <Button
-              title="Add Friend"
-              color="white"
-              onPress={() => handleButtonPress(myId, yourId, name)}
-            />
-          </Card>
+        <View style={styles.buttonContainer}>
+            <TouchableOpacity 
+            style={styles.button2}
+            onPress={() => handleButtonPress(myId, yourId, name)}>
+              <Text style={{ fontSize: 17, fontWeight: 'bold', color:'white'}}>Add Friend</Text>
+              </TouchableOpacity>
         </View>
       );
     }
@@ -225,8 +223,22 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 20,
+    marginTop: 7,
     width: 300,
     maxWidth: '50%',
   },
+  button2: {
+    backgroundColor: Colors.purple,
+    height: 60,
+    width:120,
+    borderBottomLeftRadius:10,
+    borderBottomRightRadius:10,
+    borderTopRightRadius:10,
+    borderTopLeftRadius:10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowOffset: { width: 2, height: 2 },
+    shadowColor: 'black',
+    shadowOpacity: 0.2,
+  }
 });

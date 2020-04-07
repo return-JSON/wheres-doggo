@@ -9,7 +9,7 @@ export { default as DogSnap } from './DogSnap';
 export { default as HomeScreen } from './HomeScreen';
 export { default as UserList } from './UserList';
 export { default as LoadingScreen } from './LoadingScreen';
-export { default as LoginScreen } from './LoginScreen';
+export { default as Login } from './Login';
 export { default as DoggoMap } from './DoggoMap';
 export { default as Score } from './Score';
 export { default as RegisterScreen } from './RegisterScreen';
