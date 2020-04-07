@@ -14,7 +14,7 @@
     "icon": "./assets/images/logo.png",
     "scheme": "myapp",
     "splash": {
-      "image": "./assets/images/logo.png",
+      "image": "./assets/images/dogpic.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
