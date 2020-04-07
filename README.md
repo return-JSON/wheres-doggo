@@ -2,7 +2,7 @@
 
 Where's DogGo is a mobile dog-scouting game which uses your mobile device GPS to locate and capture virtual dogs, which appear as if they were in your real-time location.
 
-Visit [Where's DogGo](https://expo.io/@cpascale43) to try it out!
+Visit [Where's DogGo](https://expo.io/@cpascale43/wheresdoggo) to try it out!
 
 ## Download
 
