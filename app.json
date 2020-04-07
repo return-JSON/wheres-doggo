@@ -1,25 +1,31 @@
 {
   "expo": {
-    "name": "Tab Navigation Template",
+    "name": "Where's Doggo?",
     "slug": "wheresDoggo",
     "privacy": "public",
     "sdkVersion": "36.0.0",
-    "platforms": ["ios", "android", "web"],
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "splash": {
-      "image": "./assets/images/corgi.gif",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "Where's DogGo is a mobile dog-scouting game which uses your mobile device GPS to locate and capture virtual dogs, which appear as if they were in your real-time location."
   }
 }
