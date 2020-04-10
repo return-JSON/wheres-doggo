@@ -54,6 +54,22 @@ https://expo.io/
 
 - Expo is an open-source platform for making universal native apps for Android, iOS, and the web with JavaScript and React.
 
+## APIs
+
+APIs used in this project:
+
+### `Google Cloud Vision`
+
+https://cloud.google.com/vision
+
+- Google Cloud’s Vision API offers powerful pre-trained machine learning models through REST and RPC APIs.
+
+### `LocationIQ`
+
+https://locationiq.com/
+
+- The LocationIQ Geocoding API allows developers to perform geocoding and reverse geocoding operations. The API also allows developers to access maps, nearby points of interest, nearby countries. Map tiles provided by LocationIQ work on web, Android, and iOS platforms.
+
 ## Tutorial
 
 View your dogs...
