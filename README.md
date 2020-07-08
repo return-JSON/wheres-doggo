@@ -18,9 +18,9 @@ In the terminal:
 npm install
 
 npm run start
+```
 
 With your phone, scan the QR code in the terminal to use Where's DogGo!
-```
 
 ## Tech Stack
 
