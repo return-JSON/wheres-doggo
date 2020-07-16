@@ -3,9 +3,9 @@ import {
   getLocation,
   uploadImage,
   addPup,
-  getBreedList
+  getBreedList,
 } from '../api';
-import { dogResponseComboFunction } from '../../constants/utilityFunctions';
+import { googleResponseProcessor } from '../../constants/utilityFunctions';
 
 //test objects
 import { dog, notADog, breedList } from '../../constants/dog';
@@ -13,7 +13,7 @@ import { dog, notADog, breedList } from '../../constants/dog';
 let initialState = {
   imageUrl: '',
   breed: '',
-  location: ''
+  location: '',
 };
 
 // actions
@@ -23,40 +23,44 @@ const SET_LOCATION = 'SET_LOCATION';
 const CLEAR_DOG = 'CLEAR_DOG';
 
 //// action creator
-const takePhoto = imageUrl => {
+const takePhoto = (imageUrl) => {
   return {
     type: SET_PHOTO_URI,
-    imageUrl
+    imageUrl,
   };
 };
 
-const setLocation = location => {
+const setLocation = (location) => {
   return {
     type: SET_LOCATION,
-    location
+    location,
   };
 };
 
-const setDogBreed = breed => {
+const setDogBreed = (breed) => {
   return {
     type: SET_DOG,
-    breed
+    breed,
   };
 };
 
 export const clearDog = () => {
   return {
     type: CLEAR_DOG,
-    clearState: {}
+    clearState: {},
   };
 };
 
 //thunk creator
-export const setPhotoUri = photo => {
-  return async dispatch => {
+export const setPhotoUri = (photo) => {
+  return async (dispatch) => {
     let response = await submitToGoogle(photo.base64);
+    if (response === 'error') {
+      await dispatch(takePhoto('error'));
+      return;
+    }
     let newBreedList = await getBreedList();
-    response = await dogResponseComboFunction(response, newBreedList);
+    response = await googleResponseProcessor(response, newBreedList);
     let location = await getLocation();
     await dispatch(takePhoto(photo.uri));
     await dispatch(setDogBreed(response));
@@ -65,7 +69,7 @@ export const setPhotoUri = photo => {
 };
 
 export const addPupThunk = (userId, stateObj) => {
-  return async dispatch => {
+  return async (dispatch) => {
     await uploadImage(userId, stateObj.imageUrl, stateObj.breed);
     await addPup(userId, stateObj);
     await dispatch(clearDog());

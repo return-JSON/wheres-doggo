@@ -1,30 +1,30 @@
 import GOOGLE_VISION_API_KEY from '../../config/constants';
 import {
   geopointMaker,
-  dogDocer,
-  urlMaker
+  dogBreedIdCreator,
+  urlMaker,
 } from '../../constants/utilityFunctions';
 import { db } from '../../config/firebase';
 import firebase from '../../config/firebase';
 import * as Location from 'expo-location';
 import * as ImageManipulator from 'expo-image-manipulator';
 
-export const submitToGoogle = async base64 => {
+export const submitToGoogle = async (base64) => {
   try {
     let body = JSON.stringify({
       requests: [
         {
           image: {
-            content: base64
+            content: base64,
           },
           features: [
             {
               type: 'LABEL_DETECTION',
-              maxResults: 10
-            }
-          ]
-        }
-      ]
+              maxResults: 10,
+            },
+          ],
+        },
+      ],
     });
     let response = await fetch(
       'https://vision.googleapis.com/v1/images:annotate?key=' +
@@ -32,10 +32,10 @@ export const submitToGoogle = async base64 => {
       {
         headers: {
           Accept: 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         method: 'POST',
-        body: body
+        body: body,
       }
     );
     let responseJson = await response.json();
@@ -44,6 +44,7 @@ export const submitToGoogle = async base64 => {
     return responseJson;
   } catch (error) {
     console.log(error);
+    return 'error';
   }
 };
 
@@ -55,14 +56,14 @@ export const getLocation = async () => {
 export const getBreedList = async () => {
   try {
     const dogsRef = await db.collection('dogs').get();
-    let newDogsArr = dogsRef.docs.map(doc => doc.data().breed);
+    let newDogsArr = dogsRef.docs.map((doc) => doc.data().breed);
     return newDogsArr;
   } catch (err) {
     console.log(err);
   }
 };
 
-export const resizeFromCamera = async uri => {
+export const resizeFromCamera = async (uri) => {
   let resizedPhoto = await ImageManipulator.manipulateAsync(
     uri,
     [{ resize: { width: 500 } }],
@@ -75,10 +76,7 @@ export const uploadImage = async (userId, uri, breed = 'last-image') => {
   try {
     const response = await fetch(uri);
     const blob = await response.blob();
-    const ref = await firebase
-      .storage()
-      .ref()
-      .child(`${userId}/${breed}`);
+    const ref = await firebase.storage().ref().child(`${userId}/${breed}`);
     const snapshot = await ref.put(blob);
     blob.close();
   } catch (err) {
@@ -88,13 +86,13 @@ export const uploadImage = async (userId, uri, breed = 'last-image') => {
 
 const findCityCounty = async (lat, lon) => {
   const response = await fetch(
-     `https://us1.locationiq.com/v1/reverse.php?key=dd8b2f143c4022&lat=${lat}&lon=${lon}&format=json&accept-language=en`
+    `https://us1.locationiq.com/v1/reverse.php?key=dd8b2f143c4022&lat=${lat}&lon=${lon}&format=json&accept-language=en`
   );
   const responseJson = await response.json();
   return {
     city: `${responseJson.address.city}, ${responseJson.address.state}`,
     county: responseJson.address.county,
-    country: responseJson.address.country
+    country: responseJson.address.country,
   };
 };
 
@@ -114,7 +112,7 @@ export const addPup = async (userId, stateObj) => {
   stateObj.county = cityCounty.county;
   stateObj.country = cityCounty.country;
 
-  const breedId = dogDocer(stateObj.breed);
+  const breedId = dogBreedIdCreator(stateObj.breed);
   stateObj.location = geopoint;
 
   const dogRef = await db.collection('dogs').doc(breedId);
@@ -131,10 +129,7 @@ export const addPup = async (userId, stateObj) => {
   let points = user.points + stateObj.points;
   await userRef.update({ points: points });
 
-  await userRef
-    .collection('userDogs')
-    .doc(breedId)
-    .set(stateObj);
+  await userRef.collection('userDogs').doc(breedId).set(stateObj);
 };
 
 export const addFriend = async (myID, yourID) => {
@@ -143,11 +138,11 @@ export const addFriend = async (myID, yourID) => {
     const secondUserRef = await db.collection('users').doc(yourID);
 
     const addMyFriend = await firstUserRef.update({
-      friends: firebase.firestore.FieldValue.arrayUnion(yourID)
+      friends: firebase.firestore.FieldValue.arrayUnion(yourID),
     });
 
     const addMe = await secondUserRef.update({
-      friends: firebase.firestore.FieldValue.arrayUnion(myID)
+      friends: firebase.firestore.FieldValue.arrayUnion(myID),
     });
     return true;
   } catch (err) {
