@@ -73,7 +73,7 @@ export const resizeFromCamera = async (uri) => {
   return resizedPhoto;
 };
 
-export const uploadImage = async (userId, uri, breed = 'last-image') => {
+export const uploadImage = async (userId, uri, breed) => {
   try {
     const response = await fetch(uri);
     const blob = await response.blob();

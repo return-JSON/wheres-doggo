@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
-import * as Animatable from 'react-native-animatable';
 
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
@@ -11,7 +10,7 @@ import { useAuth } from './HomeScreen';
 import { resizeFromCamera } from '../src/api';
 
 export default function CameraScreen({ navigation }) {
-  const { initializing, user } = useAuth();
+  const { user } = useAuth();
   const [loading, setLoading] = React.useState(false);
   const [hasPermission, setHasPermission] = React.useState(null);
 
@@ -44,7 +43,7 @@ export default function CameraScreen({ navigation }) {
     await setLoading(false);
     await navigation.navigate('DogSnap', {
       userId: user.uid,
-      photo: photo
+      photo: photo,
     });
   };
 
@@ -65,12 +64,12 @@ export default function CameraScreen({ navigation }) {
     <View style={{ flex: 1 }}>
       <Camera
         style={{ flex: 1, justifyContent: 'flex-end' }}
-        ref={ref => (this.camera = ref)}
+        ref={(ref) => (this.camera = ref)}
       >
         <TouchableOpacity
           style={{
             flex: 0.1,
-            alignSelf: 'center'
+            alignSelf: 'center',
           }}
           onPress={handlePress}
         >
