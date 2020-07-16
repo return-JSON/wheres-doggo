@@ -39,6 +39,7 @@ class DogSnap extends Component {
         isLoading: true,
       });
       await this.props.addPupThunk(userId, props);
+
       await this.setState({
         isLoading: false,
       });
@@ -63,13 +64,23 @@ class DogSnap extends Component {
   };
 
   errorHandlePress = async () => {
-    this.props.setPhotoUri(this.props.route.params.photo);
+    console.log();
+    await this.setState({
+      isLoading: true,
+      isError: false,
+    });
+
+    await this.props.setPhotoUri(this.props.route.params.photo);
+    await this.setState({
+      isLoading: false,
+    });
   };
 
   render() {
     const navigation = this.props.navigation;
-
-    if (this.props.camera.imageUrl === 'error' || this.state.isError) {
+    if (!this.props.camera.breed || this.state.isLoading) {
+      return <PupLoading />;
+    } else if (this.props.camera.imageUrl === 'error' || this.state.isError) {
       return (
         <View
           style={{
@@ -97,10 +108,7 @@ class DogSnap extends Component {
           </Card>
         </View>
       );
-    }
-
-    if (!this.props.camera.breed || this.state.isLoading) {
-      return <PupLoading />;
+      1;
     } else if (this.props.camera.breed === '🐶 breed not found') {
       return (
         <View

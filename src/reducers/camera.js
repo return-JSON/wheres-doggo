@@ -55,11 +55,13 @@ export const clearDog = () => {
 export const setPhotoUri = (photo) => {
   return async (dispatch) => {
     let response = await submitToGoogle(photo.base64);
-    if (response === 'error') {
+
+    let newBreedList = await getBreedList();
+    if (response === 'error' || newBreedList === 'error') {
       await dispatch(takePhoto('error'));
+      await dispatch(setDogBreed('error'));
       return;
     }
-    let newBreedList = await getBreedList();
     response = await googleResponseProcessor(response, newBreedList);
     let location = await getLocation();
     await dispatch(takePhoto(photo.uri));

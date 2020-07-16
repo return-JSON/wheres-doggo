@@ -60,6 +60,7 @@ export const getBreedList = async () => {
     return newDogsArr;
   } catch (err) {
     console.log(err);
+    return 'error';
   }
 };
 
