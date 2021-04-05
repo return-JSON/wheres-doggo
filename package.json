@@ -19,7 +19,7 @@
     "@react-navigation/drawer": "^5.3.2",
     "@react-navigation/material-bottom-tabs": "^5.3.15",
     "@react-navigation/native": "^5.9.4",
-    "@react-navigation/stack": "^5.0.0",
+    "@react-navigation/stack": "^5.14.4",
     "@react-navigation/web": "~1.0.0-alpha.9",
     "axios": "^0.21.1",
     "base-64": "^0.1.0",
