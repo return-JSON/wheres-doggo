@@ -64,7 +64,7 @@
     "react-native-vector-icons": "^6.6.0",
     "react-native-web": "~0.11.7",
     "react-native-webview": "^11.3.2",
-    "react-navigation": "^3.0.9",
+    "react-navigation": "^4.4.4",
     "react-pixelify": "^0.2.1",
     "react-redux": "^7.2.0",
     "react-redux-firebase": "^3.3.0",
