@@ -63,7 +63,7 @@
     "react-native-svg": "9.13.3",
     "react-native-vector-icons": "^6.6.0",
     "react-native-web": "~0.11.7",
-    "react-native-webview": "^11.0.0",
+    "react-native-webview": "^11.3.2",
     "react-navigation": "^3.0.9",
     "react-pixelify": "^0.2.1",
     "react-redux": "^7.2.0",
