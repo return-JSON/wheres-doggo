@@ -54,7 +54,7 @@
     "react-native-image-blur-loading": "^1.0.5",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-map-clustering": "^3.1.2",
-    "react-native-maps": "0.26.1",
+    "react-native-maps": "0.28.0",
     "react-native-modals": "^0.19.9",
     "react-native-paper": "^4.7.2",
     "react-native-reanimated": "^1.7.1",
