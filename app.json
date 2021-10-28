@@ -3,7 +3,6 @@
     "name": "Where's DogGo?",
     "slug": "wheresdoggo",
     "privacy": "public",
-    "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
       "android",
