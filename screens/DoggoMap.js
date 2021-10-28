@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Image, View, StyleSheet, Text } from "react-native";
-import MapView from "react-native-map-clustering";
-import { Marker, Callout } from "react-native-maps";
+import MapView from "react-native-maps";
+import { Marker, Callout} from "react-native-maps";
 import { db } from "../config/firebase";
 import AwesomeAlert from "react-native-awesome-alerts";
 import Colors from "../constants/Colors";
@@ -14,7 +14,7 @@ import { getLocation } from "../src/api";
 let lat;
 let long;
 
-const getLoc = async () => {
+const  getLoc = async () => {
   let location = await getLocation();
   const { latitude, longitude } = location.coords;
   lat = latitude || 40.705015;
@@ -107,8 +107,14 @@ export default class DoggoMap extends React.Component {
     return (
       <View style={styles.container}>
         <MapView
+        initialRegion={{
+             latitude: this.state.location.latitude,
+             longitude: this.state.location.longitude,
+             latitudeDelta: this.state.location.latitudeDelta,
+             longitudeDelta: this.state.location.longitudeDelta,
+
+         }}
           style={styles.mapContainer}
-          initialRegion={this.state.location}
           clusterColor={Colors.cluster}
         >
           {dogArr.map((dog, idx) => {
@@ -117,8 +123,8 @@ export default class DoggoMap extends React.Component {
                 tracksViewChanges={false}
                 key={idx}
                 coordinate={{
-                  latitude: dog.lastSeen["F"],
-                  longitude: dog.lastSeen["V"]
+                  latitude: dog.lastSeen["V"],
+                  longitude: dog.lastSeen["F"]
                 }}
                 image={image}
               >

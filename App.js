@@ -4,19 +4,21 @@ import LoadingScreen from './screens/LoadingScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import InsideApp from './screens/InsideApp';
 import {Asset} from 'expo-asset'
-import {AppLoading} from 'expo'
+import AppLoading from 'expo-app-loading'
 import { Provider } from 'react-redux';
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 import { createFirestoreInstance } from 'redux-firestore';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import Login from './screens/Login'
-import { YellowBox } from 'react-native'
+import { LogBox } from 'react-native'
 import store from './src/store';
 
-YellowBox.ignoreWarnings(['AppRegistry.setWrapperComponentProvider has no effect in managed Expo apps']);
-YellowBox.ignoreWarnings(['Deprecated: Native Google Sign-In has been moved to Expo.GoogleSignIn'])
-
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
+LogBox.ignoreAllLogs(['AppRegistry.setWrapperComponentProvider has no effect in managed Expo apps']);
+LogBox.ignoreAllLogs(['Deprecated: Native Google Sign-In has been moved to Expo.GoogleSignIn'])
+LogBox.ignoreLogs(['md-stats" is not a valid icon name for family "ionicons'])
 
 const rrfConfig = { userProfile: 'users', useFirestoreForProfile: true };
 
@@ -56,7 +58,7 @@ function cacheImages(images){
   })
 };
 
-export default class App extends React.Component {
+class App extends React.Component {
   constructor(){
     super()
     this.state = {
@@ -78,7 +80,7 @@ export default class App extends React.Component {
         onError={console.warn}
         />
       )
-    }
+    } 
   return (
     <Provider store={store}>
       <ReactReduxFirebaseProvider {...rrfProps}>
@@ -88,3 +90,5 @@ export default class App extends React.Component {
   );
 }
 }
+
+export default App;
